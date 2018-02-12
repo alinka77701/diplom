@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <script src="js/jquery.js"></script>
+    <script src="js/metro.js"></script>
+    <script src="js/Model.js" defer></script>
+    <script src="js/View.js" defer></script>
+    <script src="js/Controller.js" defer></script>
+    <link href="assets/css/metro.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/metro-colors.css" rel="stylesheet">
+    <link href="assets/css/metro-icons.css" rel="stylesheet">
+    <link href="assets/css/metro-schemes.css" rel="stylesheet">
+    <link href="assets/css/metro-responsive.css" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/img/iipo.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+    <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+    <title>Система распределения студентов на практику</title>
+</head>
+<body>
+<div class="container">
+    <div class="grid condensed">
+        <!--================================HEADER===================================-->
+        <div class="row cells12 myheader align-center">
+            <div class="cell colspan2">
+                <a href="http://iipo.tu-bryansk.ru/" target="_blank"><img src="assets/img/iipo.png"/></a>
+            </div>
+            <div class="cell colspan8 padding-top30">
+                <div class="row">
+                    <div class="cell"><h1>Система распределения студентов на практику</h1></div>
+                    <div class="cell ">
+                        <div class="inline-block">
+                            <h2>
+                                <small>Брянский Государственный Технический Университет</small>
+                            </h2>
+                        </div>
+                        <!--   <div ><a href="http://www.tu-bryansk.ru/" target="_blank"><img
+                                   src="assets/img/bstu.jpg"/></a></div>-->
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="cell colspan2 padding-top10">
+                <div class="row">
+                    <div class="cell">
+                        <h2>
+                            <small>Лагерев Д.Г.</small>
+                        </h2>
+                    </div>
+                    <div class="cell">
+                        <div class="split-button">
+                            <button class="button"><span class="mif-user mif-2x"></span></button>
+                            <button class="split dropdown-toggle"></button>
+                            <ul class="split-content d-menu" data-role="dropdown">
+                                <li><a id="studentsSectionBtn" href="#">Студенты</a></li>
+                                <li><a id="organisationsSectionBtn" href="#">Организации</a></li>
+                                <li><a href="#">Учет договоров</a></li>
+                                <li><a href="#">Связаться с . . .</a></li>
+                                <li><a href="#">Выход</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--================================CONTENT===================================-->
+        <section id="practiceCreationSection">
+            <div class="row content">
+                <div class="row">
+                    <div class="cell align-center">
+                        <h3>Создание практики</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="cell align-center">
+                        <h3>Шаг
+                            <step id="stepText">1</step>
+                        </h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="cell">
+                        <div class="wizard" data-role="wizard" data-locale='ru' data-stepper-type="cycle"
+                             data-stepper-clickable="false">
+                            <div class="steps">
+                                <div class="step align-center">
+                                    <h2>
+                                        <small>Укажите уровень высшего образования</small>
+                                    </h2>
+                                    <select name="select" class="styled-select slate" id="selectEducation">
+                                        <option value="bachelor" selected>Бакалавриат</option>
+                                        <option value="master">Магистратура</option>
+                                    </select>
+                                </div>
+                                <div class="step">
+                                    <h2>
+                                        <small>Укажите группы, участвующие в практике</small>
+                                    </h2>
+                                    <div class="treeview" data-role="treeview" id="groups-treeview-practice-creation">
+                                        <ul>
+                                            <li data-mode="checkbox" data-name="c1" class="node collapsed first">
+                                                <span class="leaf">1 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+
+                                                </ul>
+                                            </li>
+                                            <li data-mode="checkbox" data-name="c2" class="node collapsed second">
+                                                <span class="leaf">2 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+
+                                                </ul>
+                                            </li>
+                                            <li data-mode="checkbox" data-name="c3" class="node collapsed third">
+                                                <span class="leaf">3 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+
+                                                </ul>
+                                            </li>
+                                            <li data-mode="checkbox" data-name="c4" class="node collapsed fourth">
+                                                <span class="leaf">4 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <h2>
+                                        <small>Укажите организации, участвующие в практике</small>
+                                    </h2>
+
+                                    <div class="treeview" data-role="treeview"
+                                         id="organisations-treeview-practice-creation">
+                                        <ul>
+                                            <li class="node" data-mode="checkbox" class="node collapsed">
+                                                <span class="leaf">Выбрать все</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+                                                    <li data-mode="checkbox" data-name="c6"
+                                                        class="node collapsed organisation-type">
+                                                        <span class="leaf">Разработка мобильных систем</span>
+                                                        <span class="node-toggle"></span>
+                                                        <ul>
+                                                            <li data-mode="checkbox" data-name="c6_1">
+                                                                <span class="leaf">Polonium Arts</span>
+                                                            </li>
+                                                            <li data-mode="checkbox" data-name="c6_2">
+                                                                <span class="leaf">Сбертех</span>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li data-mode="checkbox" data-name="c7"
+                                                        class="node collapsed organisation-type">
+                                                        <span class="leaf">Смешанное</span>
+                                                        <span class="node-toggle"></span>
+                                                        <ul>
+                                                            <li data-mode="checkbox" data-name="c7_1">
+                                                                <span class="leaf">Рстайл</span>
+                                                            </li>
+                                                            <li data-mode="checkbox" data-name="c7_2">
+                                                                <span class="leaf">Брянск-Софт</span>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li data-mode="checkbox" data-name="c8"
+                                                        class="node collapsed organisation-type">
+                                                        <span class="leaf">WEB-разработка</span>
+                                                        <span class="node-toggle"></span>
+                                                        <ul>
+                                                            <li data-mode="checkbox" data-name="c8_1">
+                                                                <span class="leaf">Competentum</span>
+                                                            </li>
+                                                            <li data-mode="checkbox" data-name="c8_2">
+                                                                <span class="leaf">Polonium Arts</span>
+                                                            </li>
+                                                            <li data-mode="checkbox" data-name="c8_3">
+                                                                <span class="leaf">Оптимизм</span>
+                                                            </li>
+                                                            <li data-mode="checkbox" data-name="c8_4">
+                                                                <span class="leaf">IDEA Promotion</span>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <button class="button" onclick="metroDialog.open('#dialogCreateCompany')">Добавить
+                                        новую
+                                        организацию
+                                    </button>
+                                    <div class="align-center dialog" data-overlay="true" data-overlay-color="op-dark"
+                                         data-role="dialog" id="dialogCreateCompany" data-overlay-click-close="true"
+                                         data-close-button="true" data-width="500px" data-height="auto">
+                                        <h3 class="margin20">Создание новой организации</h3>
+                                        <div class="main">
+                                            <div class="field margin20">
+                                                <label for="nameCompany">Название</label>
+                                                <input type="text" name="nameCompany">
+                                            </div>
+                                            <div class="field margin20">
+                                                <label for="typeCompany">Тип организации</label>
+                                                <select name="select" class="styled-select slate"
+                                                        id="selectTypeCompany">
+                                                    <option value="mobile" selected>Мобильная разработка</option>
+                                                    <option value="web">WEB-разработка</option>
+                                                </select>
+                                            </div>
+                                            <div class="field margin20">
+                                                <label for="infoCompany">Информация</label>
+                                                <input type="text" name="infoCompany">
+                                            </div>
+                                            <div class="field margin20">
+                                                <label for="contactsCompany">Контакты</label>
+                                                <input type="text" name="contactsCompany">
+                                            </div>
+                                            <div class="field margin20">
+                                                <label for="pswdCompany">Количество мест</label>
+                                                <input type="text" name="placesCompany">
+                                            </div>
+                                            <div class="field margin20">
+                                                <label for="loginCompany">Логин</label>
+                                                <input type="text" name="loginCompany">
+                                            </div>
+                                            <div class="field margin20">
+                                                <label for="pswdCompany">Пароль</label>
+                                                <input type="text" name="pswdCompany">
+                                            </div>
+                                        </div>
+                                        <button class="button" id="createOrganisation">Создать организацию</button>
+                                    </div>
+                                </div>
+                                <div class="step align-center">
+                                    <h2>
+                                        <small>Укажите тип практики</small>
+                                    </h2>
+                                    <select name="select" class="styled-select slate" id="selectTypePractice">
+                                        <option value="educational" selected>Учебная</option>
+                                        <option value="internship">Производственная</option>
+                                        <option value="prediploma">Преддипломная</option>
+                                    </select>
+                                </div>
+
+                                <div class="step align-center">
+                                    <h2>
+                                        <small>Укажите сроки прохождения практики</small>
+                                    </h2>
+                                    <p class="margin20 inline-block">с</p>
+                                    <div class=" margin20 input-control text inline-block" data-role="datepicker"
+                                         data-format="dd. mm. yyyy"
+                                         data-other-days="true"
+                                         data-week-start="1" data-locale="ru">
+                                        <input id="fromDateInput" type="text" readonly="readonly">
+                                        <button class="button" type="button"><span class="mif-calendar"></span></button>
+                                        <div class="calendar calendar-dropdown"
+                                             style="position: absolute; max-width: 220px; z-index: 1000; top: 100%; left: 0px; display: block;">
+                                            <div class="calendar-grid">
+                                                <div class="calendar-row no-margin calendar-header">
+                                                    <div class="calendar-cell align-center"><a class="btn-previous-year"
+                                                                                               href="#">-</a></div>
+                                                    <div class="calendar-cell align-center"><a
+                                                            class="btn-previous-month" href="#">〈</a></div>
+                                                    <div class="calendar-cell sel-month align-center"><a
+                                                            class="btn-select-month" href="#">Дек 2017</a></div>
+                                                    <div class="calendar-cell align-center"><a class="btn-next-month"
+                                                                                               href="#">〉</a></div>
+                                                    <div class="calendar-cell align-center"><a class="btn-next-year"
+                                                                                               href="#">+</a></div>
+                                                </div>
+                                                <div class="calendar-row week-days calendar-subheader">
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Пн</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Вт</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Ср</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Чт</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Пт</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Сб</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Вс</div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">27</div>
+                                                    </div>
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">28</div>
+                                                    </div>
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">29</div>
+                                                    </div>
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">30</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">1</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">2</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day today">
+                                                        <div><a href="#">3</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">4</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">5</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">6</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">7</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">8</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">9</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">10</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">11</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">12</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">13</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">14</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">15</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">16</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">17</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">18</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">19</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">20</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">21</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">22</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">23</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">24</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">25</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">26</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">27</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">28</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">29</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">30</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">31</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="margin20 inline-block">до</p>
+                                    <div class="margin20 input-control text inline-block" data-role="datepicker"
+                                         data-format="dd. mm. yyyy"
+                                         data-other-days="true" data-week-start="1" data-locale="ru">
+                                        <input id="toDateInput" type="text" readonly="readonly">
+                                        <button class="button" type="button"><span class="mif-calendar"></span></button>
+                                        <div class="calendar calendar-dropdown"
+                                             style="position: absolute; max-width: 220px; z-index: 1000; top: 100%; left: 0px; display: block;">
+                                            <div class="calendar-grid">
+                                                <div class="calendar-row no-margin calendar-header">
+                                                    <div class="calendar-cell align-center"><a class="btn-previous-year"
+                                                                                               href="#">-</a></div>
+                                                    <div class="calendar-cell align-center"><a
+                                                            class="btn-previous-month"
+                                                            href="#">〈</a></div>
+                                                    <div class="calendar-cell sel-month align-center"><a
+                                                            class="btn-select-month" href="#">Дек 2017</a></div>
+                                                    <div class="calendar-cell align-center"><a class="btn-next-month"
+                                                                                               href="#">〉</a></div>
+                                                    <div class="calendar-cell align-center"><a class="btn-next-year"
+                                                                                               href="#">+</a></div>
+                                                </div>
+                                                <div class="calendar-row week-days calendar-subheader">
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Пн</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Вт</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Ср</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Чт</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Пт</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Сб</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Вс</div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">27</div>
+                                                    </div>
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">28</div>
+                                                    </div>
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">29</div>
+                                                    </div>
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">30</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">1</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">2</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day today">
+                                                        <div><a href="#">3</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">4</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">5</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">6</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">7</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">8</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">9</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">10</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">11</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">12</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">13</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">14</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">15</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">16</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">17</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">18</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">19</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">20</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">21</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">22</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">23</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">24</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">25</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">26</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">27</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">28</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">29</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">30</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">31</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step align-center">
+                                    <h2>
+                                        <small>Укажите крайний срок записи в организацию</small>
+                                    </h2>
+                                    <div class=" margin20 input-control text inline-block" data-format="dd. mm. yyyy"
+                                         data-role="datepicker"
+                                         data-other-days="true"
+                                         data-week-start="1" data-locale="ru">
+                                        <input type="text" readonly="readonly" id="deadline">
+                                        <button class="button" type="button"><span class="mif-calendar"></span></button>
+                                        <div class="calendar calendar-dropdown"
+                                             style="position: absolute; max-width: 220px; z-index: 1000; top: 100%; left: 0px; display: block;">
+                                            <div class="calendar-grid">
+                                                <div class="calendar-row no-margin calendar-header">
+                                                    <div class="calendar-cell align-center"><a class="btn-previous-year"
+                                                                                               href="#">-</a></div>
+                                                    <div class="calendar-cell align-center"><a
+                                                            class="btn-previous-month" href="#">〈</a></div>
+                                                    <div class="calendar-cell sel-month align-center"><a
+                                                            class="btn-select-month" href="#">Дек 2017</a></div>
+                                                    <div class="calendar-cell align-center"><a class="btn-next-month"
+                                                                                               href="#">〉</a></div>
+                                                    <div class="calendar-cell align-center"><a class="btn-next-year"
+                                                                                               href="#">+</a></div>
+                                                </div>
+                                                <div class="calendar-row week-days calendar-subheader">
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Пн</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Вт</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Ср</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Чт</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Пт</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Сб</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day-of-week">
+                                                        <div>Вс</div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">27</div>
+                                                    </div>
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">28</div>
+                                                    </div>
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">29</div>
+                                                    </div>
+                                                    <div class="calendar-cell empty">
+                                                        <div class="other-day">30</div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">1</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">2</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day today">
+                                                        <div><a href="#">3</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">4</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">5</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">6</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">7</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">8</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">9</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">10</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">11</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">12</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">13</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">14</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">15</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">16</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">17</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">18</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">19</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">20</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">21</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">22</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">23</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">24</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="calendar-row">
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">25</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">26</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">27</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">28</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">29</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">30</a></div>
+                                                    </div>
+                                                    <div class="calendar-cell align-center day">
+                                                        <div><a href="#">31</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" dialog align-center" data-overlay="true" data-overlay-color="op-dark"
+                                         data-role="dialog" id="dialogPracticeCompleteSuccess"
+                                         data-overlay-click-close="true"
+                                         data-close-button="true" data-width="500px" data-height="auto"
+                                         data-type="success">
+                                        <h3 class="margin20">Практика успешно создана!</h3>
+                                        <div class="main align-left">
+                                            <div class="field margin20">
+                                                <p class="inline-block sub-header">Уровень высшего образования:</p>
+                                                <p class="inline-block sub-header" id="educationalLevelDialog"></p>
+                                            </div>
+                                            <div class="field margin20">
+                                                <p class="inline-block sub-header">Тип практики:</p>
+                                                <p class="inline-block sub-header" id="typePracticeDialog"></p>
+                                            </div>
+
+                                            <div class="field margin20">
+                                                <p class="inline-block sub-header">Группы:</p>
+                                                <p class="inline-block sub-header" id="groupsPracticeDialog"></p>
+                                            </div>
+                                            <div class="field margin20">
+                                                <p class="inline-block sub-header">Организации:</p>
+                                                <p class="inline-block sub-header" id="organisationsPracticeDialog"></p>
+                                            </div>
+                                            <div class="field margin20">
+                                                <p class="inline-block sub-header">Сроки:</p>
+                                                <p class="inline-block sub-header" id="termsPracticeDialog"></p>
+                                            </div>
+                                            <div class="field margin20">
+                                                <p class="inline-block sub-header">Дедлайн:</p>
+                                                <p class="inline-block sub-header" id="deadlinePracticeDialog"></p>
+                                            </div>
+                                        </div>
+                                        <button class="button" id="practiceFinishedOk">Создать практику</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="mainWindowSection">
+            <div class="row content">
+                <div class="row cells10 align-center">
+                    <div class="cell colspan3">
+
+                            <div class="tabcontrol2" data-role="tabcontrol">
+                                <ul class="tabs">
+                                    <li class="active"><a href="#frame_1_1">Бакалавриат</a></li>
+                                    <li class=""><a href="#frame_1_2">Магистратура</a></li>
+                                </ul>
+                                <div class="frames">
+                                    <div class="frame" id="frame_1_1" style="display: block;">
+                                        <div class="treeview align-left" data-role="treeview"
+                                             id="group-treeview-tabcontrol1">
+                                            <ul>
+                                                <li data-mode="checkbox" data-name="c5" class="node collapsed first">
+                                                    <span class="leaf">1 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                                <li data-mode="checkbox" data-name="c6" class="node collapsed second">
+                                                    <span class="leaf">2 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                                <li data-mode="checkbox" data-name="c7" class="node collapsed third">
+                                                    <span class="leaf">3 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                                <li data-mode="checkbox" data-name="c8" class="node collapsed fourth">
+                                                    <span class="leaf">4 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+                                                        <!--<li data-mode="checkbox" data-name="c12_2">
+                                                            <span class="leaf">14-МОА</span>
+                                                        </li>
+                                                        <li data-mode="checkbox" data-name="c12_3">
+                                                            <span class="leaf">14-ИВТ1</span>
+                                                        </li>
+                                                        <li data-mode="checkbox" data-name="c12_4">
+                                                            <span class="leaf">14-ИВТ2</span>
+                                                        </li>
+                                                        <li data-mode="checkbox" data-name="c12_5">
+                                                            <span class="leaf">14-ИВТ3</span>
+                                                        </li>-->
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="frame" id="frame_1_2" style="display: none;">
+                                        <div class="treeview align-left" data-role="treeview"
+                                             id="group-treeview-tabcontrol2">
+                                            <ul>
+                                                <li data-mode="checkbox" data-name="c9" class="node collapsed first">
+                                                    <span class="leaf">1 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                                <li data-mode="checkbox" data-name="c10" class="node collapsed second">
+                                                    <span class="leaf">2 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        <h2>
+                            <small>Укажите тип практики</small>
+                        </h2>
+                        <select name="select" class="styled-select slate" id="selectTypePracticeTab">
+                            <option value="educational" selected>Учебная</option>
+                            <option value="internship">Производственная</option>
+                            <option value="prediploma">Преддипломная</option>
+                        </select>
+                            <div> <button class="button square-button " id="getGroupsBtnOk">OK</button></div>
+
+                        <button class="button" id="generateReportBtn">Сгенерировать отчеты/приказы</button>
+                    </div>
+                    <div class="cell colspan7">
+                        <div class="row">
+                            <div class="cell align-center">
+                                <h3 id="mainWindowTypePractice" class="inline-block">Учебная практика</h3>
+                                <h3 id="mainWindowTermsPractice" class="inline-block">12.12.2017-31.12.2017</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell align-center margin-left20">
+                                <p class="sub-alt-header margin10">Список студентов</p>
+                                <!-- <table id="example" class="dataTable display striped border bordered"
+                                                 data-role="datatable" data-searching="true" role="grid"
+                                                 aria-describedby="example_table_info" data-locale="ru" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Office</th>
+                                    <th>Extn.</th>
+                                    <th>Start date</th>
+                                    <th>Salary</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Office</th>
+                                    <th>Extn.</th>
+                                    <th>Start date</th>
+                                    <th>Salary</th>
+                                </tr>
+                                </tfoot>
+                            </table>-->
+                                <!-- <div class="example" >
+                                     <div id="example_table_wrapper" class="dataTables_wrapper">
+                                         <table id="studentsList" class="dataTable striped border bordered"
+                                                data-role="datatable" data-searching="true" role="grid"
+                                                aria-describedby="example_table_info" data-locale="ru">
+                                             <thead>
+                                             <tr role="row">
+                                                 <th class="sorting_asc" tabindex="0" aria-controls="example_table"
+                                                     rowspan="1" colspan="1" aria-sort="ascending"
+                                                     aria-label="Name: activate to sort column descending"
+                                                     style="width: 155px;">Группа
+                                                 </th>
+                                                 <th class="sorting" tabindex="0" aria-controls="example_table"
+                                                     rowspan="1" colspan="1"
+                                                     aria-label="Position: activate to sort column ascending"
+                                                     style="width: 247px;">ФИО студента
+                                                 </th>
+                                                 <th class="sorting" tabindex="0" aria-controls="example_table"
+                                                     rowspan="1" colspan="1"
+                                                     aria-label="Office: activate to sort column ascending"
+                                                     style="width: 117px;">Организация
+                                                 </th>
+                                             </tr>
+                                             </thead>
+
+                                             <tfoot>
+                                             <tr>
+                                                 <th rowspan="1" colspan="1">Группа</th>
+                                                 <th rowspan="1" colspan="1">ФИО студента</th>
+                                                 <th rowspan="1" colspan="1">Организация</th>
+                                             </tr>
+                                             </tfoot>
+                                             <tbody>
+                                             <tr role="row" class="approved_stud">
+                                                 <td class="sorting_1">14-ПрИ</td>
+                                                 <td>Андреев Андрей Андреевич</td>
+                                                 <td>R-Style</td>
+                                             </tr>
+                                             <tr role="row">
+                                                 <td class="sorting_1">14-ПрИ</td>
+                                                 <td>Петров Петр Олегович</td>
+                                                 <td>БрянскСофт</td>
+                                             </tr>
+                                             <tr role="row" class="even">
+                                                 <td class="sorting_1">14-ИВТ</td>
+                                                 <td>Петров Петр Олегович</td>
+                                                 <td>БрянскСофт</td>
+                                             </tr>
+                                             <tr role="row" class="even">
+                                                 <td class="sorting_1">14-ПрИ</td>
+                                                 <td>Андреев Андрей Андреевич</td>
+                                                 <td>R-Style</td>
+                                             </tr>
+                                             <tr role="row" class="waiting_stud">
+                                                 <td class="sorting_1">14-ПрИ</td>
+                                                 <td>Петров Петр Олегович</td>
+                                                 <td>БрянскСофт</td>
+                                             </tr>
+                                             <tr role="row" class="even">
+                                                 <td class="sorting_1">14-ИВТ</td>
+                                                 <td>Петров Петр Олегович</td>
+                                                 <td>БрянскСофт</td>
+                                             </tr>
+                                             <tr role="row" class="odd">
+                                                 <td class="sorting_1">14-ПрИ</td>
+                                                 <td>Андреев Андрей Андреевич</td>
+                                                 <td>R-Style</td>
+                                             </tr>
+                                             <tr role="row" class="even">
+                                                 <td class="sorting_1">14-ПрИ</td>
+                                                 <td>Петров Петр Олегович</td>
+                                                 <td>БрянскСофт</td>
+                                             </tr>
+                                             <tr role="row" class="waiting_stud">
+                                                 <td class="sorting_1">14-ИВТ</td>
+                                                 <td>Петров Петр Олегович</td>
+                                                 <td>БрянскСофт</td>
+                                             </tr>
+                                             <tr role="row" class="odd">
+                                                 <td class="sorting_1">14-ПрИ</td>
+                                                 <td>Андреев Андрей Андреевич</td>
+                                                 <td>R-Style</td>
+                                             </tr>
+                                             <tr role="row" class="even">
+                                                 <td class="sorting_1">14-ПрИ</td>
+                                                 <td>Петров Петр Олегович</td>
+                                                 <td>БрянскСофт</td>
+                                             </tr>
+                                             <tr role="row" class="odd">
+                                                 <td class="sorting_1">14-ИВТ</td>
+                                                 <td>Петров Петр Олегович</td>
+                                                 <td>БрянскСофт</td>
+                                             </tr>
+                                             </tbody>
+                                         </table>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>-->
+                                <table id="studentsListTable" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>Группа</th>
+                                        <th>Студент</th>
+                                        <th>Организация</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Группа</th>
+                                        <th>Студент</th>
+                                        <th>Организация</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="pagination align-center " id="buttonsArray">
+                                    <span class="item year">2015</span>
+                                    <span class="item year">2016</span>
+                                    <span class="item year">2017</span>
+                                    <span class="item year">2018</span>
+                                    <span class="item year" id="createPracticeBtn"> + </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="organisationsSection">
+            <div class="row content">
+                <div class="row cells12">
+                    <div class="cell colspan2 right-separator align-center">  <h3>Конфигурация</h3>
+                        <h2>
+                            <small>Укажите тип практики</small>
+                        </h2>
+                        <select name="select" class="styled-select slate" id="selectTypePracticeOrganisationSec">
+                            <option value="educational" selected>Учебная</option>
+                            <option value="internship">Производственная</option>
+                            <option value="prediploma">Преддипломная</option>
+                        </select>
+                        <div class="pagination align-center ">
+                            <span class="item year">2016</span>
+                            <span class="item year">2017</span>
+                            <span class="item year">2018</span>
+                        </div>
+                        <div> <button class="button square-button " id="getOrganisationsBtnOk">OK</button></div>
+                    </div>
+                    <div class="cell colspan4 align-center right-separator bd-lightgray">
+                        <h3>Список организаций</h3>
+
+                        <!--<ol id="organisationList">
+                            <li>
+                                <div>
+                                    <p class="inline-block">Competentum</p>
+                                    <span class="mif-wrench inline-block"></span>
+                                    <span class="mif-wrench "></span>
+                                    <span class="mif-wrench"></span>
+                                    <span class="mif-wrench"></span>
+                                </div>
+                            </li>
+                            <li>R-Style <span class="mif-wrench"></span></li>
+                            <li>BryanskSoft</li>
+                            <li>Optimism</li>
+                            <li>Polonium Arts</li>
+                            <li>IDEA Promotion</li>
+                            <li>Сбертех</li>
+                        </ol>-->
+                        <div class="listview-outlook align-left" data-role="listview">
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Competentum</span>
+                                    <span class="list-subtitle">Всего мест: 5</span>
+                                    <span class="list-remark">Осталось: 3</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-user-plus mif-lg fg-gray"></span>
+                                    <span class="mif-pencil mif-lg fg-gray"></span>
+                                    <span class="mif-cancel mif-lg fg-yellow"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Сбертех</span>
+                                    <span class="list-subtitle">Всего мест: 10</span>
+                                    <span class="list-remark">Осталось: 7</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-user-plus mif-lg fg-gray"></span>
+                                    <span class="mif-pencil mif-lg fg-gray"></span>
+                                    <span class="mif-cancel mif-lg fg-yellow"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Optimism</span>
+                                    <span class="list-subtitle">Всего мест: 5</span>
+                                    <span class="list-remark">Осталось: 3</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-user-plus mif-lg fg-gray"></span>
+                                    <span class="mif-pencil mif-lg fg-gray"></span>
+                                    <span class="mif-cancel mif-lg fg-yellow"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Optimism</span>
+                                    <span class="list-subtitle">Всего мест: 5</span>
+                                    <span class="list-remark">Осталось: 3</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-user-plus mif-lg fg-gray"></span>
+                                    <span class="mif-pencil mif-lg fg-gray"></span>
+                                    <span class="mif-cancel mif-lg fg-yellow"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Optimism</span>
+                                    <span class="list-subtitle">Всего мест: 5</span>
+                                    <span class="list-remark">Осталось: 3</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-user-plus mif-lg fg-gray"></span>
+                                    <span class="mif-pencil mif-lg fg-gray"></span>
+                                    <span class="mif-cancel mif-lg fg-yellow"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Optimism</span>
+                                    <span class="list-subtitle">Всего мест: 5</span>
+                                    <span class="list-remark">Осталось: 3</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-user-plus mif-lg fg-gray"></span>
+                                    <span class="mif-pencil mif-lg fg-gray"></span>
+                                    <span class="mif-cancel mif-lg fg-yellow"></span>
+                                </div>
+                            </div> <div class="list">
+                            <div class="list-content inline-block">
+                                <span class="list-title">Optimism</span>
+                                <span class="list-subtitle">Всего мест: 5</span>
+                                <span class="list-remark">Осталось: 3</span>
+                            </div>
+                            <div class="inline-block list-content settingsOrganisation">
+                                <span class="mif-user-plus mif-lg fg-gray"></span>
+                                <span class="mif-pencil mif-lg fg-gray"></span>
+                                <span class="mif-cancel mif-lg fg-yellow"></span>
+                            </div>
+                        </div> <div class="list">
+                            <div class="list-content inline-block">
+                                <span class="list-title">Optimism</span>
+                                <span class="list-subtitle">Всего мест: 5</span>
+                                <span class="list-remark">Осталось: 3</span>
+                            </div>
+                            <div class="inline-block list-content settingsOrganisation">
+                                <span class="mif-user-plus mif-lg fg-gray"></span>
+                                <span class="mif-pencil mif-lg fg-gray"></span>
+                                <span class="mif-cancel mif-lg fg-yellow"></span>
+                            </div>
+                        </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">BryanskSoft</span>
+                                    <span class="list-subtitle">Всего мест: 8</span>
+                                    <span class="list-remark">Осталось: 3</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-user-plus mif-lg fg-gray"></span>
+                                    <span class="mif-pencil mif-lg fg-gray"></span>
+                                    <span class="mif-cancel mif-lg fg-yellow"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Polonium Arts</span>
+                                    <span class="list-subtitle">Всего мест: 2</span>
+                                    <span class="list-remark">Осталось: 2</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-user-plus mif-lg fg-gray"></span>
+                                    <span class="mif-pencil mif-lg fg-gray"></span>
+                                    <span class="mif-cancel mif-lg fg-yellow"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">IDEA Promotion</span>
+                                    <span class="list-subtitle">Всего мест: 3</span>
+                                    <span class="list-remark">Осталось: 0</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-user-plus mif-lg fg-gray"></span>
+                                    <span class="mif-pencil mif-lg fg-gray"></span>
+                                    <span class="mif-cancel mif-lg fg-yellow"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <button class="button padding30" onclick="metroDialog.open('#dialogCreateCompany')">Добавить
+                            новую
+                            организацию
+                        </button>
+                    </div>
+                    <div class="cell colspan6 align-center">
+                        <h3 id="compNameForNonApprovedStudList">Список студентов, записавшихся в Competentum </h3>
+                        <div class="listview-outlook align-left" data-role="listview" id="nonApprovedStudents">
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Соколова Марина Олеговна</span>
+                                    <span class="list-subtitle">14-ПрИ</span>
+                                    <span class="list-remark">12.12.2017 16:34</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-checkmark mif-lg fg-green"></span>
+                                    <span class="mif-cancel mif-lg fg-red"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Котов Федор Юрьевич</span>
+                                    <span class="list-subtitle">14-МОА</span>
+                                    <span class="list-remark">01.12.2017 19:50</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-checkmark mif-lg fg-green"></span>
+                                    <span class="mif-cancel mif-lg fg-red"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Сидоров Петр Ильич</span>
+                                    <span class="list-subtitle">14-ИВТ</span>
+                                    <span class="list-remark">23.11.2017 21:32</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-checkmark mif-lg fg-green"></span>
+                                    <span class="mif-cancel mif-lg fg-red"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Иванов Иван Иванович</span>
+                                    <span class="list-subtitle">14-ПрИ</span>
+                                    <span class="list-remark">23.11.2017 14:44</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-checkmark mif-lg fg-green"></span>
+                                    <span class="mif-cancel mif-lg fg-red"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <h3>Список утвержденных студентов</h3>
+                        <div class="listview-outlook align-left" data-role="listview" id="approvedStudents">
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Самохина Мария Федоровна</span>
+                                    <span class="list-subtitle">14-ПрИ</span>
+                                    <span class="list-remark">12.12.2017 16:34</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-cancel mif-lg fg-red"></span>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="list-content inline-block">
+                                    <span class="list-title">Фатеев Алексей Дмитриевич</span>
+                                    <span class="list-subtitle">14-МОА</span>
+                                    <span class="list-remark">01.12.2017 19:50</span>
+                                </div>
+                                <div class="inline-block list-content settingsOrganisation">
+                                    <span class="mif-cancel mif-lg fg-red"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>
