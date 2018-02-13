@@ -83,7 +83,7 @@
                 <div class="row">
                     <div class="cell">
                         <div class="wizard" data-role="wizard" data-locale='ru' data-stepper-type="cycle"
-                             data-stepper-clickable="false">
+                             data-stepper-clickable="false" id="stepper">
                             <div class="steps">
                                 <div class="step align-center">
                                     <h2>
@@ -98,7 +98,7 @@
                                     <h2>
                                         <small>Укажите группы, участвующие в практике</small>
                                     </h2>
-                                    <div class="treeview" data-role="treeview" id="groups-treeview-practice-creation">
+                                    <div class="treeview" data-role="treeview" id="groups-treeview-practice-creation-bachelor">
                                         <ul>
                                             <li data-mode="checkbox" data-name="c1" class="node collapsed first">
                                                 <span class="leaf">1 курс</span>
@@ -123,6 +123,24 @@
                                             </li>
                                             <li data-mode="checkbox" data-name="c4" class="node collapsed fourth">
                                                 <span class="leaf">4 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="treeview" data-role="treeview" id="groups-treeview-practice-creation-master">
+                                        <ul>
+                                            <li data-mode="checkbox" data-name="c1" class="node collapsed first">
+                                                <span class="leaf">1 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+
+                                                </ul>
+                                            </li>
+                                            <li data-mode="checkbox" data-name="c2" class="node collapsed second">
+                                                <span class="leaf">2 курс</span>
                                                 <span class="node-toggle"></span>
                                                 <ul>
 
@@ -800,7 +818,7 @@
                                 <div class="frames">
                                     <div class="frame" id="frame_1_1" style="display: block;">
                                         <div class="treeview align-left" data-role="treeview"
-                                             id="group-treeview-tabcontrol1">
+                                             id="group-treeview-tabcontrol1-bachelor">
                                             <ul>
                                                 <li data-mode="checkbox" data-name="c5" class="node collapsed first">
                                                     <span class="leaf">1 курс</span>
@@ -827,18 +845,6 @@
                                                     <span class="leaf">4 курс</span>
                                                     <span class="node-toggle"></span>
                                                     <ul>
-                                                        <!--<li data-mode="checkbox" data-name="c12_2">
-                                                            <span class="leaf">14-МОА</span>
-                                                        </li>
-                                                        <li data-mode="checkbox" data-name="c12_3">
-                                                            <span class="leaf">14-ИВТ1</span>
-                                                        </li>
-                                                        <li data-mode="checkbox" data-name="c12_4">
-                                                            <span class="leaf">14-ИВТ2</span>
-                                                        </li>
-                                                        <li data-mode="checkbox" data-name="c12_5">
-                                                            <span class="leaf">14-ИВТ3</span>
-                                                        </li>-->
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -846,7 +852,7 @@
                                     </div>
                                     <div class="frame" id="frame_1_2" style="display: none;">
                                         <div class="treeview align-left" data-role="treeview"
-                                             id="group-treeview-tabcontrol2">
+                                             id="group-treeview-tabcontrol2-master">
                                             <ul>
                                                 <li data-mode="checkbox" data-name="c9" class="node collapsed first">
                                                     <span class="leaf">1 курс</span>

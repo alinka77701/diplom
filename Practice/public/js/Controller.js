@@ -1,4 +1,4 @@
-var Controller = function (View, Model) {
+Controller = function (View, Model) {
     this.View = View;
     this.Model = Model;
 };
@@ -26,13 +26,19 @@ Controller.prototype.goToPracticeCreation = function () {
     this.renderGroupsTreeView();
     this.View.goToPracticeCreation();
 }
-/*========================================PRACTICE CREATION SECTION================================================*/
+
+
+
+
+/*========================================PRACTICE SECTION================================================*/
 Controller.prototype.beginActions = function () {
     this.View.renderEduLevel();
 };
 Controller.prototype.dialogPracticeCreatedInit = function () {
     this.View.dialogPracticeCreatedInit();
 }
+
+
 /*============================================STUDENTS SECTION=====================================================*/
 Controller.prototype.renderGroupsTreeView = function () {
     this.Model.getGroups(this.View.selectedYear)
@@ -54,5 +60,7 @@ Controller.prototype.renderDataInTable = async function () {
     this.View.renderInfo();
 
 }
+
 var Controller = new Controller(View, Model);
+
 Controller.init();
