@@ -55,7 +55,7 @@ Model.prototype.myGetYear = function () {
   return currentYear;
 }
 
-Model.prototype.getGroups = async function (currentYear) {
+Model.prototype.distributeGroupsByCourses = async function (currentYear) {
   this.Courses = [
     new Course('1'),
     new Course('2'),
@@ -146,5 +146,8 @@ Model.prototype.getStudentsByGroupId = async function (groupID) {
   return studentsList;
 }
 
+Model.prototype.getTypesOrganisation= async function () {
+
+}
 
 var Model = new Model();

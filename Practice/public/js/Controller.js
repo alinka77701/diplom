@@ -4,7 +4,7 @@ Controller = function (View, Model) {
 };
 
 Controller.prototype.init = function () {
-    this.View.onClickNextStep = this.beginActions.bind(this);
+    this.View.onClickNextStep = this.displayGroups.bind(this);
     this.View.onClickPracticeCompleted = this.goToStudentsSection.bind(this);
     this.View.onClickCreatePractice = this.goToPracticeCreation.bind(this);
     this.View.onClickToOrganisationsSection = this.goToOrganisationsSection.bind(this);
@@ -12,12 +12,14 @@ Controller.prototype.init = function () {
     this.View.onClickFinishBtn = this.dialogPracticeCreatedInit.bind(this);
     this.View.onClickSelectGroupBtnOk = this.renderDataInTable.bind(this);
     this.View.onClickYearsArray = this.setGroupsTreeView.bind(this);
+    this.View.onClickGetOrganisations = this.getOrganisations.bind(this);
     this.View.init();
 };
 
 Controller.prototype.goToOrganisationsSection = function () {
     this.View.goToOrganisationsSection();
 }
+
 Controller.prototype.goToStudentsSection = function () {
     this.View.goToStudentsSection();
 }
@@ -31,8 +33,8 @@ Controller.prototype.goToPracticeCreation = function () {
 
 
 /*========================================PRACTICE SECTION================================================*/
-Controller.prototype.beginActions = function () {
-    this.View.renderEduLevel();
+Controller.prototype.displayGroups = function () {
+    this.View.displayGroups();
 };
 Controller.prototype.dialogPracticeCreatedInit = function () {
     this.View.dialogPracticeCreatedInit();
@@ -41,7 +43,7 @@ Controller.prototype.dialogPracticeCreatedInit = function () {
 
 /*============================================STUDENTS SECTION=====================================================*/
 Controller.prototype.renderGroupsTreeView = function () {
-    this.Model.getGroups(this.View.selectedYear)
+    this.Model.distributeGroupsByCourses(this.View.selectedYear)
         .then(function () {
             this.View.clearGroupsTreeView();
         })
@@ -60,7 +62,9 @@ Controller.prototype.renderDataInTable = async function () {
     this.View.renderInfo();
 
 }
-
+Controller.prototype.getOrganisations = function () {
+  this.View.getConfigurations();
+}
 var Controller = new Controller(View, Model);
 
 Controller.init();

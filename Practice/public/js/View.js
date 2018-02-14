@@ -19,6 +19,7 @@ var View = function () {
     'groups-treeview-practice-creation-bachelor',
     'groups-treeview-practice-creation-master'
   ];
+  this.onClickGetOrganisations = null;
 };
 
 View.prototype.init = function () {
@@ -39,7 +40,10 @@ View.prototype.init = function () {
       this.onClickSelectGroupBtnOk);
   document.getElementById("buttonsArray").addEventListener('click',
       this.onClickYearsArray);
-  ;
+  document.getElementById("buttonsArray1").addEventListener('click',
+      this.onClickYearsArray);
+  document.getElementById("getOrganisationsBtnOk").addEventListener('click',
+      this.onClickGetOrganisations);
   this.myTable.dataTable({
     data: this.Groups,
     "language": {
@@ -137,7 +141,7 @@ View.prototype.dialogPracticeCreatedInit = function () {
       + ' - ' + toDate;
 
 }
-View.prototype.renderEduLevel = function () {
+View.prototype.displayGroups = function () {
   let educationLevel = document.getElementById("selectEducation").value;
   if (educationLevel === "bachelor") {
     for (let i = 0; i < this.idTreeViews.length; i++) {
@@ -199,6 +203,7 @@ View.prototype.changeYear = function (node) {
 
 View.prototype.updateYear = function (event) {
   var target = event.target;
+  debugger;
   while (target != buttonsArray) {
     if (target.className == 'item year') {
       this.changeYear(target);
@@ -289,4 +294,14 @@ View.prototype.updateGroupsTreeView = function (courses) {
     idCounter++;
   }
 }
+
+View.prototype.getConfigurations= function () {
+  let typePractice=document.getElementById("selectTypePracticeOrganisationSec").value;
+  let eduLevel=document.getElementById("selectEduLevelOrganisationSec").value;
+  let years=document.getElementsByClassName("years");
+  console.log(typePractice);
+  console.log(eduLevel);
+  console.log(this.selectedYear);
+}
+
 var View = new View();

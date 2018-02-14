@@ -201,6 +201,6 @@ th{
 .dataTables_paginate{
     width: 65% !important;
 }
-#selectTypePracticeOrganisationSec{
+#selectTypePracticeOrganisationSec, #selectEduLevelOrganisationSec{
     width:auto;
 }
