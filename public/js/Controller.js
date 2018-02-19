@@ -31,11 +31,9 @@ Controller.prototype.goToStudentsSection = function () {
 Controller.prototype.goToPracticeCreation = function () {
     this.View.selectedYear = this.Model.myGetYear();
     this.renderGroupsTreeView();
+    this.View.clearPracticeSection();
     this.View.goToPracticeCreation();
 }
-
-
-
 
 /*========================================PRACTICE SECTION================================================*/
 Controller.prototype.displayGroups = function () {
@@ -44,7 +42,6 @@ Controller.prototype.displayGroups = function () {
 Controller.prototype.dialogPracticeCreatedInit = function () {
     this.View.dialogPracticeCreatedInit();
 }
-
 
 /*============================================STUDENTS SECTION=====================================================*/
 Controller.prototype.renderGroupsTreeView = function () {

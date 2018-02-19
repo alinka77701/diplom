@@ -1,6 +1,6 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+//const nodeExternals = require('webpack-node-externals');
 module.exports = {
   entry: './public/js/main.js',
   output: {
@@ -44,4 +44,8 @@ module.exports = {
   ],
 
   devtool: 'cheap-inline-module-source-map'
+
+ /* target: 'node',
+  externals: [nodeExternals()]*/
+
 };

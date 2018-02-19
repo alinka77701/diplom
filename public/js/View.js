@@ -104,7 +104,15 @@ View.prototype.dialogPracticeCreatedInit = function () {
   let fromDate = document.getElementById("fromDateInput").value;
   let toDate = document.getElementById("toDateInput").value;
   let deadline = document.getElementById("deadline").value;
-
+  if (fromDate === "") {
+    fromDate = "01. 01. 2000";
+  }
+  if (toDate === "") {
+    toDate = "01. 01. 2000";
+  }
+  if (deadline === "") {
+    deadline = "01. 01. 2000";
+  }
   if (typePractice === "educational") {
     typePracticeText = "Учебная";
   }
@@ -165,7 +173,11 @@ View.prototype.displayGroups = function () {
   }
 
 }
-
+View.prototype.clearPracticeSection = function () {
+  document.getElementById("fromDateInput").value="";
+  document.getElementById("toDateInput").value="";
+  document.getElementById("deadline").value="";
+}
 /*============================================STUDENTS SECTION=====================================================*/
 View.prototype.renderInfo = function () {
   let typePractice = document.getElementById("selectTypePracticeTab").value;
@@ -226,10 +238,9 @@ View.prototype.getSelectedGroups = function (treeView) {
   }
   let Groups = [];
   let liNumber = treeView.querySelectorAll('li');
-  debugger;
   for (let i = 0; i < liNumber.length; i++) {
     let groups = liNumber[i].querySelectorAll('input:checked');
-    if (groups.length == 1) {
+    if (groups.length== 1) {
       for (let j = 0; j < groups.length; j++) {
         let group = groups[j].parentElement.nextElementSibling.innerHTML;
         if (group.indexOf("курс") === -1) {

@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize');
-
-
-const Documents = sequelize.define('Documents', {
+const sequelize = require('sequelize');
+const Sequelize = new sequelize(
+    'postgres://practdist:972979ss@82.179.88.27:5432/practdistdb');
+const Documents = Sequelize.define('Documents', {
   id_document: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -26,7 +26,7 @@ const Documents = sequelize.define('Documents', {
   }
 }, { timestamps: false });
 
-const Organisations = sequelize.define('Organisations', {
+const Organisations = Sequelize.define('Organisations', {
   id_organisation: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -64,7 +64,7 @@ const Organisations = sequelize.define('Organisations', {
 
 }, { timestamps: false });
 
-const Practices = sequelize.define('Practices', {
+const Practices = Sequelize.define('Practices', {
   id_practice: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -93,7 +93,7 @@ const Practices = sequelize.define('Practices', {
   }
 }, { timestamps: false });
 
-const Practices_Organisations = sequelize.define('Practices_Organisations', {
+const Practices_Organisations = Sequelize.define('Practices_Organisations', {
   id_practice: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -106,7 +106,7 @@ const Practices_Organisations = sequelize.define('Practices_Organisations', {
   }
 }, { timestamps: false });
 
-const Requests = sequelize.define('Requests', {
+const Requests = Sequelize.define('Requests', {
   id_request: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -131,7 +131,7 @@ const Requests = sequelize.define('Requests', {
   }
 }, { timestamps: false });
 
-const Requests_Organisations = sequelize.define('Requests_Organisations', {
+const Requests_Organisations = Sequelize.define('Requests_Organisations', {
   id_request: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -152,7 +152,7 @@ const Requests_Organisations = sequelize.define('Requests_Organisations', {
   }
 }, { timestamps: false });
 
-const Reviews = sequelize.define('Reviews', {
+const Reviews = Sequelize.define('Reviews', {
   id_review: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -164,7 +164,7 @@ const Reviews = sequelize.define('Reviews', {
   }
 }, { timestamps: false });
 
-const Statuses = sequelize.define('Statuses', {
+const Statuses = Sequelize.define('Statuses', {
   id_status: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -176,7 +176,7 @@ const Statuses = sequelize.define('Statuses', {
   }
 }, { timestamps: false });
 
-const Students = sequelize.define('Students', {
+const Students = Sequelize.define('Students', {
   id_student: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -200,7 +200,7 @@ const Students = sequelize.define('Students', {
   }
 }, { timestamps: false });
 
-const Teachers = sequelize.define('Teachers', {
+const Teachers = Sequelize.define('Teachers', {
   id_teacher: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -220,7 +220,7 @@ const Teachers = sequelize.define('Teachers', {
   }
 }, { timestamps: false });
 
-const Types_organisation = sequelize.define('Types_organisation', {
+const Types_organisation = Sequelize.define('Types_organisation', {
   id_type_organisation: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -232,7 +232,7 @@ const Types_organisation = sequelize.define('Types_organisation', {
   }
 }, { timestamps: false });
 
-const Types_practice = sequelize.define('Types_practice', {
+const Types_practice = Sequelize.define('Types_practice', {
   id_type_practice: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -243,6 +243,8 @@ const Types_practice = sequelize.define('Types_practice', {
     allowNull: false
   }
 }, { timestamps: false });
+
+
 
 
 module.exports = {

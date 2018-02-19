@@ -22,24 +22,11 @@ class Course {
     this.groups.push(group);
   }
 }
-// async function getDataFromTable(table) {
-//   let answer = await table.findAll({
-//     attributes: [
-//       'id_type_practice',
-//       'name_type_practice'
-//     ]
-//   });
-//   let data = [];
-//   for (let i = 0; i < answer.length; ++i) {
-//     data.push(answer[i].name);
-//   }
-//   debugger;
-//   console.log(data);
-// }
+
 /*============================================STUDENTS SECTION=====================================================*/
 Model.prototype.getStudents = async function (groups) {
 
- await getDataFromTable(model.Types_practice);
+ //await query.getDataFromTable(model.Types_practice);
   debugger;
   this.Groups = groups;
   this.Students = [];
@@ -114,6 +101,7 @@ Model.prototype.distributeGroupsByCourses = async function (currentYear) {
     if (groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
       if (groups[i].name.indexOf("мг") == -1) {
         this.Courses[thirdCourse].addGroup(groups[i].name);
+        console.log(groups[i].name, i);
       }
 
     }
@@ -123,6 +111,7 @@ Model.prototype.distributeGroupsByCourses = async function (currentYear) {
         this.Courses[fourthCourse].addGroup(groups[i].name);
       }
     }
+
     currentYear += 3;
   }
 }
@@ -131,13 +120,12 @@ Model.prototype.getGroupsUIDS = async function () {
   let groupsUIDS = [];
   for (let i = 0; i < this.Groups.length; ++i) {
     let groupName = this.Groups[i];
-    console.log(groupName);
     let result = await fetch('/proxy/core/v1/groups?name=' + groupName)
     .then(async function (response) {
       return await response.json();
     })
     .then(function (response) {
-      this.groups = response;
+      let groups = response;
       let groupID = response._embedded.groups[0].id;
       groupsUIDS.push(groupID);
     })
