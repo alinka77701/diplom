@@ -26,8 +26,9 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/lalala', function (req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
+app.get('/data',async function (req, res) {
+  let data =  await getDataFromTable(model.Type_organisation);
+  res.send(data);
 });
 
 app.listen('7777', function () {
@@ -37,13 +38,15 @@ app.listen('7777', function () {
 async function getDataFromTable(table) {
   let answer = await table.findAll({
     attributes: [
-      'id_type_practice',
-      'name_type_practice'
+      'id_type_organisation',
+      'name_type_organisation'
     ]
   });
   let data = [];
+  //console.log(answer);
   for (let i = 0; i < answer.length; ++i) {
-    data.push(answer[i].name);
+    data.push( {id_type_organisation: answer[i].id_type_organisation});
+    data.push( {name_type_organisation: answer[i].name_type_organisation});
   }
-  console.log(data);
+  return data;
 }

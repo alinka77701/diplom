@@ -32,6 +32,7 @@ Controller.prototype.goToPracticeCreation = function () {
     this.View.selectedYear = this.Model.myGetYear();
     this.renderGroupsTreeView();
     this.View.clearPracticeSection();
+    this.Model.getTypesOrganisation();
     this.View.goToPracticeCreation();
 }
 

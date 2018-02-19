@@ -1,263 +1,310 @@
-const sequelize = require('sequelize');
-const Sequelize = new sequelize(
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(
     'postgres://practdist:972979ss@82.179.88.27:5432/practdistdb');
-const Documents = Sequelize.define('Documents', {
+
+const Document = sequelize.define('Document', {
   id_document: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true
   },
   name_document: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: false
   },
   id_status: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false
   },
   date_transfer: {
-    type: Sequelize.DATE,
+    type: sequelize.Sequelize.DATE,
     allowNull: true
   },
   name_person: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: true
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Documents'
+});
 
-const Organisations = Sequelize.define('Organisations', {
+const Organisation = sequelize.define('Organisation', {
   id_organisation: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true
   },
   name_organisation: {
-    type: Sequelize.STRING,
+    type: sequelize.Sequelize.STRING,
     allowNull: false
   },
   email_organisation: {
-    type: Sequelize.STRING,
+    type: sequelize.Sequelize.STRING,
     allowNull: true
   },
   phone_organisation: {
-    type: Sequelize.STRING,
+    type: sequelize.Sequelize.STRING,
     allowNull: true
   },
   info_organisation: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: true
   },
   address_organisation: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: true
   },
   id_type_organisation: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false
   },
   max_students_number: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: true
   }
 
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Organisations'
+});
 
-const Practices = Sequelize.define('Practices', {
+const Practice = sequelize.define('Practice', {
   id_practice: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true
   },
   id_type_practice: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false
   },
   start_date_practice: {
-    type: Sequelize.DATE,
+    type: sequelize.Sequelize.DATE,
     allowNull: false
   },
   end_date_practice: {
-    type: Sequelize.DATE,
+    type: sequelize.Sequelize.DATE,
     allowNull: false
   },
   deadline_practice: {
-    type: Sequelize.DATE,
+    type: sequelize.Sequelize.DATE,
     allowNull: false
   },
   lections_number: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: false
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Practices'
+});
 
-const Practices_Organisations = Sequelize.define('Practices_Organisations', {
+const Practice_Organisation = sequelize.define('Practice_Organisation', {
   id_practice: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
   id_organisation: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Practices_Organisations'
+});
 
-const Requests = Sequelize.define('Requests', {
+const Request = sequelize.define('Request', {
   id_request: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true
   },
   id_student: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false
   },
   id_practice: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false
   },
   id_review: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: true
   },
   id_organisation: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Requests'
+});
 
-const Requests_Organisations = Sequelize.define('Requests_Organisations', {
+const Request_Organisation = sequelize.define('Request_Organisation', {
   id_request: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
   id_organisation: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
   id_status: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false
   },
   date_creation: {
-    type: Sequelize.DATE,
+    type: sequelize.Sequelize.DATE,
     allowNull: false
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Requests_Organisations'
+});
 
-const Reviews = Sequelize.define('Reviews', {
+const Review = sequelize.define('Review', {
   id_review: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
   comment_student: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: false
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Reviews'
+});
 
-const Statuses = Sequelize.define('Statuses', {
+const Status = sequelize.define('Status', {
   id_status: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
   name_status: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: false
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Statuses'
+});
 
-const Students = Sequelize.define('Students', {
+const Student = sequelize.define('Student', {
   id_student: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
   uid_student_LDAP: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: false
   },
   email_student: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: true
   },
   phone_student: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: true
   },
   id_teacher: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: true
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Students'
+});
 
-const Teachers = Sequelize.define('Teachers', {
+const Teacher = sequelize.define('Teacher', {
   id_teacher: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
   email_teacher: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: true
   },
   phone_teacher: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: true
   },
   uid_teacher_LDAP: {
     type: Sequelize.TEXT,
     allowNull: false
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Teachers'
+});
 
-const Types_organisation = Sequelize.define('Types_organisation', {
+const Type_organisation = sequelize.define('Type_organisation', {
   id_type_organisation: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
   name_type_organisation: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.TEXT,
     allowNull: false
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Types_organisation'
+});
 
-const Types_practice = Sequelize.define('Types_practice', {
+const Type_practice = sequelize.define('Type_practice', {
   id_type_practice: {
-    type: Sequelize.INTEGER,
+    type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
   name_type_practice: {
-    type: Sequelize.TEXT,
+    type: sequelize.Sequelize.Sequelize.TEXT,
     allowNull: false
   }
-}, { timestamps: false });
+}, {
+  timestamps: false,
+  tableName: 'Types_practice'
+});
 
-
-
+Type_organisation.schema("public");
+Document.schema("public");
+Organisation.schema("public");
+Practice.schema("public");
+Practice_Organisation.schema("public");
+Request.schema("public");
+Request_Organisation.schema("public");
+Review.schema("public");
+Status.schema("public");
+Student.schema("public");
+Teacher.schema("public");
+Type_practice.schema("public");
 
 module.exports = {
-  Documents: Documents,
-  Organisations: Organisations,
-  Practices: Practices,
-  Practices_Organisations: Practices_Organisations,
-  Requests: Requests,
-  Requests_Organisations: Requests_Organisations,
-  Reviews: Reviews,
-  Statuses: Statuses,
-  Students: Students,
-  Teachers: Teachers,
-  Types_organisation: Types_organisation,
-  Types_practice: Types_practice
+  Document: Document,
+  Organisation: Organisation,
+  Practice: Practice,
+  Practice_Organisation: Practice_Organisation,
+  Request: Request,
+  Request_Organisation: Request_Organisation,
+  Review: Review,
+  Status: Status,
+  Student: Student,
+  Teacher: Teacher,
+  Type_organisation: Type_organisation,
+  Type_practice: Type_practice
 };

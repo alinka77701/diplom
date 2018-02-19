@@ -21,12 +21,20 @@ class Course {
   addGroup(group) {
     this.groups.push(group);
   }
-}
+};
 
+Model.prototype.getTypesOrganisation = async function () {
+  let result = await fetch('/data')
+  .then(async function (response) {
+
+    return await response.json();
+  })
+  .then(function (response) {
+    console.log(response);
+  });
+}
 /*============================================STUDENTS SECTION=====================================================*/
 Model.prototype.getStudents = async function (groups) {
-
- //await query.getDataFromTable(model.Types_practice);
   debugger;
   this.Groups = groups;
   this.Students = [];
@@ -42,6 +50,7 @@ Model.prototype.getStudents = async function (groups) {
     }
   }
 };
+
 Model.prototype.getAllGroups = async function () {
   let groups = [];
   let result = await fetch('/proxy/core/v1/groups')
@@ -52,13 +61,13 @@ Model.prototype.getAllGroups = async function () {
     groups = response._embedded.groups;
   });
   return groups;
-}
+};
 
 Model.prototype.myGetYear = function () {
   let date = new Date();
   let currentYear = date.getFullYear().toString();
   return currentYear;
-}
+};
 
 Model.prototype.distributeGroupsByCourses = async function (currentYear) {
   this.Courses = [
@@ -114,7 +123,7 @@ Model.prototype.distributeGroupsByCourses = async function (currentYear) {
 
     currentYear += 3;
   }
-}
+};
 
 Model.prototype.getGroupsUIDS = async function () {
   let groupsUIDS = [];
@@ -134,7 +143,7 @@ Model.prototype.getGroupsUIDS = async function () {
     });
   }
   return groupsUIDS;
-}
+};
 
 Model.prototype.getStudentsByGroupId = async function (groupID) {
   let studentsList = [];
@@ -148,12 +157,7 @@ Model.prototype.getStudentsByGroupId = async function (groupID) {
   .catch(error => {
     alert(error);
   });
-  ;
   return studentsList;
-}
-
-Model.prototype.getTypesOrganisation= async function () {
-
-}
+};
 
 module.exports = Model;
