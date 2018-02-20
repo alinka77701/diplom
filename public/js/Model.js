@@ -10,6 +10,8 @@ var Model = function () {
   this.Groups = [];
   this.Students = [];
   this.Courses = [];
+  this.typesOrganisation=[];
+  this.Organisations = [];
 };
 
 class Course {
@@ -21,18 +23,9 @@ class Course {
   addGroup(group) {
     this.groups.push(group);
   }
-};
-
-Model.prototype.getTypesOrganisation = async function () {
-  let result = await fetch('/data')
-  .then(async function (response) {
-
-    return await response.json();
-  })
-  .then(function (response) {
-    console.log(response);
-  });
 }
+
+
 /*============================================STUDENTS SECTION=====================================================*/
 Model.prototype.getStudents = async function (groups) {
   debugger;
@@ -108,19 +101,17 @@ Model.prototype.distributeGroupsByCourses = async function (currentYear) {
     }
     currentYear--;
     if (groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
-      if (groups[i].name.indexOf("мг") == -1) {
+      if (groups[i].name.indexOf("мг") === -1) {
         this.Courses[thirdCourse].addGroup(groups[i].name);
-        console.log(groups[i].name, i);
       }
 
     }
     currentYear--;
     if (groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
-      if (groups[i].name.indexOf("мг") == -1) {
+      if (groups[i].name.indexOf("мг") === -1) {
         this.Courses[fourthCourse].addGroup(groups[i].name);
       }
     }
-
     currentYear += 3;
   }
 };
@@ -158,6 +149,34 @@ Model.prototype.getStudentsByGroupId = async function (groupID) {
     alert(error);
   });
   return studentsList;
+};
+/*============================================PRACTICE CREATION
+ SECTION=====================================================*/
+Model.prototype.getTypesOrganisation = async function () {
+  this.typesOrganisation = [];
+  let types=[];
+  let result = await fetch('/types-organisation')
+  .then(async function (response) {
+    return await response.json();
+  })
+  .then(function (response) {
+    types=response;
+  });
+  this.typesOrganisation=types;
+  return this.typesOrganisation;
+};
+Model.prototype.getOrganisations = async function () {
+  let orgs=[];
+  let result = await fetch('/organisations')
+  .then(async function (response) {
+    return await response.json();
+  })
+  .then(function (response) {
+    orgs=response;
+  });
+  console.log(orgs);
+  this.Organisations=orgs;
+  return this.Organisations;
 };
 
 module.exports = Model;

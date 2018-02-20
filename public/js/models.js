@@ -252,12 +252,12 @@ const Teacher = sequelize.define('Teacher', {
 });
 
 const Type_organisation = sequelize.define('Type_organisation', {
-  id_type_organisation: {
+  id: {
     type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
-  name_type_organisation: {
+  name: {
     type: sequelize.Sequelize.TEXT,
     allowNull: false
   }

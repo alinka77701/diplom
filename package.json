@@ -13,7 +13,8 @@
     "express-http-proxy": "^1.1.0",
     "metro-dist": "^3.0.17",
     "pg": "^7.4.1",
-    "sequelize": "^4.33.4"
+    "sequelize": "^4.33.4",
+    "webpack-watcher": "^0.2.3"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

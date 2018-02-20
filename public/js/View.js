@@ -215,7 +215,6 @@ View.prototype.changeYear = function (node) {
 
 View.prototype.updateYear = function (event) {
   var target = event.target;
-  debugger;
   while (target != buttonsArray) {
     if (target.className == 'item year') {
       this.changeYear(target);
@@ -258,7 +257,6 @@ function tree_add_leaf_checkbox_example_click(tree, node, nameLeaf) {
     mode: 'checkbox',
     checked: false
   });
-
 }
 
 function removeChildren(node) {
@@ -280,7 +278,6 @@ View.prototype.clearGroupsTreeView = function () {
   }
 };
 View.prototype.updateGroupsTreeView = function (courses) {
-  console.log(courses);
   let idCounter = 0, courseNumber = bachelorYear, cnt;
   let coursesName = ['first', 'second', 'third', 'fourth'];
   var i = 0;
@@ -314,5 +311,45 @@ View.prototype.getConfigurations= function () {
   console.log(eduLevel);
   console.log(this.selectedYear);
 };
-
+function tree_add_leaf_checkbox(tree, node, nameLeaf, idTypeOrganisation) {
+  tree.addLeaf(node, nameLeaf, {
+    mode: 'checkbox',
+    checked: false
+  });
+  node.find('ul').find('li').last()[0].setAttribute("id",'type_org_'+idTypeOrganisation);
+}
+View.prototype.setTypesOrganisation= function (typesOrganisation) {
+  var treeViewOrganisations = $("#organisations-treeview-practice-creation").data("treeview");
+  for (let i=0; i < typesOrganisation.length; i++) {
+    let node = treeViewOrganisations.element.find('li.node');
+    tree_add_leaf_checkbox(treeViewOrganisations, node, typesOrganisation[i].name, typesOrganisation[i].id );
+  }
+};
+View.prototype.clearTypesOrganisation= function () {
+    var liArray = document.getElementById(
+        'organisations-treeview-practice-creation').children[0].children;
+    for (let i = 0; i < liArray.length; i++) {
+      removeChildren(liArray[i].getElementsByTagName('ul')[0]);
+    }
+}
+View.prototype.setOrganisationsInTreeView= function (organisations,typesOrganisation) {
+  var tree = $("#organisations-treeview-practice-creation").data("treeview");
+  for (let i=0; i < organisations.length; i++) {
+    for (let j = 0; j < typesOrganisation.length; j++) {
+      if(organisations[i].id_type_organisation===typesOrganisation[j].id)
+      {
+        let liArr= tree.element.find('li');
+        let node;
+        for (let k = 0; k < liArr.length; k++) {
+          if(liArr[k].getAttribute("id")=== ('type_org_'+typesOrganisation[j].id))
+          {
+            node=liArr[k];
+            break;
+          }
+        }
+        tree_add_leaf_checkbox_example_click(tree, node, organisations[i].name_organisation);
+      }
+    }
+  }
+}
 module.exports = View;

@@ -28,11 +28,15 @@ Controller.prototype.goToOrganisationsSection = function () {
 Controller.prototype.goToStudentsSection = function () {
     this.View.goToStudentsSection();
 }
-Controller.prototype.goToPracticeCreation = function () {
+Controller.prototype.goToPracticeCreation = async function () {
     this.View.selectedYear = this.Model.myGetYear();
     this.renderGroupsTreeView();
     this.View.clearPracticeSection();
-    this.Model.getTypesOrganisation();
+    let typesOrganisation= await this.Model.getTypesOrganisation();
+    this.View.clearTypesOrganisation();
+    this.View.setTypesOrganisation(typesOrganisation);
+    let organisations= await this.Model.getOrganisations();
+    this.View.setOrganisationsInTreeView(organisations,typesOrganisation);
     this.View.goToPracticeCreation();
 }
 

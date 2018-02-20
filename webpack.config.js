@@ -44,8 +44,4 @@ module.exports = {
   ],
 
   devtool: 'cheap-inline-module-source-map'
-
- /* target: 'node',
-  externals: [nodeExternals()]*/
-
 };
