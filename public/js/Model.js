@@ -179,4 +179,9 @@ Model.prototype.getOrganisations = async function () {
   return this.Organisations;
 };
 
+Model.prototype.createNewOrganisation = async function (organisation) {
+
+};
+
+
 module.exports = Model;

@@ -20,6 +20,7 @@ var View = function () {
     'groups-treeview-practice-creation-master'
   ];
   this.onClickGetOrganisations = null;
+  this.onClickCreateOrganisation=null;
 };
 
 View.prototype.init = function () {
@@ -44,6 +45,10 @@ View.prototype.init = function () {
       this.onClickYearsArray);
   document.getElementById("getOrganisationsBtnOk").addEventListener('click',
       this.onClickGetOrganisations);
+  document.getElementById("createOrganisation").addEventListener('click',
+      this.onClickCreateOrganisation);
+
+
   this.myTable.dataTable({
     data: this.Groups,
     "language": {
@@ -73,18 +78,18 @@ View.prototype.goToStudentsSection = function () {
   document.querySelector("#organisationsSection").style.display = "none";
   document.querySelector("#practiceCreationSection").style.display = "none";
   document.querySelector("#mainWindowSection").style.display = "block";
-}
+};
 
 View.prototype.goToOrganisationsSection = function () {
   document.querySelector("#practiceCreationSection").style.display = "none";
   document.querySelector("#mainWindowSection").style.display = "none";
   document.querySelector("#organisationsSection").style.display = "block";
-}
+};
 
 View.prototype.goToPracticeCreation = function () {
   document.querySelector("#practiceCreationSection").style.display = "block";
   document.querySelector("#mainWindowSection").style.display = "none";
-}
+};
 /*========================================PRACTICE SECTION==============================================*/
 View.prototype.dialogPracticeCreatedInit = function () {
   let finishBtn = document.getElementsByClassName("btn-finish")[0];
@@ -148,7 +153,7 @@ View.prototype.dialogPracticeCreatedInit = function () {
   document.getElementById("mainWindowTermsPractice").innerHTML = fromDate
       + ' - ' + toDate;
 
-}
+};
 View.prototype.displayGroups = function () {
   let educationLevel = document.getElementById("selectEducation").value;
   if (educationLevel === "bachelor") {
@@ -172,12 +177,12 @@ View.prototype.displayGroups = function () {
     }
   }
 
-}
+};
 View.prototype.clearPracticeSection = function () {
   document.getElementById("fromDateInput").value="";
   document.getElementById("toDateInput").value="";
   document.getElementById("deadline").value="";
-}
+};
 /*============================================STUDENTS SECTION=====================================================*/
 View.prototype.renderInfo = function () {
   let typePractice = document.getElementById("selectTypePracticeTab").value;
@@ -193,7 +198,7 @@ View.prototype.renderInfo = function () {
   }
   document.getElementById("mainWindowTypePractice").innerHTML = typePracticeText
       + ' практика';
-}
+};
 View.prototype.renderTable = function (data) {
   if (data.length === 0) {
     this.myTable.dataTable().fnClearTable();
@@ -202,7 +207,7 @@ View.prototype.renderTable = function (data) {
     this.myTable.dataTable().fnClearTable();
     this.myTable.dataTable().fnAddData(data);
   }
-}
+};
 
 View.prototype.changeYear = function (node) {
   if (selectedElem) {
@@ -211,7 +216,7 @@ View.prototype.changeYear = function (node) {
   selectedElem = node;
   selectedElem.classList.add('current');
   this.selectedYear = selectedElem.innerHTML;
-}
+};
 
 View.prototype.updateYear = function (event) {
   var target = event.target;
@@ -331,7 +336,7 @@ View.prototype.clearTypesOrganisation= function () {
     for (let i = 0; i < liArray.length; i++) {
       removeChildren(liArray[i].getElementsByTagName('ul')[0]);
     }
-}
+};
 View.prototype.setOrganisationsInTreeView= function (organisations,typesOrganisation) {
   var tree = $("#organisations-treeview-practice-creation").data("treeview");
   for (let i=0; i < organisations.length; i++) {
@@ -343,7 +348,7 @@ View.prototype.setOrganisationsInTreeView= function (organisations,typesOrganisa
         for (let k = 0; k < liArr.length; k++) {
           if(liArr[k].getAttribute("id")=== ('type_org_'+typesOrganisation[j].id))
           {
-            node=liArr[k];
+            node=$(liArr[k]);
             break;
           }
         }
@@ -351,5 +356,29 @@ View.prototype.setOrganisationsInTreeView= function (organisations,typesOrganisa
       }
     }
   }
-}
+};
+
+View.prototype.getInfoNewOrganisation= function () {
+  let organisation = {
+    'name': document.getElementById("nameCompany").value,
+    'typeOrg': document.getElementById("selectTypeCompany").value,
+    'infoOrg': document.getElementById("infoCompany").value,
+    'contactsOrg':document.getElementById("contactsCompany").value,
+    'placesOrg': document.getElementById("placesCompany").value,
+    'loginOrg':document.getElementById("loginCompany").value,
+    'pswdOrg':document.getElementById("pswdCompany").value
+  }
+  return organisation;
+};
+
+View.prototype.setTypesOrganisationSelect= function (typesOrganisation) {
+  let typeOrg = document.getElementById("selectTypeCompany");
+  for(let i=0;i<typesOrganisation.length;i++){
+    let option = document.createElement('option');
+    option.setAttribute("value", typesOrganisation[i].id);
+    option.innerHTML= typesOrganisation[i].name;
+    typeOrg.appendChild(option);
+  }
+
+};
 module.exports = View;

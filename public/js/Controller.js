@@ -4,7 +4,6 @@ const Model =  require ('./Model.js');
 function Controller () {
     this.View = new View();
     this.Model = new Model();
-
     this.init();
 }
 
@@ -18,16 +17,17 @@ Controller.prototype.init = function () {
     this.View.onClickSelectGroupBtnOk = this.renderDataInTable.bind(this);
     this.View.onClickYearsArray = this.setGroupsTreeView.bind(this);
     this.View.onClickGetOrganisations = this.getOrganisations.bind(this);
+    this.View.onClickCreateOrganisation = this.createNewOrganisation.bind(this);
     this.View.init();
 };
 
 Controller.prototype.goToOrganisationsSection = function () {
     this.View.goToOrganisationsSection();
-}
+};
 
 Controller.prototype.goToStudentsSection = function () {
     this.View.goToStudentsSection();
-}
+};
 Controller.prototype.goToPracticeCreation = async function () {
     this.View.selectedYear = this.Model.myGetYear();
     this.renderGroupsTreeView();
@@ -37,8 +37,9 @@ Controller.prototype.goToPracticeCreation = async function () {
     this.View.setTypesOrganisation(typesOrganisation);
     let organisations= await this.Model.getOrganisations();
     this.View.setOrganisationsInTreeView(organisations,typesOrganisation);
+    this.View.setTypesOrganisationSelect(typesOrganisation);
     this.View.goToPracticeCreation();
-}
+};
 
 /*========================================PRACTICE SECTION================================================*/
 Controller.prototype.displayGroups = function () {
@@ -46,8 +47,11 @@ Controller.prototype.displayGroups = function () {
 };
 Controller.prototype.dialogPracticeCreatedInit = function () {
     this.View.dialogPracticeCreatedInit();
-}
-
+};
+Controller.prototype.createNewOrganisation = function () {
+  let organisation= this.View.getInfoNewOrganisation();
+  this.Model.createNewOrganisation(organisation);
+};
 /*============================================STUDENTS SECTION=====================================================*/
 Controller.prototype.renderGroupsTreeView = function () {
     this.Model.distributeGroupsByCourses(this.View.selectedYear)
@@ -67,10 +71,10 @@ Controller.prototype.renderDataInTable = async function () {
     await this.Model.getStudents(groups);
     this.View.renderTable(this.Model.Students);
     this.View.renderInfo();
-
 };
 Controller.prototype.getOrganisations = function () {
   this.View.getConfigurations();
 };
+
 
 module.exports = Controller;
