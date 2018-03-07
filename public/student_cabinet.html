@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <script src="js/jquery.js"></script>
+  <script src="js/metro.js"></script>
+  <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+  <script src="./js/bundle.js"></script>
+  <link rel="stylesheet" href="./assets/css/bundle.css">
+  <link rel="shortcut icon" href="assets/img/iipo.png" type="image/x-icon">
+
+  <title>Система распределения студентов на практику</title>
+</head>
+<body>
+<div class="container">
+  <div class="grid condensed">
+    <!--================================HEADER===================================-->
+    <div class="row cells12 myheader align-center">
+      <div class="cell colspan2">
+        <a href="http://iipo.tu-bryansk.ru/" target="_blank"><img src="assets/img/iipo.png"/></a>
+      </div>
+      <div class="cell colspan8 padding-top30">
+        <div class="row">
+          <div class="cell"><h1>Система распределения студентов на практику</h1></div>
+          <div class="cell ">
+            <div class="inline-block">
+              <h2>
+                <small>Брянский Государственный Технический Университет</small>
+              </h2>
+            </div>
+            <!--   <div ><a href="http://www.tu-bryansk.ru/" target="_blank"><img
+                       src="assets/img/bstu.jpg"/></a></div>-->
+
+
+          </div>
+        </div>
+      </div>
+      <div class="cell colspan2 padding-top10">
+        <div class="row">
+          <div class="cell">
+            <h2>
+              <small id="studentName">Иванов И. И.</small>
+            </h2>
+          </div>
+          <div class="cell">
+            <div class="split-button">
+              <button class="button"><span class="mif-user mif-2x"></span></button>
+              <button class="split dropdown-toggle"></button>
+              <ul class="split-content d-menu" data-role="dropdown">
+                <li><a id="checkStatusBtn" href="#">Проверить статус</a></li>
+                <li><a id="exitStudentCabinetBtn" href="#">Выход</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--================================CONTENT===================================-->
+    <section id="studentCabinet">
+      <div class="row content">
+        <div class="row cells12">
+          <div class="cell colspan4 align-center right-separator bd-lightgray">
+            <h3>Список организаций</h3>
+            <div class="listview-outlook align-left" data-role="listview">
+              <div class="list">
+                <div class="list-content inline-block">
+                  <span class="list-title">Competentum</span>
+                  <span class="list-subtitle">Всего мест: 5</span>
+                  <span class="list-remark">Осталось: 3</span>
+                </div>
+                <div class="inline-block list-content settingsOrganisation">
+                  <span class="mif-user-plus mif-lg fg-gray"
+                        onclick="metroDialog.open('#dialogStudentProveAddition')"></span>
+                </div>
+              </div>
+              <div class="list">
+                <div class="list-content inline-block">
+                  <span class="list-title">Сбертех</span>
+                  <span class="list-subtitle">Всего мест: 10</span>
+                  <span class="list-remark">Осталось: 7</span>
+                </div>
+                <div class="inline-block list-content settingsOrganisation">
+                  <span class="mif-user-plus mif-lg fg-gray"></span>
+                </div>
+              </div>
+              <div class="list">
+                <div class="list-content inline-block">
+                  <span class="list-title">Optimism</span>
+                  <span class="list-subtitle">Всего мест: 5</span>
+                  <span class="list-remark">Осталось: 3</span>
+                </div>
+                <div class="inline-block list-content settingsOrganisation">
+                  <span class="mif-user-plus mif-lg fg-gray"></span>
+                </div>
+              </div>
+
+              <div class="list">
+                <div class="list-content inline-block">
+                  <span class="list-title">BryanskSoft</span>
+                  <span class="list-subtitle">Всего мест: 8</span>
+                  <span class="list-remark">Осталось: 3</span>
+                </div>
+                <div class="inline-block list-content settingsOrganisation">
+                  <span class="mif-user-plus mif-lg fg-gray"></span>
+                </div>
+              </div>
+              <div class="list">
+                <div class="list-content inline-block">
+                  <span class="list-title">Polonium Arts</span>
+                  <span class="list-subtitle">Всего мест: 2</span>
+                  <span class="list-remark">Осталось: 2</span>
+                </div>
+                <div class="inline-block list-content settingsOrganisation">
+                  <span class="mif-user-plus mif-lg fg-gray"></span>
+                </div>
+              </div>
+              <div class="list">
+                <div class="list-content inline-block">
+                  <span class="list-title">IDEA Promotion</span>
+                  <span class="list-subtitle">Всего мест: 3</span>
+                  <span class="list-remark">Осталось: 0</span>
+                </div>
+                <div class="inline-block list-content settingsOrganisation">
+                  <span class="mif-user-plus mif-lg fg-gray"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cell colspan8 align-center" id="infoOrganisation">
+            <h3>Информация о <span id="orgNameStudentSection">Competentum</span></h3>
+            <div class="align-left">
+              <div class="info-organisation">
+                <p class="text-bold"> Информация о компании:</p>
+                <br/>
+                <p>Competentum — российский поставщик e-Learning решений для бизнеса и образования.
+                  Competentum является одной из ведущих компаний в сфере создания решений для
+                  электронного обучения, занимается разработкой полного спектра программных решений,
+                  электронных курсов и мультимедийного контента для организации электронного
+                  обучения
+                  как для корпоративного, так и для академического рынков. Группа Competentum
+                  участвует
+                  в крупных международных проектах в США и Европе.</p>
+              </div>
+              <div class="info-organisation">
+                <p class="inline-block text-bold"> Адрес компании:</p>
+                <p class="inline-block"> Брянск, ул.Институтская, д. 15</p>
+              </div>
+              <div class="info-organisation">
+                <p class="inline-block text-bold">Электронная почта:</p>
+                <p class="inline-block"> competentum@mail.com</p>
+              </div>
+              <div class="info-organisation">
+                <p class="inline-block text-bold">Телефон для связи:</p>
+                <p class="inline-block"> 8-953-234-45-67</p>
+              </div>
+            </div>
+            <h3>Отзывы студентов</h3>
+            <div class="align-left">
+              <div class="review inline-block">
+                <div class="info-organisation">
+                  <p class="inline-block text-bold" id="groupStudent">14-ПрИ</p>
+                  <p class="inline-block text-bold" id="reviewNameStudent">Шилина Алина</p>
+                </div>
+                <p class="info-organisation" id="reviewBody">Дружный коллектив, белая зарплата,
+                  насыщенная корпоративная жизнь, различные приятные плюшки, которые заряжают
+                  бодростью на весь день! оборудованное рабочее место, предоставление
+                  различной литературы за счёт компании, выплаты премии по личным достижениям,
+                  открытый путь к развитию.</p>
+                <p class="info-organisation text-italic fg-gray" id="dateReview">25.07.2017</p>
+              </div>
+              <div class="review inline-block ">
+                <div class="info-organisation">
+                  <p class="inline-block text-bold" >13-ПрИ</p>
+                  <p class="inline-block text-bold" >Праскура Григорий</p>
+                </div>
+                <p class="info-organisation " >Дружный коллектив, белая зарплата,
+                  насыщенная корпоративная жизнь, различные приятные плюшки, которые заряжают
+                  бодростью на весь день! оборудованное рабочее место, предоставление
+                  различной литературы за счёт компании, выплаты премии по личным достижениям,
+                  открытый путь к развитию.</p>
+                <p class="info-organisation text-italic fg-gray">17.07.2016</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="align-center dialog" data-overlay="true" data-overlay-color="op-dark"
+     data-role="dialog" id="dialogStudentProveAddition" data-overlay-click-close="true"
+     data-close-button="true" data-width="500px" data-height="auto">
+  <h3 class="margin20">Окно подтверждения</h3>
+  <div class="main">
+    <div class="field margin20">
+      <label for="phoneNumberStudent">Номер телефона:</label>
+      <input id="phoneNumberStudent">
+    </div>
+    <div class="field margin20">
+      <label for="emailStudent">Email: </label>
+      <input id="emailStudent">
+    </div>
+  </div>
+  <button class="button js-dialog-close"
+          onclick="metroDialog.open('#dialogAddStudentToOrganisation')">Записаться
+  </button>
+</div>
+
+<div class="align-center dialog" data-overlay="true" data-overlay-color="op-dark"
+     data-role="dialog" id="dialogAddStudentToOrganisation" data-overlay-click-close="true"
+     data-close-button="true" data-width="500px" data-height="200px">
+  <h3 class="margin20">Информация</h3>
+  <div class="main">
+    <p>Ваша заявка передана на рассмотрение в выбранную Вами организацию. После того, как
+      организация примет решение, Ваш статус в личном кабинете изменится на "утвержден" либо "не
+      утвержден". Хорошего дня! </p>
+  </div>
+</div>
+</div>
+</body>
+</html>

@@ -9,8 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "docxtemplater": "^3.4.2",
     "express": "^4.16.2",
     "express-http-proxy": "^1.1.0",
+    "jszip": "^2.6.1",
+    "jszip-utils": "0.0.2",
     "metro-dist": "^3.0.17",
     "pg": "^7.4.1",
     "sequelize": "^4.33.4",

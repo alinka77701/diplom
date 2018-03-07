@@ -379,6 +379,5 @@ View.prototype.setTypesOrganisationSelect= function (typesOrganisation) {
     option.innerHTML= typesOrganisation[i].name;
     typeOrg.appendChild(option);
   }
-
 };
 module.exports = View;
