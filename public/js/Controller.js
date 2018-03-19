@@ -30,17 +30,21 @@ Controller.prototype.goToStudentsSection = function () {
 };
 Controller.prototype.goToPracticeCreation = async function () {
     this.View.selectedYear = this.Model.myGetYear();
+    this.View.clearGroupsTreeView();
     this.renderGroupsTreeView();
     this.View.clearPracticeSection();
-    let typesOrganisation= await this.Model.getTypesOrganisation();
-    this.View.clearTypesOrganisation();
-    this.View.setTypesOrganisation(typesOrganisation);
-    let organisations= await this.Model.getOrganisations();
-    this.View.setOrganisationsInTreeView(organisations,typesOrganisation);
+    let typesOrganisation= await this.updateTypesOrganisation();
     this.View.setTypesOrganisationSelect(typesOrganisation);
     this.View.goToPracticeCreation();
 };
-
+Controller.prototype.updateTypesOrganisation = async function () {
+  let typesOrganisation= await this.Model.getTypesOrganisation();
+  this.View.clearTypesOrganisation();
+  this.View.setTypesOrganisation(typesOrganisation);
+  let organisations= await this.Model.getOrganisations();
+  this.View.setOrganisationsInTreeView(organisations,typesOrganisation);
+  return typesOrganisation;
+}
 /*========================================PRACTICE SECTION================================================*/
 Controller.prototype.displayGroups = function () {
     this.View.displayGroups();
@@ -48,9 +52,10 @@ Controller.prototype.displayGroups = function () {
 Controller.prototype.dialogPracticeCreatedInit = function () {
     this.View.dialogPracticeCreatedInit();
 };
-Controller.prototype.createNewOrganisation = function () {
+Controller.prototype.createNewOrganisation = async function () {
   let organisation= this.View.getInfoNewOrganisation();
-  this.Model.createNewOrganisation(organisation);
+  this.Model.createOrUpdateOrganisation(organisation);
+  await this.updateTypesOrganisation();
 };
 /*============================================STUDENTS SECTION=====================================================*/
 Controller.prototype.renderGroupsTreeView = function () {
@@ -75,6 +80,5 @@ Controller.prototype.renderDataInTable = async function () {
 Controller.prototype.getOrganisations = function () {
   this.View.getConfigurations();
 };
-
 
 module.exports = Controller;

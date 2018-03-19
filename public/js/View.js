@@ -78,6 +78,7 @@ View.prototype.goToStudentsSection = function () {
   document.querySelector("#organisationsSection").style.display = "none";
   document.querySelector("#practiceCreationSection").style.display = "none";
   document.querySelector("#mainWindowSection").style.display = "block";
+  document.getElementById("group-treeview-tabcontrol1-bachelor").style.display = "block";
 };
 
 View.prototype.goToOrganisationsSection = function () {
@@ -359,20 +360,25 @@ View.prototype.setOrganisationsInTreeView= function (organisations,typesOrganisa
 };
 
 View.prototype.getInfoNewOrganisation= function () {
+  var e= document.getElementById("selectTypeCompany");
+  var typeOrg = e.options[e.selectedIndex].text;
   let organisation = {
     'name': document.getElementById("nameCompany").value,
-    'typeOrg': document.getElementById("selectTypeCompany").value,
+    'typeOrg': typeOrg,
     'infoOrg': document.getElementById("infoCompany").value,
-    'contactsOrg':document.getElementById("contactsCompany").value,
+    'emailOrg':document.getElementById("emailOrg").value,
+    'phoneOrg':document.getElementById("phoneOrg").value,
     'placesOrg': document.getElementById("placesCompany").value,
     'loginOrg':document.getElementById("loginCompany").value,
-    'pswdOrg':document.getElementById("pswdCompany").value
+    'pswdOrg':document.getElementById("pswdCompany").value,
+    'addressOrg':document.getElementById("addressOrg").value
   }
   return organisation;
 };
 
 View.prototype.setTypesOrganisationSelect= function (typesOrganisation) {
   let typeOrg = document.getElementById("selectTypeCompany");
+  removeChildren(typeOrg);
   for(let i=0;i<typesOrganisation.length;i++){
     let option = document.createElement('option');
     option.setAttribute("value", typesOrganisation[i].id);

@@ -22,7 +22,7 @@ th{
 }
 
 #organisationsSection {
-    display: block;
+    display: none;
 }
 /* ---------------------------- Select Box Styles------------------------------------------ */
 .styled-select {
@@ -96,27 +96,27 @@ th{
     margin-bottom: 20px !important;
 }
 
-#dialogCreateCompany, #dialogStudentProveAddition h3 {
+#dialogCreateCompany h3, #dialogStudentProveAddition h3 {
     font: 500 1.3rem "Segoe UI", "Open Sans", sans-serif, serif;
     color: #1ba1e2;
 }
 
-#dialogCreateCompany, #dialogStudentProveAddition label {
+#dialogCreateCompany label, #dialogStudentProveAddition label {
     float: left;
     padding-right: 10px;
 }
 
-#dialogCreateCompany, #dialogStudentProveAddition .field {
+#dialogCreateCompany .field, #dialogStudentProveAddition .field {
     clear: both;
     text-align: right;
     line-height: 25px;
 }
 
-#dialogCreateCompany, #dialogStudentProveAddition input {
+#dialogCreateCompany input, #dialogStudentProveAddition input {
     height: 30px;
 }
 
-#dialogCreateCompany, #dialogStudentProveAddition button {
+#dialogCreateCompany button, #dialogStudentProveAddition button {
     clear: both;
 }
 

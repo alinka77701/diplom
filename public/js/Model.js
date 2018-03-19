@@ -28,7 +28,6 @@ class Course {
 
 /*============================================STUDENTS SECTION=====================================================*/
 Model.prototype.getStudents = async function (groups) {
-  debugger;
   this.Groups = groups;
   this.Students = [];
   let groupsUIDS = await this.getGroupsUIDS();
@@ -179,8 +178,20 @@ Model.prototype.getOrganisations = async function () {
   return this.Organisations;
 };
 
-Model.prototype.createNewOrganisation = async function (organisation) {
-
+Model.prototype.createOrUpdateOrganisation = async function (organisation) {
+  let result = await fetch('/organisation', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(organisation)
+  })
+  .then(function (data) {
+    console.log('Request success: ', data);
+  })
+  .catch(function (error) {
+    console.log('Request failure: ', error);
+  });
 };
 
 
