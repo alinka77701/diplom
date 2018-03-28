@@ -80,21 +80,25 @@ const Practice = sequelize.define('Practice', {
   },
   id_type_practice: {
     type: sequelize.Sequelize.INTEGER,
-    allowNull: false
+    allowNull: true
   },
   start_date_practice: {
     type: sequelize.Sequelize.DATE,
-    allowNull: false
+    allowNull: true
   },
   end_date_practice: {
     type: sequelize.Sequelize.DATE,
-    allowNull: false
+    allowNull: true
   },
   deadline_practice: {
     type: sequelize.Sequelize.DATE,
-    allowNull: false
+    allowNull: true
   },
   lections_number: {
+    type: sequelize.Sequelize.TEXT,
+    allowNull: false
+  },
+  edu_level: {
     type: sequelize.Sequelize.TEXT,
     allowNull: false
   }
@@ -118,7 +122,21 @@ const Practice_Organisation = sequelize.define('Practice_Organisation', {
   timestamps: false,
   tableName: 'Practices_Organisations'
 });
-
+const Practice_Group = sequelize.define('Practice_Group', {
+  id_practice: {
+    type: sequelize.Sequelize.INTEGER,
+    allowNull: false,
+    primaryKey: true
+  },
+  id_group: {
+    type: sequelize.Sequelize.INTEGER,
+    allowNull: false,
+    primaryKey: true
+  }
+}, {
+  timestamps: false,
+  tableName: 'Practices_Groups'
+});
 const Request = sequelize.define('Request', {
   id_request: {
     type: sequelize.Sequelize.INTEGER,
@@ -267,12 +285,12 @@ const Type_organisation = sequelize.define('Type_organisation', {
 });
 
 const Type_practice = sequelize.define('Type_practice', {
-  id_type_practice: {
+  id: {
     type: sequelize.Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true
   },
-  name_type_practice: {
+  name: {
     type: sequelize.Sequelize.Sequelize.TEXT,
     allowNull: false
   }
@@ -299,6 +317,7 @@ module.exports = {
   Organisation: Organisation,
   Practice: Practice,
   Practice_Organisation: Practice_Organisation,
+  Practice_Groups: Practice_Group,
   Request: Request,
   Request_Organisation: Request_Organisation,
   Review: Review,

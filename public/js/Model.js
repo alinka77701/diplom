@@ -62,6 +62,7 @@ Model.prototype.myGetYear = function () {
 };
 
 Model.prototype.distributeGroupsByCourses = async function (currentYear) {
+ delete this.Courses;
   this.Courses = [
     new Course('1'),
     new Course('2'),
@@ -70,8 +71,9 @@ Model.prototype.distributeGroupsByCourses = async function (currentYear) {
     new Course('1 (мг)'),
     new Course('2 (мг)')
   ];
-
+console.log(this.Courses );
   let groups = await this.getAllGroups();
+  console.log(groups);
   let date = new Date();
   let currentMonth = date.getMonth();
   if (+currentMonth < SEPTEMBER) {
@@ -186,13 +188,22 @@ Model.prototype.createOrUpdateOrganisation = async function (organisation) {
     },
     body: JSON.stringify(organisation)
   })
-  .then(function (data) {
-    console.log('Request success: ', data);
-  })
   .catch(function (error) {
-    console.log('Request failure: ', error);
+    alert("Ошибка при добавлении организации в БД "+ error);
   });
 };
 
+Model.prototype.createPractice = async function (practice) {
+  let result = await fetch('/practice', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(practice)
+  })
+  .catch(function (error) {
+    alert("Ошибка при добавлении практики в БД "+ error);
+  });
+};
 
 module.exports = Model;

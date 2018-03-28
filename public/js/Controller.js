@@ -11,6 +11,7 @@ Controller.prototype.init = function () {
     this.View.onClickNextStep = this.displayGroups.bind(this);
     this.View.onClickPracticeCompleted = this.goToStudentsSection.bind(this);
     this.View.onClickCreatePractice = this.goToPracticeCreation.bind(this);
+    this.View.onClickAddPractice = this.createPractice.bind(this);
     this.View.onClickToOrganisationsSection = this.goToOrganisationsSection.bind(this);
     this.View.onClickToStudentsSection = this.goToStudentsSection.bind(this);
     this.View.onClickFinishBtn = this.dialogPracticeCreatedInit.bind(this);
@@ -44,7 +45,8 @@ Controller.prototype.updateTypesOrganisation = async function () {
   let organisations= await this.Model.getOrganisations();
   this.View.setOrganisationsInTreeView(organisations,typesOrganisation);
   return typesOrganisation;
-}
+};
+
 /*========================================PRACTICE SECTION================================================*/
 Controller.prototype.displayGroups = function () {
     this.View.displayGroups();
@@ -54,8 +56,12 @@ Controller.prototype.dialogPracticeCreatedInit = function () {
 };
 Controller.prototype.createNewOrganisation = async function () {
   let organisation= this.View.getInfoNewOrganisation();
-  this.Model.createOrUpdateOrganisation(organisation);
+  await this.Model.createOrUpdateOrganisation(organisation);
   await this.updateTypesOrganisation();
+};
+Controller.prototype.createPractice = async function () {
+  let practice = await this.View.dialogPracticeCreatedInit();
+  await this.Model.createPractice(practice);
 };
 /*============================================STUDENTS SECTION=====================================================*/
 Controller.prototype.renderGroupsTreeView = function () {

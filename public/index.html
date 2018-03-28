@@ -2,9 +2,9 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-  <script src="js/jquery.js"></script>
-    <script src="js/metro.js"></script>
-    <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+  <script src="js/libs/jQuery/jquery.js"></script>
+    <script src="js/libs/metro/metro.js"></script>
+    <script type="text/javascript" src="js/libs/DataTables/datatables.min.js"></script>
     <script src= "./js/bundle.js" ></script>
     <link rel="stylesheet" href= "./assets/css/bundle.css" >
     <link rel="shortcut icon" href="assets/img/iipo.png" type="image/x-icon">
@@ -218,7 +218,12 @@
                                         <option value="prediploma">Преддипломная</option>
                                     </select>
                                 </div>
-
+                                <div class="step align-center">
+                                    <h2>
+                                        <small>Укажите количество лекций</small>
+                                    </h2>
+                                    <input type="number" value="0" id="lecNum" min="0"/>
+                                </div>
                                 <div class="step align-center">
                                     <h2>
                                         <small>Укажите сроки прохождения практики</small>
@@ -561,7 +566,7 @@
                                         <input type="text" readonly="readonly" id="deadline" required>
                                         <button class="button" type="button"><span class="mif-calendar"></span></button>
                                         <div class="calendar calendar-dropdown"
-                                             style="position: absolute; max-width: 220px; z-index: 1000; top: 100%; left: 0px; display: block;">
+                                             style="position: absolute; max-width: 220px; z-index: 1000; top: 100%; left: 0px; display: block;" id="calendarFrom">
                                             <div class="calendar-grid">
                                                 <div class="calendar-row no-margin calendar-header">
                                                     <div class="calendar-cell align-center"><a class="btn-previous-year"
@@ -725,31 +730,35 @@
                                         <div class="main align-left">
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Уровень высшего образования:</p>
-                                                <p class="inline-block sub-header" id="educationalLevelDialog"></p>
+                                                <p class="inline-block sub-header fg-black" id="educationalLevelDialog"></p>
                                             </div>
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Тип практики:</p>
-                                                <p class="inline-block sub-header" id="typePracticeDialog"></p>
+                                                <p class="inline-block sub-header fg-black" id="typePracticeDialog"></p>
                                             </div>
 
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Группы:</p>
-                                                <p class="inline-block sub-header" id="groupsPracticeDialog"></p>
+                                                <p class="inline-block sub-header fg-black" id="groupsPracticeDialog"></p>
                                             </div>
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Организации:</p>
-                                                <p class="inline-block sub-header" id="organisationsPracticeDialog"></p>
+                                                <p class="inline-block sub-header fg-black" id="organisationsPracticeDialog"></p>
+                                            </div>
+                                            <div class="field margin20">
+                                                <p class="inline-block sub-header">Кол-во лекций:</p>
+                                                <p class="inline-block sub-header fg-black" id="lecNumDialog"></p>
                                             </div>
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Сроки:</p>
-                                                <p class="inline-block sub-header" id="termsPracticeDialog"></p>
+                                                <p class="inline-block sub-header fg-black" id="termsPracticeDialog" ></p>
                                             </div>
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Дедлайн:</p>
-                                                <p class="inline-block sub-header" id="deadlinePracticeDialog"></p>
+                                                <p class="inline-block sub-header fg-black" id="deadlinePracticeDialog"></p>
                                             </div>
                                         </div>
-                                        <button class="button" id="practiceFinishedOk">Создать практику</button>
+                                        <button class="button js-dialog-close" id="practiceFinishedOk">Создать практику</button>
                                     </div>
                                 </div>
                             </div>
@@ -1072,65 +1081,7 @@
                                     <span class="mif-cancel mif-lg fg-yellow"></span>
                                 </div>
                             </div>
-                            <div class="list">
-                                <div class="list-content inline-block">
-                                    <span class="list-title">Optimism</span>
-                                    <span class="list-subtitle">Всего мест: 5</span>
-                                    <span class="list-remark">Осталось: 3</span>
-                                </div>
-                                <div class="inline-block list-content settingsOrganisation">
-                                    <span class="mif-user-plus mif-lg fg-gray"></span>
-                                    <span class="mif-pencil mif-lg fg-gray"></span>
-                                    <span class="mif-cancel mif-lg fg-yellow"></span>
-                                </div>
-                            </div>
-                            <div class="list">
-                                <div class="list-content inline-block">
-                                    <span class="list-title">Optimism</span>
-                                    <span class="list-subtitle">Всего мест: 5</span>
-                                    <span class="list-remark">Осталось: 3</span>
-                                </div>
-                                <div class="inline-block list-content settingsOrganisation">
-                                    <span class="mif-user-plus mif-lg fg-gray"></span>
-                                    <span class="mif-pencil mif-lg fg-gray"></span>
-                                    <span class="mif-cancel mif-lg fg-yellow"></span>
-                                </div>
-                            </div>
-                            <div class="list">
-                                <div class="list-content inline-block">
-                                    <span class="list-title">Optimism</span>
-                                    <span class="list-subtitle">Всего мест: 5</span>
-                                    <span class="list-remark">Осталось: 3</span>
-                                </div>
-                                <div class="inline-block list-content settingsOrganisation">
-                                    <span class="mif-user-plus mif-lg fg-gray"></span>
-                                    <span class="mif-pencil mif-lg fg-gray"></span>
-                                    <span class="mif-cancel mif-lg fg-yellow"></span>
-                                </div>
-                            </div>
-                            <div class="list">
-                                <div class="list-content inline-block">
-                                    <span class="list-title">Optimism</span>
-                                    <span class="list-subtitle">Всего мест: 5</span>
-                                    <span class="list-remark">Осталось: 3</span>
-                                </div>
-                                <div class="inline-block list-content settingsOrganisation">
-                                    <span class="mif-user-plus mif-lg fg-gray"></span>
-                                    <span class="mif-pencil mif-lg fg-gray"></span>
-                                    <span class="mif-cancel mif-lg fg-yellow"></span>
-                                </div>
-                            </div> <div class="list">
-                            <div class="list-content inline-block">
-                                <span class="list-title">Optimism</span>
-                                <span class="list-subtitle">Всего мест: 5</span>
-                                <span class="list-remark">Осталось: 3</span>
-                            </div>
-                            <div class="inline-block list-content settingsOrganisation">
-                                <span class="mif-user-plus mif-lg fg-gray"></span>
-                                <span class="mif-pencil mif-lg fg-gray"></span>
-                                <span class="mif-cancel mif-lg fg-yellow"></span>
-                            </div>
-                        </div> <div class="list">
+                           <div class="list">
                             <div class="list-content inline-block">
                                 <span class="list-title">Optimism</span>
                                 <span class="list-subtitle">Всего мест: 5</span>

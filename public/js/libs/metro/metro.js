@@ -6,7 +6,7 @@
 
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
-    define(['jquery'], factory);
+    define(['public/js/libs/jQuery/jquery'], factory);
   }
   else {
     factory(jQuery);

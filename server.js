@@ -6,8 +6,8 @@ var bodyParser = require('body-parser');
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const model = require('./public/js/models');
-const query=require('./Query');
+const model = require('./public/db/models');
+const query=require('./public/db/Query');
 
 
 //const sequelize = new
@@ -56,6 +56,11 @@ app.get('/organisations',async function (req, res) {
 
 app.post('/organisation', async (req, res) => {
   await query.addOrUpdateOrganisation(req.body);
+  res.json('done');
+});
+
+app.post('/practice', async (req, res) => {
+  await query.createPractice(req.body);
   res.json('done');
 });
 
