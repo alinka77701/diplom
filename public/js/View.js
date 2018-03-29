@@ -114,15 +114,30 @@ View.prototype.dialogPracticeCreatedInit = async function () {
   let fromDate = document.getElementById("fromDateInput").value;
   let toDate = document.getElementById("toDateInput").value;
   let deadline = document.getElementById("deadline").value;
+  document.getElementById("termsPracticeDialog").innerHTML = 'c ' + fromDate
+      + ' по ' + toDate;
+  document.getElementById("deadlinePracticeDialog").innerHTML = deadline;
+  document.getElementById("mainWindowTermsPractice").innerHTML = fromDate
+      + ' - ' + toDate;
   if (fromDate === "") {
     fromDate = "2000-01-01 21:00:00.000 +00:00";
+  }
+  else {
+    fromDate=fromDate.substr(8,4)+'-'+ fromDate.substr(4,2)+'-'+fromDate.substr(0,2)+' ' + '21:00:00.000 +00:00';
   }
   if (toDate === "") {
     toDate = "2000-01-01 21:00:00.000 +00:00";
   }
+  else{
+    toDate=toDate.substr(8,4)+'-'+ toDate.substr(4,2)+'-'+toDate.substr(0,2)+' ' + '21:00:00.000 +00:00';
+  }
   if (deadline === "") {
     deadline = "2000-01-01 21:00:00.000 +00:00";
   }
+  else {
+    deadline=deadline.substr(8,4)+'-'+ deadline.substr(4,2)+'-'+deadline.substr(0,2)+' ' + '21:00:00.000 +00:00';
+  }
+
   if (typePractice === "educational") {
     typePracticeText = "Учебная";
   }
@@ -136,7 +151,7 @@ View.prototype.dialogPracticeCreatedInit = async function () {
   for (let i = 0; i < this.idTreeViews.length; i++) {
     if (this.idTreeViews[i].indexOf("practice") !== -1
         && document.getElementById(this.idTreeViews[i]).style.display
-        == "block") {
+        ==="block") {
       treeView = document.getElementById(this.idTreeViews[i]);
     }
   }
@@ -147,17 +162,13 @@ View.prototype.dialogPracticeCreatedInit = async function () {
   document.getElementById("typePracticeDialog").innerHTML = typePracticeText;
   document.getElementById(
       "educationalLevelDialog").innerHTML = educationLevelText;
-  document.getElementById("termsPracticeDialog").innerHTML = 'c ' + fromDate
-      + ' по ' + toDate;
-  document.getElementById("deadlinePracticeDialog").innerHTML = deadline;
   document.getElementById("groupsPracticeDialog").innerHTML = arrGroups;
   document.getElementById(
       "organisationsPracticeDialog").innerHTML = arrOrganisations;
 
   document.getElementById("mainWindowTypePractice").innerHTML = typePracticeText
       + " практика";
-  document.getElementById("mainWindowTermsPractice").innerHTML = fromDate
-      + ' - ' + toDate;
+
   document.getElementById("lecNumDialog").innerHTML = lecNum;
   let practice = {
     'typePractice': typePracticeText,
@@ -169,6 +180,7 @@ View.prototype.dialogPracticeCreatedInit = async function () {
   };
   return practice;
 };
+
 View.prototype.displayGroups = function () {
   let educationLevel = document.getElementById("selectEducation").value;
   if (educationLevel === "bachelor") {

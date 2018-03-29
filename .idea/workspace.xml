@@ -2,109 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e1658c82-3a95-4f6f-8361-057b63fd8d23" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/js/dbQueries.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/js/lib.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/Controller.js" afterPath="$PROJECT_DIR$/public/js/Controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/Model.js" afterPath="$PROJECT_DIR$/public/js/Model.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/View.js" afterPath="$PROJECT_DIR$/public/js/View.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/bundle.js" afterPath="$PROJECT_DIR$/public/js/bundle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/main.js" afterPath="$PROJECT_DIR$/public/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/student_cabinet.html" afterPath="$PROJECT_DIR$/public/student_cabinet.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.js" afterPath="$PROJECT_DIR$/server.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Query.js" afterPath="$PROJECT_DIR$/public/db/Query.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.bootstrap.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.bootstrap.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.bootstrap.min.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.bootstrap.min.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.bootstrap4.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.bootstrap4.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.foundation.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.foundation.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.foundation.min.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.foundation.min.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.jqueryui.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.jqueryui.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.jqueryui.min.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.jqueryui.min.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.semanticui.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.semanticui.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/dataTables.semanticui.min.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/dataTables.semanticui.min.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/jquery.dataTables.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/jquery.dataTables.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/css/jquery.dataTables.min.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/css/jquery.dataTables.min.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/images/sort_asc.png" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/images/sort_asc.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/images/sort_asc_disabled.png" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/images/sort_asc_disabled.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/images/sort_both.png" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/images/sort_both.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/images/sort_desc.png" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/images/sort_desc.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/images/sort_desc_disabled.png" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/images/sort_desc_disabled.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.bootstrap.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.bootstrap.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.bootstrap.min.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.bootstrap.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.bootstrap4.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.bootstrap4.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.foundation.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.foundation.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.foundation.min.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.foundation.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.jqueryui.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.jqueryui.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.jqueryui.min.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.jqueryui.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.semanticui.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.semanticui.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/dataTables.semanticui.min.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/dataTables.semanticui.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/jquery.dataTables.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/jquery.dataTables.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/datatables.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/datatables.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/datatables.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/datatables.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/datatables.min.css" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/datatables.min.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/DataTables/datatables.min.js" afterPath="$PROJECT_DIR$/public/js/libs/DataTables/datatables.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/global.js" afterPath="$PROJECT_DIR$/public/js/libs/metro/global.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/initiator.js" afterPath="$PROJECT_DIR$/public/js/libs/metro/initiator.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/jquery.js" afterPath="$PROJECT_DIR$/public/js/libs/jQuery/jquery.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/metro.js" afterPath="$PROJECT_DIR$/public/js/libs/metro/metro.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/metro.min.js" afterPath="$PROJECT_DIR$/public/js/libs/metro/metro.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/models.js" afterPath="$PROJECT_DIR$/public/db/models.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/public/assets/css/bundle.css" afterPath="$PROJECT_DIR$/public/js/assets/css/bundle.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/requirements.js" afterPath="$PROJECT_DIR$/public/js/libs/metro/requirements.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/utils/core-utils.js" afterPath="$PROJECT_DIR$/public/js/libs/utils/core-utils.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/utils/easing.js" afterPath="$PROJECT_DIR$/public/js/libs/utils/easing.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/utils/hotkeys.js" afterPath="$PROJECT_DIR$/public/js/libs/utils/hotkeys.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/utils/mousewheel.js" afterPath="$PROJECT_DIR$/public/js/libs/utils/mousewheel.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/utils/pre-code.js" afterPath="$PROJECT_DIR$/public/js/libs/utils/pre-code.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/utils/touch-handler.js" afterPath="$PROJECT_DIR$/public/js/libs/utils/touch-handler.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/utils/tpl.js" afterPath="$PROJECT_DIR$/public/js/libs/utils/tpl.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widget.js" afterPath="$PROJECT_DIR$/public/js/libs/metro/widget.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/accordion.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/accordion.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/appbar.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/appbar.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/audio-player.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/audio-player.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/button-groups.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/button-groups.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/calendar.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/calendar.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/carousel.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/carousel.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/charm.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/charm.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/clock.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/clock.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/countdown.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/countdown.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/datatable.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/datatable.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/datepicker.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/datepicker.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/dialog.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/dialog.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/donut.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/donut.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/draggable.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/draggable.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/dropdown.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/dropdown.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/fit-image.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/fit-image.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/fluentmenu.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/fluentmenu.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/grid.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/grid.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/hint.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/hint.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/inputs.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/inputs.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/keypad.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/keypad.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/listview.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/listview.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/notify.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/notify.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/panel.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/panel.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/plugin.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/plugin.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/popovers.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/popovers.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/preloaders.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/preloaders.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/presenter.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/presenter.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/progressbar.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/progressbar.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/rating.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/rating.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/select.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/select.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/slider.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/slider.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/stepper.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/stepper.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/streamer.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/streamer.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/tabcontrol.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/tabcontrol.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/tile.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/tile.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/treeview.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/treeview.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/validator.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/validator.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/video-player.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/video-player.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/window.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/window.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/wizard.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/wizard.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/js/widgets/wizard2.js" afterPath="$PROJECT_DIR$/public/js/libs/widgets/wizard2.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -140,8 +40,18 @@
       <file leaf-file-name="View.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/js/View.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="160" column="61" lean-forward="false" selection-start-line="160" selection-start-column="61" selection-end-line="160" selection-end-column="61" />
+            <state relative-caret-position="255">
+              <caret line="120" column="23" lean-forward="false" selection-start-line="120" selection-start-column="23" selection-end-line="120" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="datepicker.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/libs/widgets/datepicker.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="762">
+              <caret line="197" column="27" lean-forward="true" selection-start-line="197" selection-start-column="27" selection-end-line="197" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -150,8 +60,8 @@
       <file leaf-file-name="Controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/Controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-340">
-              <caret line="13" column="66" lean-forward="true" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="66" />
+            <state relative-caret-position="187">
+              <caret line="11" column="14" lean-forward="false" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -199,7 +109,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>debugger</find>
       <find>выбрать</find>
       <find>Groups</find>
       <find>Создание новой органи</find>
@@ -226,9 +135,10 @@
       <find>Добав</find>
       <find>getInfo</find>
       <find>createOrUpdateOrganisation</find>
-      <find>onClickPracticeCompleted</find>
-      <find>practiceFinishedOk</find>
       <find>Создать</find>
+      <find>onClickPracticeCompleted</find>
+      <find>calendar</find>
+      <find>practiceFinishedOk</find>
     </findStrings>
     <dirStrings>
       <dir>E:\projects\DIPLOM</dir>
@@ -288,7 +198,7 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
@@ -387,12 +297,12 @@
       <workItem from="1520921113791" duration="21261000" />
       <workItem from="1522043264602" duration="3983000" />
       <workItem from="1522220264538" duration="1671000" />
-      <workItem from="1522221988307" duration="8014000" />
+      <workItem from="1522221988307" duration="11430000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116555000" />
+    <option name="totallyTimeSpent" value="119971000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -404,16 +314,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24762908" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27391306" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27391306" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -422,7 +332,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -447,7 +356,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Practice/node_modules/sequelize/index.js" />
     <entry file="file://$PROJECT_DIR$/Practice/node_modules/orm/lib/ORM.js" />
     <entry file="file://$USER_HOME$/AppData/Roaming/Skype/My Skype Received Files/app.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -667,6 +575,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -741,14 +650,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/Controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-340">
-          <caret line="13" column="66" lean-forward="true" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="290">
@@ -766,10 +667,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/Controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="14" lean-forward="false" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/libs/widgets/datepicker.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="762">
+          <caret line="197" column="27" lean-forward="true" selection-start-line="197" selection-start-column="27" selection-end-line="197" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/View.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="160" column="61" lean-forward="false" selection-start-line="160" selection-start-column="61" selection-end-line="160" selection-end-column="61" />
+        <state relative-caret-position="255">
+          <caret line="120" column="23" lean-forward="false" selection-start-line="120" selection-start-column="23" selection-end-line="120" selection-end-column="23" />
           <folding />
         </state>
       </provider>
