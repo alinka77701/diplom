@@ -55,12 +55,15 @@ app.get('/organisations',async function (req, res) {
 });
 
 app.post('/organisation', async (req, res) => {
-  await query.addOrUpdateOrganisation(req.body);
+  await query.addOrUpdateOrganisation(req.body.eduLevel);
   res.json('done');
 });
 
 app.post('/practice', async (req, res) => {
   await query.createPractice(req.body);
+  await query.createPracticeOrganisation(req.body);
+ // await query.createPracticeGroup(req.body);
+    //await query.createRequests(req.body);
   res.json('done');
 });
 

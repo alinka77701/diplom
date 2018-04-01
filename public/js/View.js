@@ -176,7 +176,9 @@ View.prototype.dialogPracticeCreatedInit = async function () {
     'endDatePractice':toDate,
     'deadlinePractice':deadline,
     'lecNum':lecNum,
-    'eduLevel':educationLevelText
+    'eduLevel':educationLevelText,
+      'organisations': arrOrganisations,
+      'groups': arrGroups
   };
   return practice;
 };
@@ -385,7 +387,7 @@ View.prototype.setOrganisationsInTreeView = function (organisations,
           }
         }
         tree_add_leaf_checkbox_example_click(tree, node,
-            organisations[i].name_organisation);
+            organisations[i].name);
       }
     }
   }
