@@ -194,7 +194,7 @@
                                             </div>
                                             <div class="field margin20">
                                                 <label for="pswdCompany">Количество мест</label>
-                                                <input type="number" id="placesCompany">
+                                                <input type="number" id="placesCompany" min="0">
                                             </div>
                                             <div class="field margin20">
                                                 <label for="loginCompany">Логин</label>
@@ -760,6 +760,19 @@
                                         </div>
                                         <button class="button js-dialog-close" id="practiceFinishedOk">Создать практику</button>
                                     </div>
+                                    <div class="align-center dialog" data-overlay="true" data-overlay-color="op-dark"
+                                         data-role="dialog" id="dialogWaiting" data-overlay-click-close="true"
+                                         data-close-button="true" data-width="500px" data-height="auto">
+                                        <div class="main">
+                                            <div class=" text-center p-2">
+                                                <div class="mx-auto dark-style activity-cycle" data-role="activity" data-type="cycle" data-style="dark"><div class="cycle"></div></div>
+                                            </div>
+                                            <div class="field margin20">
+                                                <p class="inline-block sub-header">Уровень высшего образования:</p>
+                                                <p class="inline-block sub-header fg-black" id="educationalLevelDialog"></p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1208,6 +1221,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

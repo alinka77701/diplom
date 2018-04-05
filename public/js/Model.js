@@ -1,16 +1,16 @@
 const SEPTEMBER = 9;
-const firstCourse=0;
+const firstCourse = 0;
 const secondCourse = 1;
-const thirdCourse=2;
+const thirdCourse = 2;
 const fourthCourse = 3;
-const masterFirstCourse=4;
-const masterSecondCourse=5;
+const masterFirstCourse = 4;
+const masterSecondCourse = 5;
 
 var Model = function () {
   this.Groups = [];
   this.Students = [];
   this.Courses = [];
-  this.typesOrganisation=[];
+  this.typesOrganisation = [];
   this.Organisations = [];
 };
 
@@ -25,44 +25,79 @@ class Course {
   }
 }
 
+class Group {
+  constructor(uid_LDAP, nameGroup) {
+    this.name = nameGroup;
+    this.uid_LDAP = uid_LDAP;
+    this.students = [];
+  }
+
+  addStudent(student) {
+    this.students.push(student);
+  }
+}
 
 /*============================================STUDENTS SECTION=====================================================*/
-Model.prototype.getStudents = async function (groups) {
-  this.Groups = groups;
-  this.Students = [];
-  let groupsUIDS = await this.getGroupsUIDS();
-  if (groupsUIDS != 0) {
-    for (let i = 0, n = 0; i < groupsUIDS.length; ++i) {
-      let studentsList = await this.getStudentsByGroupId(groupsUIDS[i]);
-      for (let j = 0; j < studentsList.length; ++j, n++) {
-        this.Students.push({group: this.Groups[i]});
-        this.Students[n].student = studentsList[j].displayName;
-        this.Students[n].organisation = j;
+Model.prototype.getData = async function (selectedGroups) {
+  let data = [];
+  for (let i = 0, n = 0; i < this.Groups.length; ++i) {
+    for (let j = 0; j < selectedGroups.length; ++j) {
+      if (this.Groups[i].name === selectedGroups[j]) {
+        for (let k = 0; k < this.Groups[i].students.length; ++k, n++) {
+          data.push({group: this.Groups[i].name});
+          data[n].student = this.Groups[i].students[k].name;
+          data[n].student_UID = this.Groups[i].students[k].uid;
+          data[n].organisation = j;
+        }
       }
     }
   }
+  return data;
 };
 
-Model.prototype.getAllGroups = async function () {
-  let groups = [];
-  let result = await fetch('/proxy/core/v1/groups')
-  .then(async function (response) {
-    return await response.json();
-  })
-  .then(function (response) {
-    groups = response._embedded.groups;
-  });
+Model.prototype.getGroups = async function () {
+  let result = await fetch('/proxy/core/v1/groups');
+  let list = await result.json();
+  let groups = list._embedded.groups;
   return groups;
 };
 
-Model.prototype.myGetYear = function () {
+/*получаем студентов из хранилища LDAP по ID группы*/
+Model.prototype.getStudentsByGroupId = async function (groupID) {
+  let result = await fetch('/proxy/core/v1/groups/' + groupID);
+  let list = await result.json();
+  let studentsList = list._embedded.students;
+  return studentsList;
+};
+
+/*получаем группы и их студентов из хранилища LDAP, обновляем таблицу Students*/
+Model.prototype.init = async function () {
+  let groups = await this.getGroups();
+
+  for (let i = 0; i < groups.length; i++) {
+    this.Groups.push(new Group(groups[i].id, groups[i].name));
+  }
+
+  for (let i = 0, n = 0; i < this.Groups.length; ++i) {
+    let studentsList = await this.getStudentsByGroupId(this.Groups[i].uid_LDAP);
+    for (let j = 0; j < studentsList.length; ++j, n++) {
+      let student = {
+        'name': studentsList[j].displayName,
+        'uid': studentsList[j].uid
+      };
+      this.Groups[i].addStudent(student);
+    }
+   //await this.createOrUpdateStudents(this.Groups[i].students);
+  }
+};
+
+Model.prototype.getCurrentYear = function () {
   let date = new Date();
   let currentYear = date.getFullYear().toString();
   return currentYear;
 };
 
 Model.prototype.distributeGroupsByCourses = async function (currentYear) {
- delete this.Courses;
   this.Courses = [
     new Course('1'),
     new Course('2'),
@@ -71,113 +106,74 @@ Model.prototype.distributeGroupsByCourses = async function (currentYear) {
     new Course('1 (мг)'),
     new Course('2 (мг)')
   ];
-console.log(this.Courses );
-  let groups = await this.getAllGroups();
-  console.log(groups);
   let date = new Date();
   let currentMonth = date.getMonth();
   if (+currentMonth < SEPTEMBER) {
     currentYear -= 1;
   }
 
-  for (let i = 0; i < groups.length; i++) {
-    if (groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
-      if (groups[i].name.indexOf("мг") !== -1) {
-
-        this.Courses[masterFirstCourse].addGroup(groups[i].name);
+  for (let i = 0; i < this.Groups.length; i++) {
+    if (this.Groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
+      if (this.Groups[i].name.indexOf("мг") !== -1) {
+        this.Courses[masterFirstCourse].addGroup(this.Groups[i].name);
       }
       else {
-
-        this.Courses[firstCourse].addGroup(groups[i].name);
+        this.Courses[firstCourse].addGroup(this.Groups[i].name);
       }
     }
     currentYear--;
-    if (groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
-      if (groups[i].name.indexOf("мг") !== -1) {
-        this.Courses[masterSecondCourse].addGroup(groups[i].name);
+    if (this.Groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
+      if (this.Groups[i].name.indexOf("мг") !== -1) {
+        this.Courses[masterSecondCourse].addGroup(this.Groups[i].name);
       }
       else {
-        this.Courses[secondCourse].addGroup(groups[i].name);
+        this.Courses[secondCourse].addGroup(this.Groups[i].name);
       }
     }
     currentYear--;
-    if (groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
-      if (groups[i].name.indexOf("мг") === -1) {
-        this.Courses[thirdCourse].addGroup(groups[i].name);
+    if (this.Groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
+      if (this.Groups[i].name.indexOf("мг") === -1) {
+        this.Courses[thirdCourse].addGroup(this.Groups[i].name);
       }
-
     }
     currentYear--;
-    if (groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
-      if (groups[i].name.indexOf("мг") === -1) {
-        this.Courses[fourthCourse].addGroup(groups[i].name);
+    if (this.Groups[i].name.indexOf(currentYear.toString().substr(-2)) !== -1) {
+      if (this.Groups[i].name.indexOf("мг") === -1) {
+        this.Courses[fourthCourse].addGroup(this.Groups[i].name);
       }
     }
     currentYear += 3;
   }
 };
 
-Model.prototype.getGroupsUIDS = async function () {
-  let groupsUIDS = [];
-  for (let i = 0; i < this.Groups.length; ++i) {
-    let groupName = this.Groups[i];
-    let result = await fetch('/proxy/core/v1/groups?name=' + groupName)
-    .then(async function (response) {
-      return await response.json();
-    })
-    .then(function (response) {
-      let groups = response;
-      let groupID = response._embedded.groups[0].id;
-      groupsUIDS.push(groupID);
-    })
-    .catch(error => {
-      alert("Группа " + groupName + " не существует.");
-    });
-  }
-  return groupsUIDS;
-};
-
-Model.prototype.getStudentsByGroupId = async function (groupID) {
-  let studentsList = [];
-  let result = await fetch('/proxy/core/v1/groups/' + groupID)
-  .then(async function (response) {
-    return await response.json();
-  })
-  .then(function (response) {
-    studentsList = response._embedded.students;
-  })
-  .catch(error => {
-    alert(error);
-  });
-  return studentsList;
-};
 /*============================================PRACTICE CREATION
  SECTION=====================================================*/
 Model.prototype.getTypesOrganisation = async function () {
   this.typesOrganisation = [];
-  let types=[];
-  let result = await fetch('/types-organisation')
-  .then(async function (response) {
-    return await response.json();
-  })
-  .then(function (response) {
-    types=response;
-  });
-  this.typesOrganisation=types;
+  let result = await fetch('/types-organisation');
+  let types = await result.json();
+  this.typesOrganisation = types;
   return this.typesOrganisation;
 };
+
 Model.prototype.getOrganisations = async function () {
-  let orgs=[];
-  let result = await fetch('/organisations')
-  .then(async function (response) {
-    return await response.json();
-  })
-  .then(function (response) {
-    orgs=response;
-  });
-  console.log(orgs);
-  this.Organisations=orgs;
+  let result = await fetch('/organisations');
+  let orgs = await result.json();
+  this.Organisations = orgs;
   return this.Organisations;
+};
+
+
+Model.prototype.getDeterminedGroups = async function (selectedGroups) {
+  let determinedGroups = [];
+  for (let i = 0; i < this.Groups.length; i++) {
+    for (let j = 0; j < selectedGroups.length; j++) {
+      if (this.Groups[i].name === selectedGroups[j]) {
+        determinedGroups.push(this.Groups[i]);
+      }
+    }
+  }
+  return determinedGroups;
 };
 
 Model.prototype.createOrUpdateOrganisation = async function (organisation) {
@@ -189,7 +185,7 @@ Model.prototype.createOrUpdateOrganisation = async function (organisation) {
     body: JSON.stringify(organisation)
   })
   .catch(function (error) {
-    alert("Ошибка при добавлении организации в БД "+ error);
+    alert("Ошибка при добавлении организации в БД " + error);
   });
 };
 
@@ -202,8 +198,21 @@ Model.prototype.createPractice = async function (practice) {
     body: JSON.stringify(practice)
   })
   .catch(function (error) {
-    alert("Ошибка при добавлении практики в БД "+ error);
+    alert("Ошибка при добавлении практики в БД " + error);
   });
+
 };
 
+Model.prototype.createOrUpdateStudents = async function (students) {
+  let result = await fetch('/students', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(students)
+  })
+  .catch(function (error) {
+    alert("Ошибка при добавлении uid студентов в БД " + error);
+  });
+};
 module.exports = Model;

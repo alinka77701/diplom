@@ -22,6 +22,7 @@ var View = function () {
   ];
   this.onClickGetOrganisations = null;
   this.onClickCreateOrganisation = null;
+  this.Practice = null;
 };
 
 View.prototype.init = function () {
@@ -96,7 +97,7 @@ View.prototype.goToPracticeCreation = function () {
   document.querySelector("#mainWindowSection").style.display = "none";
 };
 /*========================================PRACTICE SECTION==============================================*/
-View.prototype.dialogPracticeCreatedInit = async function () {
+View.prototype.dialogPracticeCreatedInit = function () {
   let finishBtn = document.getElementsByClassName("btn-finish")[0];
   finishBtn.setAttribute("onclick",
       "metroDialog.open('#dialogPracticeCompleteSuccess')");
@@ -123,19 +124,22 @@ View.prototype.dialogPracticeCreatedInit = async function () {
     fromDate = "2000-01-01 21:00:00.000 +00:00";
   }
   else {
-    fromDate=fromDate.substr(8,4)+'-'+ fromDate.substr(4,2)+'-'+fromDate.substr(0,2)+' ' + '21:00:00.000 +00:00';
+    fromDate = fromDate.substr(8, 4) + '-' + fromDate.substr(4, 2) + '-'
+        + fromDate.substr(0, 2) + ' ' + '21:00:00.000 +00:00';
   }
   if (toDate === "") {
     toDate = "2000-01-01 21:00:00.000 +00:00";
   }
-  else{
-    toDate=toDate.substr(8,4)+'-'+ toDate.substr(4,2)+'-'+toDate.substr(0,2)+' ' + '21:00:00.000 +00:00';
+  else {
+    toDate = toDate.substr(8, 4) + '-' + toDate.substr(4, 2) + '-'
+        + toDate.substr(0, 2) + ' ' + '21:00:00.000 +00:00';
   }
   if (deadline === "") {
     deadline = "2000-01-01 21:00:00.000 +00:00";
   }
   else {
-    deadline=deadline.substr(8,4)+'-'+ deadline.substr(4,2)+'-'+deadline.substr(0,2)+' ' + '21:00:00.000 +00:00';
+    deadline = deadline.substr(8, 4) + '-' + deadline.substr(4, 2) + '-'
+        + deadline.substr(0, 2) + ' ' + '21:00:00.000 +00:00';
   }
 
   if (typePractice === "educational") {
@@ -151,7 +155,7 @@ View.prototype.dialogPracticeCreatedInit = async function () {
   for (let i = 0; i < this.idTreeViews.length; i++) {
     if (this.idTreeViews[i].indexOf("practice") !== -1
         && document.getElementById(this.idTreeViews[i]).style.display
-        ==="block") {
+        === "block") {
       treeView = document.getElementById(this.idTreeViews[i]);
     }
   }
@@ -170,17 +174,19 @@ View.prototype.dialogPracticeCreatedInit = async function () {
       + " практика";
 
   document.getElementById("lecNumDialog").innerHTML = lecNum;
-  let practice = {
+  this.Practice = {
     'typePractice': typePracticeText,
-    'startDatePractice':fromDate,
-    'endDatePractice':toDate,
-    'deadlinePractice':deadline,
-    'lecNum':lecNum,
-    'eduLevel':educationLevelText,
-      'organisations': arrOrganisations,
-      'groups': arrGroups
+    'startDatePractice': fromDate,
+    'endDatePractice': toDate,
+    'deadlinePractice': deadline,
+    'lecNum': lecNum,
+    'eduLevel': educationLevelText,
+    'organisations': arrOrganisations,
+    'groups': arrGroups,
+    'year': this.selectedYear
   };
-  return practice;
+
+  return this.Practice;
 };
 
 View.prototype.displayGroups = function () {
@@ -281,7 +287,6 @@ View.prototype.getSelectedGroups = function (treeView) {
       }
     }
   }
-  console.log(Groups);
   return Groups;
 };
 
@@ -299,7 +304,7 @@ function removeChildren(node) {
   }
 }
 
-View.prototype.clearGroupsTreeView = function () {
+View.prototype.clearGroupsTreeView = async function () {
   var id = 0;
   while (id < this.idTreeViews.length) {
     var liArray = document.getElementById(
@@ -310,7 +315,7 @@ View.prototype.clearGroupsTreeView = function () {
     id++;
   }
 };
-View.prototype.updateGroupsTreeView = function (courses) {
+View.prototype.updateGroupsTreeView = async function (courses) {
   let idCounter = 0, courseNumber = bachelorYear, cnt;
   let coursesName = ['first', 'second', 'third', 'fourth'];
   var i = 0;
@@ -419,5 +424,13 @@ View.prototype.setTypesOrganisationSelect = function (typesOrganisation) {
     option.innerHTML = typesOrganisation[i].name;
     typeOrg.appendChild(option);
   }
+};
+
+View.prototype.Wait = function () {
+  metroDialog.open('#dialogWaiting');
+};
+
+View.prototype.Stop = function () {
+  metroDialog.close('#dialogWaiting');
 };
 module.exports = View;

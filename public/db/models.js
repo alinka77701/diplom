@@ -13,8 +13,8 @@ const Document = sequelize.define('Document', {
         type: sequelize.Sequelize.INTEGER,
         allowNull: false
     },
-    id_group: {
-        type: sequelize.Sequelize.INTEGER,
+    uid_group: {
+        type: sequelize.Sequelize.TEXT,
         allowNull: true
     },
     good_students_number: {
@@ -128,8 +128,8 @@ const Practice_Group = sequelize.define('Practice_Group', {
         allowNull: false,
         primaryKey: true
     },
-    id_group: {
-        type: sequelize.Sequelize.INTEGER,
+    uid_group: {
+        type: sequelize.Sequelize.TEXT,
         allowNull: false,
         primaryKey: true
     }
@@ -144,8 +144,8 @@ const Request = sequelize.define('Request', {
         autoIncrement: true,
         primaryKey: true
     },
-    id_student: {
-        type: sequelize.Sequelize.INTEGER,
+    uid_student: {
+        type: sequelize.Sequelize.TEXT,
         allowNull: false
     },
     id_practice: {
@@ -222,15 +222,10 @@ const Status = sequelize.define('Status', {
 });
 
 const Student = sequelize.define('Student', {
-    id_student: {
-        type: sequelize.Sequelize.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
-    },
     uid_student_LDAP: {
         type: sequelize.Sequelize.TEXT,
-        allowNull: false
+        allowNull: false,
+      primaryKey: true
     },
     email_student: {
         type: sequelize.Sequelize.TEXT,
@@ -304,25 +299,7 @@ const Type_practice = sequelize.define('Type_practice', {
     timestamps: false,
     tableName: 'Types_practice'
 });
-const Group = sequelize.define('Group', {
-    id: {
-        type: sequelize.Sequelize.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    uid_group_LDAP: {
-        type: Sequelize.TEXT,
-        allowNull: false
-    },
-    name: {
-        type: Sequelize.TEXT,
-        allowNull: true
-    },
-}, {
-    timestamps: false,
-    tableName: 'Groups'
-});
+
 Type_organisation.schema("public");
 Document.schema("public");
 Organisation.schema("public");
@@ -335,7 +312,6 @@ Status.schema("public");
 Student.schema("public");
 Teacher.schema("public");
 Type_practice.schema("public");
-Group.schema("public");
 
 module.exports = {
     Document: Document,
@@ -350,6 +326,5 @@ module.exports = {
     Student: Student,
     Teacher: Teacher,
     Type_organisation: Type_organisation,
-    Type_practice: Type_practice,
-    Group: Group
+    Type_practice: Type_practice
 };

@@ -1,15 +1,15 @@
 const View =  require ('./View.js');
 const Model =  require ('./Model.js');
 
-function Controller () {
+ function Controller () {
     this.View = new View();
     this.Model = new Model();
     this.init();
 }
 
-Controller.prototype.init = function () {
+Controller.prototype.init = async function () {
     this.View.onClickNextStep = this.displayGroups.bind(this);
-    this.View.onClickPracticeCompleted = this.goToStudentsSection.bind(this);
+   // this.View.onClickPracticeCompleted = this.goToStudentsSection.bind(this);
     this.View.onClickCreatePractice = this.goToPracticeCreation.bind(this);
     this.View.onClickAddPractice = this.createPractice.bind(this);
     this.View.onClickToOrganisationsSection = this.goToOrganisationsSection.bind(this);
@@ -20,6 +20,7 @@ Controller.prototype.init = function () {
     this.View.onClickGetOrganisations = this.getOrganisations.bind(this);
     this.View.onClickCreateOrganisation = this.createNewOrganisation.bind(this);
     this.View.init();
+    await this.Model.init();
 };
 
 Controller.prototype.goToOrganisationsSection = function () {
@@ -29,15 +30,17 @@ Controller.prototype.goToOrganisationsSection = function () {
 Controller.prototype.goToStudentsSection = function () {
     this.View.goToStudentsSection();
 };
+
 Controller.prototype.goToPracticeCreation = async function () {
-    this.View.selectedYear = this.Model.myGetYear();
-    this.View.clearGroupsTreeView();
-    this.renderGroupsTreeView();
+    this.View.selectedYear = this.Model.getCurrentYear();
+    await this.renderGroupsTreeView();
     this.View.clearPracticeSection();
     let typesOrganisation= await this.updateTypesOrganisation();
     this.View.setTypesOrganisationSelect(typesOrganisation);
     this.View.goToPracticeCreation();
+    this.View.selectedYear = this.Model.getCurrentYear();
 };
+
 Controller.prototype.updateTypesOrganisation = async function () {
   let typesOrganisation= await this.Model.getTypesOrganisation();
   this.View.clearTypesOrganisation();
@@ -51,38 +54,48 @@ Controller.prototype.updateTypesOrganisation = async function () {
 Controller.prototype.displayGroups = function () {
     this.View.displayGroups();
 };
+
 Controller.prototype.dialogPracticeCreatedInit = function () {
     this.View.dialogPracticeCreatedInit();
 };
+
 Controller.prototype.createNewOrganisation = async function () {
   let organisation= this.View.getInfoNewOrganisation();
   await this.Model.createOrUpdateOrganisation(organisation);
   await this.updateTypesOrganisation();
 };
+
 Controller.prototype.createPractice = async function () {
-  let practice = await this.View.dialogPracticeCreatedInit();
+  this.View.Wait();
+  let practice = this.View.Practice;
+  let groups=await this.Model.getDeterminedGroups(practice.groups);
+  practice.groups=groups;
   await this.Model.createPractice(practice);
+  this.View.Stop();
+  this.goToStudentsSection();
 };
+
 /*============================================STUDENTS SECTION=====================================================*/
-Controller.prototype.renderGroupsTreeView = function () {
-    this.Model.distributeGroupsByCourses(this.View.selectedYear)
-        .then(() => {
-            this.View.clearGroupsTreeView();
-        })
-        .then(() => {
-            this.View.updateGroupsTreeView(this.Model.Courses);
-        });
+Controller.prototype.renderGroupsTreeView = async function () {
+  if(this.View.selectedYear!==" + ") {
+    await  this.Model.distributeGroupsByCourses(this.View.selectedYear);
+    await this.View.clearGroupsTreeView();
+    await this.View.updateGroupsTreeView(this.Model.Courses);
+  }
 };
+
 Controller.prototype.setGroupsTreeView = function (event) {
     this.View.updateYear(event);
     this.renderGroupsTreeView();
 };
+
 Controller.prototype.renderDataInTable = async function () {
     let groups = this.View.getSelectedGroups();
-    await this.Model.getStudents(groups);
-    this.View.renderTable(this.Model.Students);
+    let data= await this.Model.getData(groups);
+    this.View.renderTable(data);
     this.View.renderInfo();
 };
+
 Controller.prototype.getOrganisations = function () {
   this.View.getConfigurations();
 };
