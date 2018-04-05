@@ -101,7 +101,11 @@ const Practice = sequelize.define('Practice', {
     edu_level: {
         type: sequelize.Sequelize.TEXT,
         allowNull: true
-    }
+    },
+  year: {
+    type: sequelize.Sequelize.TEXT,
+    allowNull: true
+  }
 }, {
     timestamps: false,
     tableName: 'Practices'

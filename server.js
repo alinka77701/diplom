@@ -54,6 +54,11 @@ app.get('/organisations',async function (req, res) {
   res.send(data);
 });
 
+app.get('/practice/',async function (req, res) {
+  let data =  await query.getPractice(req);
+  res.send(data);
+});
+
 app.post('/organisation', async (req, res) => {
   await query.addOrUpdateOrganisation(req.body);
   res.json('done');

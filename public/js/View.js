@@ -219,7 +219,30 @@ View.prototype.clearPracticeSection = function () {
   document.getElementById("deadline").value = "";
 };
 /*============================================STUDENTS SECTION=====================================================*/
-View.prototype.renderInfo = function () {
+View.prototype.renderInfo = function (practice) {
+  if(practice.length!==0)
+  {
+    document.getElementById("mainWindowTermsPractice").innerHTML='с '+practice.start_date_practice+' по '+practice.end_date_practice;
+    let info_about_practice=this.getUserInfoAboutPractice();
+    document.getElementById("mainWindowTypePractice").innerHTML = info_about_practice.typePractice
+        + ' практика';
+  }
+  else
+  {
+    document.getElementById("mainWindowTypePractice").innerHTML = "Практики"
+        + " не существует.";
+    document.getElementById("mainWindowTermsPractice").innerHTML=" ";
+  }
+};
+View.prototype.getUserInfoAboutPractice = function () {
+  let educationLevel = document.getElementById("selectEducation").value;
+  let educationLevelText="";
+  if (educationLevel === "bachelor") {
+    educationLevelText = "Бакалавриат";
+  }
+  else {
+    educationLevelText = "Магистратура";
+  }
   let typePractice = document.getElementById("selectTypePracticeTab").value;
   let typePracticeText = "Учебная";
   if (typePractice === "educational") {
@@ -231,9 +254,15 @@ View.prototype.renderInfo = function () {
   else if (typePractice === "prediploma") {
     typePracticeText = "Преддипломная";
   }
-  document.getElementById("mainWindowTypePractice").innerHTML = typePracticeText
-      + ' практика';
+  let info_about_practice={
+    'typePractice':typePracticeText,
+     'year': this.selectedYear,
+    'edu_level': educationLevelText
+  };
+  return info_about_practice;
 };
+
+
 View.prototype.renderTable = function (data) {
   if (data.length === 0) {
     this.myTable.dataTable().fnClearTable();

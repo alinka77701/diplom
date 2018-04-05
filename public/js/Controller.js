@@ -91,9 +91,11 @@ Controller.prototype.setGroupsTreeView = function (event) {
 
 Controller.prototype.renderDataInTable = async function () {
     let groups = this.View.getSelectedGroups();
-    let data= await this.Model.getData(groups);
+    let data = await this.Model.getData(groups);
+    let info_about_practice= this.View.getUserInfoAboutPractice();
+    let practice=await this.Model.getInfoAboutPractice(info_about_practice);
     this.View.renderTable(data);
-    this.View.renderInfo();
+    this.View.renderInfo(practice);
 };
 
 Controller.prototype.getOrganisations = function () {

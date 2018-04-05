@@ -87,7 +87,7 @@ Model.prototype.init = async function () {
       };
       this.Groups[i].addStudent(student);
     }
-   //await this.createOrUpdateStudents(this.Groups[i].students);
+    //await this.createOrUpdateStudents(this.Groups[i].students);
   }
 };
 
@@ -145,7 +145,26 @@ Model.prototype.distributeGroupsByCourses = async function (currentYear) {
     currentYear += 3;
   }
 };
-
+Model.prototype.getInfoAboutPractice = async function (info_about_practice) {
+  let params = {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin'
+  };
+  info_about_practice = "?year=" + info_about_practice.year + "&edu_level="
+      + info_about_practice.edu_level + "&typePractice="
+      + info_about_practice.typePractice;
+  let info=0;
+  let result = await fetch('/practice' + info_about_practice, params)
+  .then((response) => {
+     info =  response.json();
+  })
+  .catch((response) => {
+    console.log(response);
+  });
+  return info;
+};
 /*============================================PRACTICE CREATION
  SECTION=====================================================*/
 Model.prototype.getTypesOrganisation = async function () {
@@ -162,7 +181,6 @@ Model.prototype.getOrganisations = async function () {
   this.Organisations = orgs;
   return this.Organisations;
 };
-
 
 Model.prototype.getDeterminedGroups = async function (selectedGroups) {
   let determinedGroups = [];
@@ -215,4 +233,5 @@ Model.prototype.createOrUpdateStudents = async function (students) {
     alert("Ошибка при добавлении uid студентов в БД " + error);
   });
 };
+
 module.exports = Model;

@@ -48,6 +48,20 @@ class Query {
     return data;
   }
 
+  async getPractice(req) {
+    let data=await model.Practice.findAll({
+      where: {
+        edu_level: req.query.edu_level,
+        year:req.query.year,
+        id_type_practice: await this.getIdByName(model.Type_practice, req.query.typePractice)
+      }
+    });
+    if (data.length!==0) {
+      data = data[0].dataValues;
+    }
+    return data;
+  }
+
   async getIdByName(table, name) {
     let id;
     id = await table.findOne({
@@ -110,7 +124,7 @@ class Query {
       if (id_student) {
         queryObj.uid_student_LDAP = id_student.dataValues.uid_student_LDAP;
       }
-      console.log("id_student= "+id_student);
+      console.log("id_student= " + id_student);
       await model.Student.upsert(queryObj);
     }
   }
