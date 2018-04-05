@@ -235,14 +235,7 @@ View.prototype.renderInfo = function (practice) {
   }
 };
 View.prototype.getUserInfoAboutPractice = function () {
-  let educationLevel = document.getElementById("selectEducation").value;
-  let educationLevelText="";
-  if (educationLevel === "bachelor") {
-    educationLevelText = "Бакалавриат";
-  }
-  else {
-    educationLevelText = "Магистратура";
-  }
+  let educationLevel = document.getElementsByClassName("tabcontrol2")[0].getElementsByClassName("active")[0].children[0].text;
   let typePractice = document.getElementById("selectTypePracticeTab").value;
   let typePracticeText = "Учебная";
   if (typePractice === "educational") {
@@ -257,7 +250,7 @@ View.prototype.getUserInfoAboutPractice = function () {
   let info_about_practice={
     'typePractice':typePracticeText,
      'year': this.selectedYear,
-    'edu_level': educationLevelText
+    'edu_level': educationLevel
   };
   return info_about_practice;
 };

@@ -90,11 +90,24 @@ Controller.prototype.setGroupsTreeView = function (event) {
 };
 
 Controller.prototype.renderDataInTable = async function () {
-    let groups = this.View.getSelectedGroups();
-    let data = await this.Model.getData(groups);
+    let selectedGroups = this.View.getSelectedGroups();
+    let groups=[];
+    for(let i=0;i<this.Model.Groups.length;i++){
+        for(let j=0;j<selectedGroups.length;j++){
+            if(this.Model.Groups[i].name===selectedGroups[j]){
+                groups.push(this.Model.Groups[i]);
+            }
+        }
+    }
+
     let info_about_practice= this.View.getUserInfoAboutPractice();
-    let practice=await this.Model.getInfoAboutPractice(info_about_practice);
-    this.View.renderTable(data);
+    let practice=await this.Model.getPractice(info_about_practice);
+    if(practice)
+    {
+        await this.Model.AAA(practice, groups);
+        let data = await this.Model.getData(groups);
+        this.View.renderTable(data);
+    }
     this.View.renderInfo(practice);
 };
 
