@@ -91,11 +91,11 @@ Controller.prototype.setGroupsTreeView = function (event) {
 
 Controller.prototype.renderDataInTable = async function () {
     let selectedGroups = this.View.getSelectedGroups();
-    let groups=[];
+    let groupsObjects=[];
     for(let i=0;i<this.Model.Groups.length;i++){
         for(let j=0;j<selectedGroups.length;j++){
             if(this.Model.Groups[i].name===selectedGroups[j]){
-                groups.push(this.Model.Groups[i]);
+              groupsObjects.push(this.Model.Groups[i]);
             }
         }
     }
@@ -104,8 +104,10 @@ Controller.prototype.renderDataInTable = async function () {
     let practice=await this.Model.getPractice(info_about_practice);
     if(practice)
     {
-        await this.Model.AAA(practice, groups);
-        let data = await this.Model.getData(groups);
+        let requests=await this.Model.getRequests(practice, groupsObjects);
+        await this.Model.assosiateRequestToStudent(requests, selectedGroups);
+        let requests_organisations=await this.Model.getRequestsOrganisations(selectedGroups);
+        let data = await this.Model.getData(selectedGroups, requests_organisations);
         this.View.renderTable(data);
     }
     this.View.renderInfo(practice);

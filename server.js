@@ -64,6 +64,11 @@ app.get('/filter-requsts/',async function (req, res) {
     res.send(data);
 });
 
+app.get('/organisations-by-request/',async function (req, res) {
+  let data =  await query.getOrganisationByRequestId(req);
+  res.send(data);
+});
+
 app.post('/organisation', async (req, res) => {
   await query.addOrUpdateOrganisation(req.body);
   res.json('done');
