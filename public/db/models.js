@@ -116,6 +116,7 @@ const Practice_Organisation = sequelize.define('Practice_Organisation', {
         type: sequelize.Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true
+
     },
     id_organisation: {
         type: sequelize.Sequelize.INTEGER,

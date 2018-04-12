@@ -55,7 +55,7 @@ View.prototype.init = function () {
     data: this.Groups,
     "language": {
       "zeroRecords": "Такой записи не существует.",
-      "emptyTable": "Ни одна из групп не выбрана.",
+      "emptyTable": "Ни одна из групп не выбрана либо практики не существует.",
       "search": "Поиск:",
       "paginate": {
         "first": "Первый",
@@ -257,12 +257,21 @@ View.prototype.getUserInfoAboutPractice = function () {
 
 
 View.prototype.renderTable = function (data) {
-  if (data.length === 0) {
+  if (data === 0) {
     this.myTable.dataTable().fnClearTable();
   }
   else {
     this.myTable.dataTable().fnClearTable();
     this.myTable.dataTable().fnAddData(data);
+  }
+};
+
+View.prototype.colorTable = function (data) {
+  for(let i=0;i<data.length;i++){
+    if(data[i].status) {
+        $(this.myTable.dataTable().fnGetNodes(i)).addClass("approved_stud");
+        this.myTable.dataTable().fnGetNodes(i).children[0].setAttribute("class", "sorting_1 approved_stud");
+    }
   }
 };
 

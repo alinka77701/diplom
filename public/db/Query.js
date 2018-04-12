@@ -143,9 +143,8 @@ class Query {
     return name;
   }
   async getLastPracticeId() {
-    let id;
-    id = await model.Practice.findAndCountAll({});
-    return id.count;
+      let id = await model.Practice.max('id_practice');
+      return id;
   }
 
   async addOrUpdateOrganisation(req) {
@@ -204,7 +203,7 @@ class Query {
       edu_level: req.eduLevel,
       year: req.year
     };
-    await model.Practice.upsert(queryObj);
+     await model.Practice.upsert(queryObj);
   }
 
   async createPracticeOrganisation(req) {

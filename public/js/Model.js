@@ -53,8 +53,16 @@ Model.prototype.getData = async function (selectedGroups,
               if (this.Groups[i].students[k].id_request === +requests_organisations[w][n].id_request) {
                 data[l].student = this.Groups[i].students[k].name;
                 data[l].student_UID = this.Groups[i].students[k].uid;
-                data[l].organisation += requests_organisations[w][n].name_organisation +', ';
-                isStudentApply = true;
+                if(requests_organisations[w][n].id_status===1){
+                    data[l].status=requests_organisations[w][n].id_status;
+                    data[l].organisation = requests_organisations[w][n].name_organisation;
+                    isStudentApply = true;
+                    break;
+                }
+                else{
+                    data[l].organisation += requests_organisations[w][n].name_organisation +', ';
+                    isStudentApply = true;
+                }
               }
             }
           }
