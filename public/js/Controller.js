@@ -9,7 +9,6 @@ function Controller() {
 
 Controller.prototype.init = async function () {
     this.View.onClickNextStep = this.displayGroups.bind(this);
-    // this.View.onClickPracticeCompleted = this.goToStudentsSection.bind(this);
     this.View.onClickCreatePractice = this.goToPracticeCreation.bind(this);
     this.View.onClickAddPractice = this.createPractice.bind(this);
     this.View.onClickToOrganisationsSection = this.goToOrganisationsSection.bind(this);
@@ -19,11 +18,15 @@ Controller.prototype.init = async function () {
     this.View.onClickYearsArray = this.setGroupsTreeView.bind(this);
     this.View.onClickGetOrganisations = this.getOrganisations.bind(this);
     this.View.onClickCreateOrganisation = this.createNewOrganisation.bind(this);
+    this.View.onClickDisplayInfoAboutOrg = this.displayInfoAboutOrg.bind(this);
+    this.View.onClickDisplayOrganisations = this.displayOrganisations.bind(this);
     this.View.init();
     await this.Model.init();
 };
 
-Controller.prototype.goToOrganisationsSection = function () {
+Controller.prototype.goToOrganisationsSection = async function () {
+    let organisations=await this.Model.getOrganisations();
+    this.View.setOrganisationsList(organisations, "allOrganisationsList");
     this.View.goToOrganisationsSection();
 };
 
@@ -120,8 +123,21 @@ Controller.prototype.renderDataInTable = async function () {
     this.View.renderInfo(practice);
 };
 
-Controller.prototype.getOrganisations = function () {
-    this.View.getConfigurations();
+Controller.prototype.getOrganisations = async function () {
+    let info_about_practice = this.View.getConfigurationPractice();
+    let practice = await this.Model.getPractice(info_about_practice);
+    let organisations = 0;
+    if (practice.length !== 0) {
+        organisations = await this.Model.getOrganisationsByPracticeId(practice);
+    }
+    this.View.setOrganisationsList(organisations,"organisationList");
+};
+/*========================================ORGANISATIONS SECTION================================================*/
+Controller.prototype.displayInfoAboutOrg = function () {
+    this.View.displayInfoAboutOrg();
 };
 
+Controller.prototype.displayOrganisations = function () {
+    this.View.displayOrganisations();
+};
 module.exports = Controller;

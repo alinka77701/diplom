@@ -87,6 +87,11 @@ app.post('/practice', async (req, res) => {
   res.json('done');
 });
 
+app.get('/organisations-by-practice/',async function (req, res) {
+    let data =  await query.getOrganisationsByPracticeId(req);
+    res.send(data);
+});
+
 app.listen('7777', function () {
   console.log('Listening on port 7777.');
 });

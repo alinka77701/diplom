@@ -1046,108 +1046,13 @@
                         <div> <button class="button square-button " id="getOrganisationsBtnOk">OK</button></div>
                     </div>
                     <div class="cell colspan4 align-center right-separator bd-lightgray">
-                        <h3>Список организаций</h3>
-
-                        <!--<ol id="organisationList">
-                            <li>
-                                <div>
-                                    <p class="inline-block">Competentum</p>
-                                    <span class="mif-wrench inline-block"></span>
-                                    <span class="mif-wrench "></span>
-                                    <span class="mif-wrench"></span>
-                                    <span class="mif-wrench"></span>
-                                </div>
-                            </li>
-                            <li>R-Style <span class="mif-wrench"></span></li>
-                            <li>BryanskSoft</li>
-                            <li>Optimism</li>
-                            <li>Polonium Arts</li>
-                            <li>IDEA Promotion</li>
-                            <li>Сбертех</li>
-                        </ol>-->
-                        <div class="listview-outlook align-left" data-role="listview">
-                            <div class="list">
-                                <div class="list-content inline-block">
-                                    <span class="list-title">Competentum</span>
-                                    <span class="list-subtitle">Всего мест: 5</span>
-                                    <span class="list-remark">Осталось: 3</span>
-                                </div>
-                                <div class="inline-block list-content settingsOrganisation">
-                                    <span class="mif-user-plus mif-lg fg-gray"></span>
-                                    <span class="mif-pencil mif-lg fg-gray"></span>
-                                    <span class="mif-cancel mif-lg fg-yellow"></span>
-                                </div>
-                            </div>
-                            <div class="list">
-                                <div class="list-content inline-block">
-                                    <span class="list-title">Сбертех</span>
-                                    <span class="list-subtitle">Всего мест: 10</span>
-                                    <span class="list-remark">Осталось: 7</span>
-                                </div>
-                                <div class="inline-block list-content settingsOrganisation">
-                                    <span class="mif-user-plus mif-lg fg-gray"></span>
-                                    <span class="mif-pencil mif-lg fg-gray"></span>
-                                    <span class="mif-cancel mif-lg fg-yellow"></span>
-                                </div>
-                            </div>
-                           <div class="list">
-                            <div class="list-content inline-block">
-                                <span class="list-title">Optimism</span>
-                                <span class="list-subtitle">Всего мест: 5</span>
-                                <span class="list-remark">Осталось: 3</span>
-                            </div>
-                            <div class="inline-block list-content settingsOrganisation">
-                                <span class="mif-user-plus mif-lg fg-gray"></span>
-                                <span class="mif-pencil mif-lg fg-gray"></span>
-                                <span class="mif-cancel mif-lg fg-yellow"></span>
-                            </div>
+                        <h3>Список организаций в практике</h3>
+                        <div class="listview-outlook align-left" data-role="listview" id="organisationList">
                         </div>
-                            <div class="list">
-                                <div class="list-content inline-block">
-                                    <span class="list-title">BryanskSoft</span>
-                                    <span class="list-subtitle">Всего мест: 8</span>
-                                    <span class="list-remark">Осталось: 3</span>
-                                </div>
-                                <div class="inline-block list-content settingsOrganisation">
-                                    <span class="mif-user-plus mif-lg fg-gray"></span>
-                                    <span class="mif-pencil mif-lg fg-gray"></span>
-                                    <span class="mif-cancel mif-lg fg-yellow"></span>
-                                </div>
-                            </div>
-                            <div class="list">
-                                <div class="list-content inline-block">
-                                    <span class="list-title">Polonium Arts</span>
-                                    <span class="list-subtitle">Всего мест: 2</span>
-                                    <span class="list-remark">Осталось: 2</span>
-                                </div>
-                                <div class="inline-block list-content settingsOrganisation">
-                                    <span class="mif-user-plus mif-lg fg-gray"></span>
-                                    <span class="mif-pencil mif-lg fg-gray"></span>
-                                    <span class="mif-cancel mif-lg fg-yellow"></span>
-                                </div>
-                            </div>
-                            <div class="list">
-                                <div class="list-content inline-block">
-                                    <span class="list-title">IDEA Promotion</span>
-                                    <span class="list-subtitle">Всего мест: 3</span>
-                                    <span class="list-remark">Осталось: 0</span>
-                                </div>
-                                <div class="inline-block list-content settingsOrganisation">
-                                    <span class="mif-user-plus mif-lg fg-gray"></span>
-                                    <span class="mif-pencil mif-lg fg-gray"></span>
-                                    <span class="mif-cancel mif-lg fg-yellow"></span>
-                                </div>
-
-                            </div>
-                        </div>
-                        <button class="button padding30" onclick="metroDialog.open('#dialogCreateCompany')">Добавить
-                            новую
-                            организацию
-                        </button>
                     </div>
-                    <div class="cell colspan6 align-center">
-                        <h3 id="compNameForNonApprovedStudList">Список студентов, записавшихся в Competentum </h3>
-                        <div class="listview-outlook align-left" data-role="listview" id="nonApprovedStudents">
+                    <div class="cell colspan6 align-center"  id="studentsRequests">
+                        <h3>Список студентов, записавшихся в <span id="orgName">Competentum </span></h3>
+                        <div class="listview-outlook align-left" data-role="listview" id="nonApprovedStudents" >
                             <div class="list">
                                 <div class="list-content inline-block">
                                     <span class="list-title">Соколова Марина Олеговна</span>
@@ -1217,8 +1122,18 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+                    <div class="cell colspan6 align-center"  id="allOrganisationsListBlock">
+                        <h3>Список всех организаций</h3>
+                        <div class="listview-outlook align-left" data-role="listview" id="allOrganisationsList">
+                        </div>
+                        <button class="button padding30" onclick="metroDialog.open('#dialogCreateCompany')">Добавить
+                            новую
+                            организацию
+                        </button>
+                    </div>
+                    <button class="button" id="showAllOrganisations">Список всех организаций
+                    </button>
                 </div>
             </div>
         </section>
