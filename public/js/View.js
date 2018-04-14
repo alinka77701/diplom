@@ -24,6 +24,7 @@ var View = function () {
     this.onClickCreateOrganisation = null;
     this.onClickDisplayInfoAboutOrg = null;
     this.onClickDisplayOrganisations = null;
+    this.onClickEditOrganisation = null;
     this.Practice = null;
 };
 
@@ -96,6 +97,8 @@ View.prototype.goToOrganisationsSection = function () {
     document.querySelector("#practiceCreationSection").style.display = "none";
     document.querySelector("#mainWindowSection").style.display = "none";
     document.querySelector("#organisationsSection").style.display = "block";
+    document.getElementById("studentsRequests").style.display = "none";
+    document.getElementById("allOrganisationsListBlock").style.display = "block";
 };
 
 View.prototype.goToPracticeCreation = function () {
@@ -479,7 +482,7 @@ View.prototype.setTypesOrganisationSelect = function (typesOrganisation) {
         typeOrg.appendChild(option);
     }
 };
-View.prototype.setOrganisationsList = function (organisations,idList) {
+View.prototype.setOrganisationsList = function (organisations, idList) {
     let listOrg = document.getElementById(idList);
     removeChildren(listOrg);
     for (let i = 0; i < organisations.length; i++) {
@@ -491,53 +494,78 @@ View.prototype.setOrganisationsList = function (organisations,idList) {
 
         let span_list_title = document.createElement('span');
         span_list_title.setAttribute("class", "list-title");
-        span_list_title.innerHTML=organisations[i].name;
+        span_list_title.innerHTML = organisations[i].name;
         div_list_content.appendChild(span_list_title);
 
         let span_list_subtitle = document.createElement('span');
         span_list_subtitle.setAttribute("class", "list-subtitle");
-        span_list_subtitle.innerHTML='Всего мест: '+organisations[i].max_students_number;
+        span_list_subtitle.innerHTML = 'Всего мест: ' + organisations[i].max_students_number;
         div_list_content.appendChild(span_list_subtitle);
 
         let span_list_remark = document.createElement('span');
         span_list_remark.setAttribute("class", "list-remark");
-        span_list_remark.innerHTML='Осталось: '+organisations[i].max_students_number;/*ОБЯЗАТЕЛЬНО ИСПРАВИТЬ НА КОЛИЧЕСТВО ОСТАВШИХСЯ МЕСТ.!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+        span_list_remark.innerHTML = 'Осталось: ' + organisations[i].max_students_number;
+        /*ОБЯЗАТЕЛЬНО ИСПРАВИТЬ НА КОЛИЧЕСТВО ОСТАВШИХСЯ МЕСТ.!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
         div_list_content.appendChild(span_list_remark);
 
         div_list.appendChild(div_list_content);
 
-        let div_settings_organisation= document.createElement('div');
+        let div_settings_organisation = document.createElement('div');
         div_settings_organisation.setAttribute("class", "inline-block list-content settingsOrganisation");
 
         let span_user_plus = document.createElement('span');
-        span_user_plus.setAttribute("class", "mif-user-plus mif-lg fg-gray");
+        span_user_plus.setAttribute("class", "mif-user-plus mif-lg fg-gray add-student-organisation");
+        //span_user_plus.addEventListener("click", this.addStudentToOrganisation());
         div_settings_organisation.appendChild(span_user_plus);
 
         let span_pencil = document.createElement('span');
-        span_pencil.setAttribute("class", "mif-pencil mif-lg fg-gray");
-        div_settings_organisation.appendChild(span_pencil)
+        span_pencil.setAttribute("class", "mif-pencil mif-lg fg-gray edit-organisation");
+        span_pencil.addEventListener("click", this.onClickEditOrganisation);
+        div_settings_organisation.appendChild(span_pencil);
 
-       /* let span_cancel = document.createElement('span');
-        span_cancel.setAttribute("class", "mif-cancel mif-lg fg-yellow");
-        div_settings_organisation.appendChild(span_cancel);*/
+        /* let span_cancel = document.createElement('span');
+         span_cancel.setAttribute("class", "mif-cancel mif-lg fg-yellow");
+         div_settings_organisation.appendChild(span_cancel);*/
 
         div_list.appendChild(div_settings_organisation);
 
         listOrg.appendChild(div_list);
     }
 };
+View.prototype.getNameOrganisation = function (event) {
+    let nameOrganisation = event.target.parentElement.parentElement.children[0].children[0].innerHTML;
+    return nameOrganisation;
+};
+
+View.prototype.showDialogOrganisation = function (organisation) {
+    document.getElementById("nameCompany").innerHTML=organisation.name;
+    document.getElementById("infoCompany").innerHTML=organisation.info_organisation;
+    document.getElementById("phoneOrg").innerHTML=organisation.phone_organisation;
+    document.getElementById("emailOrg").innerHTML=organisation.email_organisation;
+    document.getElementById("addressOrg").innerHTML=organisation.address_organisation;
+    document.getElementById("placesCompany").innerHTML=organisation.max_students_number;
+    document.getElementById("loginCompany").innerHTML=organisation.login_organisation;
+    document.getElementById("pswdCompany").innerHTML=organisation.pswd_organisation;
+    /////УСТАНОВИТЬ В ДИАЛОГ ИНФУ ОБЯЗАТЕЛЬНО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    metroDialog.open('#dialogCreateCompany');
+};
+
 View.prototype.displayInfoAboutOrg = function () {
-    document.getElementById("allOrganisationsListBlock").style.display="none";
-    document.getElementById("studentsRequests").style.display="block";
+    document.getElementById("allOrganisationsListBlock").style.display = "none";
+    document.getElementById("studentsRequests").style.display = "block";
 };
-View.prototype.displayOrganisations = function () {
-    document.getElementById("studentsRequests").style.display="none";
-    document.getElementById("allOrganisationsListBlock").style.display="block";
-};
+
 View.prototype.Wait = function () {
     metroDialog.open('#dialogWaiting');
 };
+View.prototype.renderOrganisationSection = function (practice) {
+    let text = document.getElementById("organisationListCurrentPracticeText");
+    if (practice.length !== 0) {
+        text.innerHTML = "Список организаций в практике";
+    }
+    else text.innerHTML = "Практики не существует.";
 
+};
 View.prototype.Stop = function () {
     metroDialog.close('#dialogWaiting');
 };

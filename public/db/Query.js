@@ -155,7 +155,30 @@ class Query {
         }
         return data;
     }
-
+    async getOrganisationByName(req) {
+        let organisation;
+        organisation = await model.Organisation.findOne({
+            arguments: [
+                'id',
+                'name',
+                'email_organisation',
+                'phone_organisation',
+                'info_organisation',
+                'address_organisation',
+                'max_students_number',
+                'id_type_organisation',
+                'login_organisation',
+                'pswd_organisation'
+            ],
+            where: {
+                name: req.query.name
+            }
+        });
+        if (organisation) {
+            organisation= organisation.dataValues;
+        }
+        return organisation;
+    }
     async getIdByName(table, name) {
         let id;
         id = await table.findOne({

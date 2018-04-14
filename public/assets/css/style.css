@@ -228,6 +228,8 @@ th{
     display:none;
 }
 #showAllOrganisations {
-    margin-left: 446px;
-    width: 228px;
+    width: 145px;
+}
+#getOrganisationsBtnOk{
+    width: 145px;
 }

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href= "./assets/css/bundle.css" >
     <link rel="shortcut icon" href="assets/img/iipo.png" type="image/x-icon">
 
-    <title>Система распределения студентов на практику</title>
+    <title>Распределение студентов на практику</title>
 </head>
 <body>
 <div class="container">
@@ -21,7 +21,7 @@
             </div>
             <div class="cell colspan8 padding-top30">
                 <div class="row">
-                    <div class="cell"><h1>Система распределения студентов на практику</h1></div>
+                    <div class="cell"><h1>Распределение студентов на практику</h1></div>
                     <div class="cell ">
                         <div class="inline-block">
                             <h2>
@@ -193,7 +193,7 @@
                                                 <input type="text" id="addressOrg">
                                             </div>
                                             <div class="field margin20">
-                                                <label for="pswdCompany">Количество мест</label>
+                                                <label for="placesCompany">Количество мест</label>
                                                 <input type="number" id="placesCompany" min="0">
                                             </div>
                                             <div class="field margin20">
@@ -860,136 +860,13 @@
                     <div class="cell colspan7">
                         <div class="row">
                             <div class="cell align-center">
-                                <h3 id="mainWindowTypePractice" class="inline-block">Учебная практика</h3>
-                                <h3 id="mainWindowTermsPractice" class="inline-block">12.12.2017-31.12.2017</h3>
+                                <h3 id="mainWindowTypePractice" class="inline-block"></h3>
+                                <h3 id="mainWindowTermsPractice" class="inline-block"></h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="cell align-center margin-left20">
                                 <p class="sub-alt-header margin10">Список студентов</p>
-                                <!-- <table id="example" class="dataTable display striped border bordered"
-                                                 data-role="datatable" data-searching="true" role="grid"
-                                                 aria-describedby="example_table_info" data-locale="ru" cellspacing="0" width="100%">
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Extn.</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Extn.</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                                </tfoot>
-                            </table>-->
-                                <!-- <div class="example" >
-                                     <div id="example_table_wrapper" class="dataTables_wrapper">
-                                         <table id="studentsList" class="dataTable striped border bordered"
-                                                data-role="datatable" data-searching="true" role="grid"
-                                                aria-describedby="example_table_info" data-locale="ru">
-                                             <thead>
-                                             <tr role="row">
-                                                 <th class="sorting_asc" tabindex="0" aria-controls="example_table"
-                                                     rowspan="1" colspan="1" aria-sort="ascending"
-                                                     aria-label="Name: activate to sort column descending"
-                                                     style="width: 155px;">Группа
-                                                 </th>
-                                                 <th class="sorting" tabindex="0" aria-controls="example_table"
-                                                     rowspan="1" colspan="1"
-                                                     aria-label="Position: activate to sort column ascending"
-                                                     style="width: 247px;">ФИО студента
-                                                 </th>
-                                                 <th class="sorting" tabindex="0" aria-controls="example_table"
-                                                     rowspan="1" colspan="1"
-                                                     aria-label="Office: activate to sort column ascending"
-                                                     style="width: 117px;">Организация
-                                                 </th>
-                                             </tr>
-                                             </thead>
-
-                                             <tfoot>
-                                             <tr>
-                                                 <th rowspan="1" colspan="1">Группа</th>
-                                                 <th rowspan="1" colspan="1">ФИО студента</th>
-                                                 <th rowspan="1" colspan="1">Организация</th>
-                                             </tr>
-                                             </tfoot>
-                                             <tbody>
-                                             <tr role="row" class="approved_stud">
-                                                 <td class="sorting_1">14-ПрИ</td>
-                                                 <td>Андреев Андрей Андреевич</td>
-                                                 <td>R-Style</td>
-                                             </tr>
-                                             <tr role="row">
-                                                 <td class="sorting_1">14-ПрИ</td>
-                                                 <td>Петров Петр Олегович</td>
-                                                 <td>БрянскСофт</td>
-                                             </tr>
-                                             <tr role="row" class="even">
-                                                 <td class="sorting_1">14-ИВТ</td>
-                                                 <td>Петров Петр Олегович</td>
-                                                 <td>БрянскСофт</td>
-                                             </tr>
-                                             <tr role="row" class="even">
-                                                 <td class="sorting_1">14-ПрИ</td>
-                                                 <td>Андреев Андрей Андреевич</td>
-                                                 <td>R-Style</td>
-                                             </tr>
-                                             <tr role="row" class="waiting_stud">
-                                                 <td class="sorting_1">14-ПрИ</td>
-                                                 <td>Петров Петр Олегович</td>
-                                                 <td>БрянскСофт</td>
-                                             </tr>
-                                             <tr role="row" class="even">
-                                                 <td class="sorting_1">14-ИВТ</td>
-                                                 <td>Петров Петр Олегович</td>
-                                                 <td>БрянскСофт</td>
-                                             </tr>
-                                             <tr role="row" class="odd">
-                                                 <td class="sorting_1">14-ПрИ</td>
-                                                 <td>Андреев Андрей Андреевич</td>
-                                                 <td>R-Style</td>
-                                             </tr>
-                                             <tr role="row" class="even">
-                                                 <td class="sorting_1">14-ПрИ</td>
-                                                 <td>Петров Петр Олегович</td>
-                                                 <td>БрянскСофт</td>
-                                             </tr>
-                                             <tr role="row" class="waiting_stud">
-                                                 <td class="sorting_1">14-ИВТ</td>
-                                                 <td>Петров Петр Олегович</td>
-                                                 <td>БрянскСофт</td>
-                                             </tr>
-                                             <tr role="row" class="odd">
-                                                 <td class="sorting_1">14-ПрИ</td>
-                                                 <td>Андреев Андрей Андреевич</td>
-                                                 <td>R-Style</td>
-                                             </tr>
-                                             <tr role="row" class="even">
-                                                 <td class="sorting_1">14-ПрИ</td>
-                                                 <td>Петров Петр Олегович</td>
-                                                 <td>БрянскСофт</td>
-                                             </tr>
-                                             <tr role="row" class="odd">
-                                                 <td class="sorting_1">14-ИВТ</td>
-                                                 <td>Петров Петр Олегович</td>
-                                                 <td>БрянскСофт</td>
-                                             </tr>
-                                             </tbody>
-                                         </table>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>-->
                                 <table id="studentsListTable" class="display" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
@@ -1044,9 +921,11 @@
                             <span class="item year">2018</span>
                         </div>
                         <div> <button class="button square-button " id="getOrganisationsBtnOk">OK</button></div>
+                        <button class="button" id="showAllOrganisations">Список всех организаций
+                        </button>
                     </div>
                     <div class="cell colspan4 align-center right-separator bd-lightgray">
-                        <h3>Список организаций в практике</h3>
+                        <h3 id="organisationListCurrentPracticeText">Список организаций в практике</h3>
                         <div class="listview-outlook align-left" data-role="listview" id="organisationList">
                         </div>
                     </div>
@@ -1132,8 +1011,7 @@
                             организацию
                         </button>
                     </div>
-                    <button class="button" id="showAllOrganisations">Список всех организаций
-                    </button>
+
                 </div>
             </div>
         </section>

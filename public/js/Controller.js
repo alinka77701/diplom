@@ -17,15 +17,18 @@ Controller.prototype.init = async function () {
     this.View.onClickSelectGroupBtnOk = this.renderDataInTable.bind(this);
     this.View.onClickYearsArray = this.setGroupsTreeView.bind(this);
     this.View.onClickGetOrganisations = this.getOrganisations.bind(this);
-    this.View.onClickCreateOrganisation = this.createNewOrganisation.bind(this);
+    this.View.onClickCreateOrganisation = this.updateTreeView.bind(this);
     this.View.onClickDisplayInfoAboutOrg = this.displayInfoAboutOrg.bind(this);
-    this.View.onClickDisplayOrganisations = this.displayOrganisations.bind(this);
+    this.View.onClickDisplayOrganisations = this.goToOrganisationsSection.bind(this);
+    this.View.onClickEditOrganisation = this.editOrganisation.bind(this);
     this.View.init();
     await this.Model.init();
 };
 
 Controller.prototype.goToOrganisationsSection = async function () {
     let organisations=await this.Model.getOrganisations();
+    let typesOrganisation = await this.Model.getTypesOrganisation();
+    this.View.setTypesOrganisationSelect(typesOrganisation);
     this.View.setOrganisationsList(organisations, "allOrganisationsList");
     this.View.goToOrganisationsSection();
 };
@@ -52,7 +55,11 @@ Controller.prototype.updateTypesOrganisation = async function () {
     this.View.setOrganisationsInTreeView(organisations, typesOrganisation);
     return typesOrganisation;
 };
-
+Controller.prototype.editOrganisation = async function (event) {
+   let nameOrganisation= this.View.getNameOrganisation(event);
+   let organisation=await this.Model.getOrganisationByName(nameOrganisation);
+    this.View.showDialogOrganisation(organisation);
+};
 /*========================================PRACTICE SECTION================================================*/
 Controller.prototype.displayGroups = function () {
     this.View.displayGroups();
@@ -65,9 +72,12 @@ Controller.prototype.dialogPracticeCreatedInit = function () {
 Controller.prototype.createNewOrganisation = async function () {
     let organisation = this.View.getInfoNewOrganisation();
     await this.Model.createOrUpdateOrganisation(organisation);
+
+};
+Controller.prototype.updateTreeView = async function () {
+    await this.createNewOrganisation();
     await this.updateTypesOrganisation();
 };
-
 Controller.prototype.createPractice = async function () {
     this.View.Wait();
     let practice = this.View.Practice;
@@ -131,13 +141,12 @@ Controller.prototype.getOrganisations = async function () {
         organisations = await this.Model.getOrganisationsByPracticeId(practice);
     }
     this.View.setOrganisationsList(organisations,"organisationList");
+    this.View.renderOrganisationSection(practice);
 };
 /*========================================ORGANISATIONS SECTION================================================*/
 Controller.prototype.displayInfoAboutOrg = function () {
     this.View.displayInfoAboutOrg();
 };
 
-Controller.prototype.displayOrganisations = function () {
-    this.View.displayOrganisations();
-};
+
 module.exports = Controller;

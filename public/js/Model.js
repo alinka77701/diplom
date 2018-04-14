@@ -266,6 +266,7 @@ Model.prototype.getOrganisations = async function () {
     this.Organisations = orgs;
     return this.Organisations;
 };
+
 Model.prototype.getOrganisationsByPracticeId= async function (practice) {
     let params = {
         method: 'GET',
@@ -277,6 +278,19 @@ Model.prototype.getOrganisationsByPracticeId= async function (practice) {
     let result = await fetch('/organisations-by-practice' + info, params);
     let organisations = await result.json();
     return organisations;
+};
+
+Model.prototype.getOrganisationByName= async function (nameOrganisation) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = '?name=' + nameOrganisation;
+    let result = await fetch('/organisation-by-name' + info, params);
+    let organisation = await result.json();
+    return organisation;
 };
 
 Model.prototype.getDeterminedGroups = async function (selectedGroups) {
