@@ -26,10 +26,12 @@ Controller.prototype.init = async function () {
 };
 
 Controller.prototype.goToOrganisationsSection = async function () {
+    this.View.OpenOrCloseLoadImage();
     let organisations=await this.Model.getOrganisations();
     let typesOrganisation = await this.Model.getTypesOrganisation();
     this.View.setTypesOrganisationSelect(typesOrganisation);
     this.View.setOrganisationsList(organisations, "allOrganisationsList");
+    this.View.OpenOrCloseLoadImage();
     this.View.goToOrganisationsSection();
 };
 
@@ -58,7 +60,7 @@ Controller.prototype.updateTypesOrganisation = async function () {
 Controller.prototype.editOrganisation = async function (event) {
    let nameOrganisation= this.View.getNameOrganisation(event);
    let organisation=await this.Model.getOrganisationByName(nameOrganisation);
-    this.View.showDialogOrganisation(organisation);
+   this.View.showDialogOrganisation(organisation);
 };
 /*========================================PRACTICE SECTION================================================*/
 Controller.prototype.displayGroups = function () {
@@ -79,12 +81,12 @@ Controller.prototype.updateTreeView = async function () {
     await this.updateTypesOrganisation();
 };
 Controller.prototype.createPractice = async function () {
-    this.View.Wait();
+    this.View.OpenOrCloseLoadImage();
     let practice = this.View.Practice;
     let groups = await this.Model.getDeterminedGroups(practice.groups);
     practice.groups = groups;
     await this.Model.createPractice(practice);
-    this.View.Stop();
+    this.View.OpenOrCloseLoadImage();
     this.goToStudentsSection();
 };
 

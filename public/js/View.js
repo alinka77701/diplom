@@ -555,9 +555,6 @@ View.prototype.displayInfoAboutOrg = function () {
     document.getElementById("studentsRequests").style.display = "block";
 };
 
-View.prototype.Wait = function () {
-    metroDialog.open('#dialogWaiting');
-};
 View.prototype.renderOrganisationSection = function (practice) {
     let text = document.getElementById("organisationListCurrentPracticeText");
     if (practice.length !== 0) {
@@ -566,7 +563,14 @@ View.prototype.renderOrganisationSection = function (practice) {
     else text.innerHTML = "Практики не существует.";
 
 };
-View.prototype.Stop = function () {
-    metroDialog.close('#dialogWaiting');
+
+View.prototype.OpenOrCloseLoadImage = function () {
+  let display=document.getElementById("load").style.display;
+  if(display==="block"){
+    document.getElementById("load").style.display="none";
+  }
+  else{
+    document.getElementById("load").style.display="block";
+  }
 };
 module.exports = View;
