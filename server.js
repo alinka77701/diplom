@@ -97,6 +97,10 @@ app.get('/organisation-by-name/',async function (req, res) {
     res.send(data);
 });
 
+app.get('/years-practice',async function (req, res) {
+  let data =  await query.getPracticeYears();
+  res.send(data);
+});
 app.listen('7777', function () {
   console.log('Listening on port 7777.');
 });

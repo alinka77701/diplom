@@ -125,6 +125,18 @@ class Query {
         return data;
     }
 
+  async getPracticeYears() {
+    let data = await model.Practice.findAll({
+      attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('year')), 'year']]
+    });
+    let years=[];
+    for (let i = 0; i < data.length; ++i) {
+      years.push( data[i].dataValues.year);
+    }
+    years.sort();
+    return years;
+  }
+
     async getOrganisationByRequestId(req) {
         let objReqBody = {
             attributes: [

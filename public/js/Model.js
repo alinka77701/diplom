@@ -250,6 +250,11 @@ Model.prototype.getRequestsOrganisations = async function (selectedGroups) {
     }
     return organisations_by_request;
 };
+Model.prototype.getPracticeYears = async function () {
+  let result = await fetch('/years-practice');
+  let years = await result.json();
+  return years;
+};
 /*============================================PRACTICE CREATION
  SECTION=====================================================*/
 Model.prototype.getTypesOrganisation = async function () {
