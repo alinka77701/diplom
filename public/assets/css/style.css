@@ -138,6 +138,7 @@ th {
 #generateReportBtn {
   margin-top: 20px;
   font: 500 0.9rem "Segoe UI", "Open Sans", sans-serif, serif;
+  height: auto;
 }
 
 .input-control.text {
@@ -254,6 +255,7 @@ th {
   width: 145px;
 }
 
+
 #load {
   position: fixed;
   top: 0;
@@ -272,4 +274,12 @@ th {
   margin: auto auto;
   margin-top: 17%;
   z-index: 100;
+}
+
+#getOrganisationsBtnOk{
+    width: 145px;
+}
+
+.listview-outlook .list .list-content .list-title{
+    width:350px;
 }

@@ -93,6 +93,25 @@ Model.prototype.getStudentsByGroupId = async function (groupID) {
     return studentsList;
 };
 
+/*получаем студентов из хранилища LDAP по UID */
+Model.prototype.getStudentsByUID = async function (students_info) {
+    let students = [];
+    for (let i = 0, n = 0; i < students_info.length; ++i) {
+        let result = await fetch('/proxy/core/v1/people/' + students_info[i].uid_student);
+        let list = await result.json();
+        students.push({
+            displayName: list.displayName,
+            group_name: list._links.groups[0].name,
+            group_UID: list._links.groups[0].id,
+            date_creation_request: students_info[i].date_creation,
+            id_request: students_info[i].id_request,
+            uid_student: students_info[i].uid_student,
+            id_organisation: students_info[i].id_organisation
+        });
+    }
+    return students;
+};
+
 /*получаем группы и их студентов из хранилища LDAP, обновляем таблицу Students*/
 Model.prototype.init = async function () {
     let groups = await this.getGroups();
@@ -251,9 +270,9 @@ Model.prototype.getRequestsOrganisations = async function (selectedGroups) {
     return organisations_by_request;
 };
 Model.prototype.getPracticeYears = async function () {
-  let result = await fetch('/years-practice');
-  let years = await result.json();
-  return years;
+    let result = await fetch('/years-practice');
+    let years = await result.json();
+    return years;
 };
 /*============================================PRACTICE CREATION
  SECTION=====================================================*/
@@ -272,7 +291,7 @@ Model.prototype.getOrganisations = async function () {
     return this.Organisations;
 };
 
-Model.prototype.getOrganisationsByPracticeId= async function (practice) {
+Model.prototype.getOrganisationsByPracticeId = async function (practice) {
     let params = {
         method: 'GET',
         mode: 'cors',
@@ -285,7 +304,7 @@ Model.prototype.getOrganisationsByPracticeId= async function (practice) {
     return organisations;
 };
 
-Model.prototype.getOrganisationByName= async function (nameOrganisation) {
+Model.prototype.getOrganisationByName = async function (nameOrganisation) {
     let params = {
         method: 'GET',
         mode: 'cors',
@@ -296,6 +315,74 @@ Model.prototype.getOrganisationByName= async function (nameOrganisation) {
     let result = await fetch('/organisation-by-name' + info, params);
     let organisation = await result.json();
     return organisation;
+};
+
+Model.prototype.getRequestsByOrganisationName = async function (nameOrganisation, practice) {
+    let organisation = await this.getOrganisationByName(nameOrganisation);
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = "?id_practice=" + practice.id_practice;
+    let result = await fetch('/requests-by-practice' + info, params);
+    let requests = await result.json();
+    let students = [];
+    for (let i = 0; i < requests.length; i++) {
+        let info = "?id_request=" + requests[i].id_request + "&id_organisation="
+            + organisation.id;
+        let result = await fetch('/exist-request' + info, params);
+        if (result.status !== 404) {///ОШИБКА В КОНОСЛИ NOT FOUND
+            let data = await result.json();
+            if (data.id_status === 0) {
+                students.push({
+                    id_request: data.id_request,
+                    id_organisation: data.id_organisation,
+                    id_status: data.id_status,
+                    uid_student: requests[i].uid_student,
+                    id_practice: requests[i].id_practice,
+                    id_review: requests[i].id_review,
+                    date_creation: data.date_creation
+                });
+            }
+        }
+    }
+    return students;
+};
+
+Model.prototype.getApprovedStudents = async function (nameOrganisation, practice) {
+    let organisation = await this.getOrganisationByName(nameOrganisation);
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = "?id_practice=" + practice.id_practice;
+    let result = await fetch('/requests-by-practice' + info, params);
+    let requests = await result.json();
+    let students = [];
+    for (let i = 0; i < requests.length; i++) {
+        if (requests[i].id_organisation == organisation.id) {
+            students.push({
+                id_request: requests[i].id_request,
+                id_organisation: requests[i].id_organisation,
+                uid_student: requests[i].uid_student,
+                id_practice: requests[i].id_practice,
+                id_review: requests[i].id_review
+            });
+        }
+    }
+    for (let i = 0; i < students.length; i++) {
+        info = "?id_request=" + students[i].id_request + "&id_organisation=" + students[i].id_organisation;
+        result = await fetch('/exist-request' + info, params);
+        if (result.status !== 404) {
+            let data = await result.json();
+            students[i].date_creation = data.date_creation;
+        }
+    }
+    return students;
 };
 
 Model.prototype.getDeterminedGroups = async function (selectedGroups) {
@@ -348,6 +435,45 @@ Model.prototype.createOrUpdateStudents = async function (students) {
         .catch(function (error) {
             alert("Ошибка при добавлении uid студентов в БД " + error);
         });
+};
+
+Model.prototype.rejectRequestOrganisation = async function (studentThatShouldBeApproved) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = '?id_request=' + studentThatShouldBeApproved.id_request+"&id_organisation=" +studentThatShouldBeApproved.id_organisation;
+    await fetch('/update-request-organisation-reject' + info, params);
+};
+
+Model.prototype.approveRequestOrganisation = async function (studentThatShouldBeApproved) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = '?id_request=' + studentThatShouldBeApproved.id_request+"&id_organisation=" +studentThatShouldBeApproved.id_organisation;
+    await fetch('/update-request-organisation-approve' + info, params);
+};
+
+Model.prototype.updateRequest = async function (studentThatShouldBeApproved, reject) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info=0;
+    if(reject){
+        info= '?id_request=' + studentThatShouldBeApproved.id_request+"&id_organisation=null" ;
+    }
+    else{
+        info= '?id_request=' + studentThatShouldBeApproved.id_request+"&id_organisation=" +studentThatShouldBeApproved.id_organisation;
+    }
+    await fetch('/update-request' + info, params);
 };
 
 module.exports = Model;

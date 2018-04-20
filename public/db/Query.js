@@ -52,14 +52,14 @@ class Query {
         let organisation = await model.Organisation.findOne({
             arguments: [
                 'name',
-               'email_organisation',
-               'phone_organisation',
-               'info_organisation',
-               'address_organisation',
-               'max_students_number',
-               'id_type_organisation',
-               'login_organisation',
-               'pswd_organisation'
+                'email_organisation',
+                'phone_organisation',
+                'info_organisation',
+                'address_organisation',
+                'max_students_number',
+                'id_type_organisation',
+                'login_organisation',
+                'pswd_organisation'
             ],
             where: {
                 id: id_organisation
@@ -69,6 +69,35 @@ class Query {
             organisation = organisation.dataValues;
         }
         return organisation;
+    }
+
+    async getRequestsByPracticeId(req) {
+        let objReqBody = {
+            attributes: [
+                'id_request',
+                'id_practice',
+                'id_review',
+                'id_organisation',
+                'uid_student'
+            ],
+            where: {
+                id_practice: req.query.id_practice
+            }
+        };
+        let requests;
+        requests = await
+            model.Request.findAll(objReqBody);
+        let data = [];
+        for (let i = 0; i < requests.length; ++i) {
+            data.push({
+                'id_request': requests[i].dataValues.id_request,
+                'id_practice': requests[i].dataValues.id_practice,
+                'id_review': requests[i].dataValues.id_review,
+                'id_organisation': requests[i].dataValues.id_organisation,
+                'uid_student': requests[i].dataValues.uid_student
+            });
+        }
+        return data;
     }
 
     async getOrganisationsByPracticeId(req) {
@@ -90,7 +119,7 @@ class Query {
                 'id': organisations[i].dataValues.id_organisation
             });
         }
-        organisations=[];
+        organisations = [];
         for (let i = 0; i < data.length; ++i) {
             organisations.push(await this.getOrganisationById(data[i].id));
         }
@@ -125,17 +154,17 @@ class Query {
         return data;
     }
 
-  async getPracticeYears() {
-    let data = await model.Practice.findAll({
-      attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('year')), 'year']]
-    });
-    let years=[];
-    for (let i = 0; i < data.length; ++i) {
-      years.push( data[i].dataValues.year);
+    async getPracticeYears() {
+        let data = await model.Practice.findAll({
+            attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('year')), 'year']]
+        });
+        let years = [];
+        for (let i = 0; i < data.length; ++i) {
+            years.push(data[i].dataValues.year);
+        }
+        years.sort();
+        return years;
     }
-    years.sort();
-    return years;
-  }
 
     async getOrganisationByRequestId(req) {
         let objReqBody = {
@@ -167,7 +196,8 @@ class Query {
         }
         return data;
     }
-    async getOrganisationByName(req) {
+
+    async getOrganisationByName(name) {
         let organisation;
         organisation = await model.Organisation.findOne({
             arguments: [
@@ -183,14 +213,35 @@ class Query {
                 'pswd_organisation'
             ],
             where: {
-                name: req.query.name
+                name: name
             }
         });
         if (organisation) {
-            organisation= organisation.dataValues;
+            organisation = organisation.dataValues;
         }
         return organisation;
     }
+
+    async getRequestOrganisation(req) {
+        let organisation_request = 0;
+        organisation_request = await model.Request_Organisation.findOne({
+            arguments: [
+                'id_request',
+                'id_organisation',
+                'id_status',
+                'date_creation'
+            ],
+            where: {
+                id_request: req.query.id_request,
+                id_organisation: req.query.id_organisation
+            }
+        });
+        if (organisation_request) {
+            organisation_request = organisation_request.dataValues;
+        }
+        return organisation_request;
+    }
+
     async getIdByName(table, name) {
         let id;
         id = await table.findOne({
@@ -246,6 +297,38 @@ class Query {
             queryObj.id = id_org;
         }
         await model.Organisation.upsert(queryObj);
+    }
+
+    async approveRequestOrganisation(req) {
+        await  model.Request_Organisation.update({
+            id_status: 1
+        }, {
+            where: {
+                id_request: req.query.id_request,
+                id_organisation: req.query.id_organisation
+            }
+        });
+    }
+    async rejectRequestOrganisation(req) {
+        await  model.Request_Organisation.update({
+            id_status: 2
+        }, {
+            where: {
+                id_request: req.query.id_request,
+                id_organisation: req.query.id_organisation
+            }
+        });
+    }
+    async updateRequest(req) {
+        if( req.query.id_organisation==='null')
+            req.query.id_organisation=null;
+        await  model.Request.update({
+            id_organisation: req.query.id_organisation
+        }, {
+            where: {
+                id_request: req.query.id_request
+            }
+        });
     }
 
     async addOrUpdateStudents(req) {

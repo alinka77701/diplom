@@ -163,7 +163,7 @@ const Request = sequelize.define('Request', {
     },
     id_organisation: {
         type: sequelize.Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps: false,
