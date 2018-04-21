@@ -27,6 +27,7 @@ var View = function () {
     this.onClickEditOrganisation = null;
     this.onClickApproveStudent = null;
     this.onClickRejectStudent = null;
+    this.onClickUpdateOrganisation = null;
     this.Practice = null;
 };
 
@@ -58,6 +59,8 @@ View.prototype.init = function () {
           this.onClickDisplayInfoAboutOrg);*/
     document.getElementById("showAllOrganisations").addEventListener('click',
         this.onClickDisplayOrganisations);
+    document.getElementById("updateOrganisation").addEventListener('click',
+        this.onClickUpdateOrganisation);
     this.myTable.dataTable({
         data: this.Groups,
         "language": {
@@ -215,8 +218,17 @@ View.prototype.clearPracticeSection = function () {
 /*============================================STUDENTS SECTION=====================================================*/
 View.prototype.renderInfo = function (practice) {
     if (practice.length !== 0) {
+        let start_year = practice.start_date_practice.substr(0, 4),
+            start_month = practice.start_date_practice.substr(5, 2),
+            start_day = practice.start_date_practice.substr(8, 2),
+            end_year = practice.end_date_practice.substr(0, 4),
+            end_month = practice.end_date_practice.substr(5, 2),
+            end_day = practice.end_date_practice.substr(8, 2);
+        let start_date = start_day + '-' + start_month + '-' + start_year;
+        let end_date = end_day + '-' + end_month + '-' + end_year;
+
         document.getElementById("mainWindowTermsPractice").innerHTML = 'с '
-            + practice.start_date_practice + ' по ' + practice.end_date_practice;
+            + start_date + ' по ' + end_date;
         let info_about_practice = this.getUserInfoAboutPractice();
         document.getElementById(
             "mainWindowTypePractice").innerHTML = info_about_practice.typePractice
@@ -301,6 +313,7 @@ View.prototype.updateYear = function (event) {
         }
         target = target.parentNode;
     }
+
 };
 
 View.prototype.getSelectedGroups = function (treeView) {
@@ -452,7 +465,8 @@ View.prototype.getInfoNewOrganisation = function () {
         'placesOrg': document.getElementById("placesCompany").value,
         'loginOrg': document.getElementById("loginCompany").value,
         'pswdOrg': document.getElementById("pswdCompany").value,
-        'addressOrg': document.getElementById("addressOrg").value
+        'addressOrg': document.getElementById("addressOrg").value,
+        'id': document.getElementById("idCompany").innerHTML
     };
     return organisation;
 };
@@ -482,6 +496,7 @@ View.prototype.setOrganisationsList = function (organisations, idList) {
 
         let span_list_title = document.createElement('span');
         span_list_title.setAttribute("class", "list-title");
+        span_list_title.setAttribute("id_organisation", organisations[i].id);
         span_list_title.innerHTML = organisations[i].name;
         div_list_content.appendChild(span_list_title);
 
@@ -526,13 +541,20 @@ View.prototype.setOrganisationsList = function (organisations, idList) {
     }
 
 };
-View.prototype.getNameOrganisation = function (event) {
-    let nameOrganisation = event.target.parentElement.parentElement.children[0].children[0].innerHTML;
-    return nameOrganisation;
+View.prototype.getIdOrganisation = function (event) {
+    let idOrganisation=0;
+    if(event.target.id==="updateOrganisation"){
+        idOrganisation=   +event.target.parentElement.children[1].children[0].children[2].innerHTML;
+    }
+    else{
+        idOrganisation = event.target.parentElement.parentElement.children[0].children[0].getAttribute("id_organisation");
+    }
+    return idOrganisation;
 };
 
 View.prototype.showDialogOrganisation = function (organisation) {
     document.getElementById("nameCompany").value = organisation.name;
+    document.getElementById("idCompany").innerHTML = organisation.id;
     document.getElementById("infoCompany").value = organisation.info_organisation;
     document.getElementById("phoneOrg").value = organisation.phone_organisation;
     document.getElementById("emailOrg").value = organisation.email_organisation;
@@ -597,9 +619,14 @@ View.prototype.updateStudentsListView = function (students, idList) {
         span_list_subtitle.innerHTML = students[i].group_name;
         div_list_content.appendChild(span_list_subtitle);
 
+        let year = students[i].date_creation_request.substr(0, 4),
+            month = students[i].date_creation_request.substr(5, 2),
+            day = students[i].date_creation_request.substr(8, 2);
+        let date = day + '-' + month + '-' + year;
+
         let span_list_remark = document.createElement('span');
         span_list_remark.setAttribute("class", "list-remark");
-        span_list_remark.innerHTML = 'Дата записи: ' + students[i].date_creation_request;
+        span_list_remark.innerHTML = 'Дата записи: ' + date;
         div_list_content.appendChild(span_list_remark);
 
 

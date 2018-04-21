@@ -69,8 +69,13 @@ app.get('/organisations-by-request/', async function (req, res) {
     res.send(data);
 });
 
-app.post('/organisation', async (req, res) => {
-    await query.addOrUpdateOrganisation(req.body);
+app.post('/organisation-create', async (req, res) => {
+    await query.addOrganisation(req.body);
+    res.json('done');
+});
+
+app.post('/organisation-update', async (req, res) => {
+    await query.updateOrganisation(req.body);
     res.json('done');
 });
 
@@ -94,6 +99,11 @@ app.get('/organisations-by-practice/', async function (req, res) {
 
 app.get('/organisation-by-name/', async function (req, res) {
     let data = await query.getOrganisationByName(req.query.name);
+    res.send(data);
+});
+
+app.get('/organisation-by-id/', async function (req, res) {
+    let data = await query.getOrganisationById(req.query.id);
     res.send(data);
 });
 

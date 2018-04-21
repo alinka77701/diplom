@@ -24,7 +24,8 @@ Controller.prototype.init = async function () {
     this.View.onClickDisplayInfoAboutOrg = this.displayInfoAboutOrg.bind(this);
     this.View.onClickDisplayOrganisations = this.goToOrganisationsSection.bind(
         this);
-    this.View.onClickEditOrganisation = this.editOrganisation.bind(this);
+    this.View.onClickEditOrganisation = this.showDialogEditOrganisation.bind(this);
+    this.View.onClickUpdateOrganisation = this.updateOrganisation.bind(this);
     this.View.onClickApproveStudent = this.approveStudent.bind(this);
     this.View.onClickRejectStudent = this.rejectStudent.bind(this);
     this.View.init();
@@ -69,9 +70,15 @@ Controller.prototype.updateTypesOrganisation = async function () {
     this.View.setOrganisationsInTreeView(organisations, typesOrganisation);
     return typesOrganisation;
 };
-Controller.prototype.editOrganisation = async function (event) {
-    let nameOrganisation = this.View.getNameOrganisation(event);
-    let organisation = await this.Model.getOrganisationByName(nameOrganisation);
+Controller.prototype.updateOrganisation = async function (event) {
+    let idOrganisation = this.View.getIdOrganisation(event);
+    let organisation = await this.Model.getOrganisationById(idOrganisation);
+     organisation = this.View.getInfoNewOrganisation();
+    await this.Model.updateOrganisation(organisation);
+};
+Controller.prototype.showDialogEditOrganisation = async function (event) {
+    let idOrganisation = this.View.getIdOrganisation(event);
+    let organisation = await this.Model.getOrganisationById(idOrganisation);
     this.View.showDialogOrganisation(organisation);
 };
 
@@ -86,7 +93,7 @@ Controller.prototype.dialogPracticeCreatedInit = function () {
 
 Controller.prototype.createNewOrganisation = async function () {
     let organisation = this.View.getInfoNewOrganisation();
-    await this.Model.createOrUpdateOrganisation(organisation);
+    await this.Model.createOrganisation(organisation);
 
 };
 Controller.prototype.updateTreeView = async function () {
@@ -105,15 +112,15 @@ Controller.prototype.createPractice = async function () {
 
 /*============================================STUDENTS SECTION=====================================================*/
 Controller.prototype.renderGroupsTreeView = async function () {
-    if (this.View.selectedYear !== " + ") {
-        await  this.Model.distributeGroupsByCourses(this.View.selectedYear);
-        await this.View.clearGroupsTreeView();
-        await this.View.updateGroupsTreeView(this.Model.Courses);
-    }
+    await  this.Model.distributeGroupsByCourses(this.View.selectedYear);
+    await this.View.clearGroupsTreeView();
+    await this.View.updateGroupsTreeView(this.Model.Courses);
 };
 
 Controller.prototype.setGroupsTreeView = async function (event) {
     this.View.updateYear(event);
+    if (this.View.selectedYear === "+")
+        this.View.selectedYear = this.Model.getCurrentYear();
     await this.renderGroupsTreeView();
 };
 
@@ -187,14 +194,6 @@ Controller.prototype.renderNonApprovedStudentList = async function (nameOrganisa
     return non_approved_students.length;
 };
 
-Controller.prototype.updateTypesOrganisation = async function () {
-    let typesOrganisation = await this.Model.getTypesOrganisation();
-    this.View.clearTypesOrganisation();
-    this.View.setTypesOrganisation(typesOrganisation);
-    let organisations = await this.Model.getOrganisations();
-    this.View.setOrganisationsInTreeView(organisations, typesOrganisation);
-    return typesOrganisation;
-};
 
 Controller.prototype.getOrganisations = async function () {
     let info_about_practice = this.View.getConfigurationPractice();
@@ -211,7 +210,7 @@ Controller.prototype.approveStudent = async function (event) {
     let studentThatShouldBeApproved = this.View.getSelectedStudent(event);
     await this.Model.approveRequestOrganisation(studentThatShouldBeApproved);
     await this.Model.updateRequest(studentThatShouldBeApproved, false);
-    let nameOrganisation=this.View.getNameOrganisationByTitle();
+    let nameOrganisation = this.View.getNameOrganisationByTitle();
     await this.getApprovedAndNonApprovedStudents(nameOrganisation);
 };
 
@@ -219,7 +218,7 @@ Controller.prototype.rejectStudent = async function () {
     let studentThatShouldBeApproved = this.View.getSelectedStudent(event);
     await this.Model.rejectRequestOrganisation(studentThatShouldBeApproved);
     await this.Model.updateRequest(studentThatShouldBeApproved, true);
-    let nameOrganisation=this.View.getNameOrganisationByTitle();
+    let nameOrganisation = this.View.getNameOrganisationByTitle();
     await this.getApprovedAndNonApprovedStudents(nameOrganisation);
 };
 module.exports = Controller;

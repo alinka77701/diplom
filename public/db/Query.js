@@ -279,7 +279,7 @@ class Query {
         return id;
     }
 
-    async addOrUpdateOrganisation(req) {
+    async addOrganisation(req) {
         let queryObj = {
             name: req.name,
             email_organisation: req.emailOrg,
@@ -292,13 +292,31 @@ class Query {
             id_type_organisation: await this.getIdByName(model.Type_organisation,
                 req.typeOrg)
         };
-        let id_org = await this.getIdByName(model.Organisation, req.name);
-        if (id_org) {
-            queryObj.id = id_org;
-        }
-        await model.Organisation.upsert(queryObj);
-    }
+            let id_org = await this.getIdByName(model.Organisation, req.name);
+            if (id_org) {
+                queryObj.id = id_org;
+            }
+            await model.Organisation.create(queryObj);
 
+    }
+    async updateOrganisation(req) {
+        await  model.Organisation.update({
+            name: req.name,
+            email_organisation: req.emailOrg,
+            phone_organisation: req.phoneOrg,
+            info_organisation: req.infoOrg,
+            address_organisation: req.addressOrg,
+            max_students_number: req.placesOrg,
+            login_organisation: req.loginOrg,
+            pswd_organisation: req.pswdOrg,
+            id_type_organisation: await this.getIdByName(model.Type_organisation,
+                req.typeOrg)
+        }, {
+            where: {
+               id: req.id
+            }
+        });
+    }
     async approveRequestOrganisation(req) {
         await  model.Request_Organisation.update({
             id_status: 1
@@ -309,6 +327,7 @@ class Query {
             }
         });
     }
+
     async rejectRequestOrganisation(req) {
         await  model.Request_Organisation.update({
             id_status: 2
@@ -319,9 +338,10 @@ class Query {
             }
         });
     }
+
     async updateRequest(req) {
-        if( req.query.id_organisation==='null')
-            req.query.id_organisation=null;
+        if (req.query.id_organisation === 'null')
+            req.query.id_organisation = null;
         await  model.Request.update({
             id_organisation: req.query.id_organisation
         }, {

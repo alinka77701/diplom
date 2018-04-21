@@ -304,15 +304,15 @@ Model.prototype.getOrganisationsByPracticeId = async function (practice) {
     return organisations;
 };
 
-Model.prototype.getOrganisationByName = async function (nameOrganisation) {
+Model.prototype.getOrganisationById = async function (id) {
     let params = {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin'
     };
-    let info = '?name=' + nameOrganisation;
-    let result = await fetch('/organisation-by-name' + info, params);
+    let info = '?id=' + id;
+    let result = await fetch('/organisation-by-id' + info, params);
     let organisation = await result.json();
     return organisation;
 };
@@ -397,8 +397,21 @@ Model.prototype.getDeterminedGroups = async function (selectedGroups) {
     return determinedGroups;
 };
 
-Model.prototype.createOrUpdateOrganisation = async function (organisation) {
-    let result = await fetch('/organisation', {
+Model.prototype.createOrganisation = async function (organisation) {
+    let result = await fetch('/organisation-create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(organisation)
+    })
+        .catch(function (error) {
+            alert("Ошибка при добавлении организации в БД " + error);
+        });
+};
+
+Model.prototype.updateOrganisation = async function (organisation) {
+    let result = await fetch('/organisation-update', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

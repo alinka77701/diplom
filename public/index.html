@@ -159,7 +159,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <button class="button" onclick="metroDialog.open('#dialogCreateCompany')">Добавить/Обновить
+                                    <button class="button" onclick="metroDialog.open('#dialogCreateCompany')">Добавить новую
                                         организацию
                                     </button>
                                     <div class="align-center dialog" data-overlay="true" data-overlay-color="op-dark"
@@ -169,7 +169,8 @@
                                         <div class="main">
                                             <div class="field margin20">
                                                 <label for="nameCompany">Название</label>
-                                                <input type="text"  id="nameCompany">
+                                                <input type="text"  id="nameCompany" >
+                                                <div id="idCompany" class="no-display"></div>
                                             </div>
                                             <div class="field margin20">
                                                 <label for="typeCompany">Тип организации</label>
@@ -206,7 +207,8 @@
                                                 <input type="text" id="pswdCompany">
                                             </div>
                                         </div>
-                                        <button class="button js-dialog-close" id="createOrganisation">Создать/Обновить организацию</button>
+                                        <button class="button js-dialog-close" id="createOrganisation">Создать</button>
+                                        <button class="button js-dialog-close" id="updateOrganisation" disabled>Обновить</button>
                                     </div>
                                 </div>
                                 <div class="step align-center">
@@ -942,8 +944,7 @@
                         <h3>Список всех организаций</h3>
                         <div class="listview-outlook align-left" data-role="listview" id="allOrganisationsList">
                         </div>
-                        <button class="button padding30" onclick="metroDialog.open('#dialogCreateCompany')">Добавить
-                            новую
+                        <button class="button padding30" onclick="metroDialog.open('#dialogCreateCompany')">Добавить/Обновить
                             организацию
                         </button>
                     </div>
