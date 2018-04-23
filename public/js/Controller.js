@@ -9,7 +9,7 @@ function Controller() {
 
 Controller.prototype.init = async function () {
     this.View.OpenOrCloseLoadImage();
-    this.setYears();
+    await this.setYears();
     this.View.onClickNextStep = this.displayGroups.bind(this);
     this.View.onClickCreatePractice = this.goToPracticeCreation.bind(this);
     this.View.onClickAddPractice = this.createPractice.bind(this);
@@ -28,9 +28,20 @@ Controller.prototype.init = async function () {
     this.View.onClickUpdateOrganisation = this.updateOrganisation.bind(this);
     this.View.onClickApproveStudent = this.approveStudent.bind(this);
     this.View.onClickRejectStudent = this.rejectStudent.bind(this);
+    this.View.onClickAddStudentToOrganisationShowDialog = this.addStudentToOrganisationShowDialog.bind(this);
+    this.View.onClickAddStudentToOrganisation= this.addStudentToOrganisation.bind(this);
     this.View.init();
     await this.Model.init();
     this.View.OpenOrCloseLoadImage();
+};
+
+Controller.prototype.addStudentToOrganisationShowDialog = async function () {
+    this.View.dialogAddStudentsOpen(event);
+};
+
+Controller.prototype.addStudentToOrganisation = async function () {
+  let students= await this.View.getSelectedStudents(event);
+
 };
 
 Controller.prototype.setYears = async function () {
@@ -54,7 +65,6 @@ Controller.prototype.goToStudentsSection = function () {
 
 Controller.prototype.goToPracticeCreation = async function () {
     this.View.selectedYear = this.Model.getCurrentYear();
-    //await this.renderGroupsTreeView();
     this.View.clearPracticeSection();
     let typesOrganisation = await this.updateTypesOrganisation();
     this.View.setTypesOrganisationSelect(typesOrganisation);
@@ -71,9 +81,7 @@ Controller.prototype.updateTypesOrganisation = async function () {
     return typesOrganisation;
 };
 Controller.prototype.updateOrganisation = async function (event) {
-    let idOrganisation = this.View.getIdOrganisation(event);
-    let organisation = await this.Model.getOrganisationById(idOrganisation);
-     organisation = this.View.getInfoNewOrganisation();
+    let organisation = this.View.getInfoNewOrganisation();
     await this.Model.updateOrganisation(organisation);
 };
 Controller.prototype.showDialogEditOrganisation = async function (event) {
@@ -112,9 +120,10 @@ Controller.prototype.createPractice = async function () {
 
 /*============================================STUDENTS SECTION=====================================================*/
 Controller.prototype.renderGroupsTreeView = async function () {
-    await  this.Model.distributeGroupsByCourses(this.View.selectedYear);
+    await this.Model.distributeGroupsByCourses(this.View.selectedYear);
     await this.View.clearGroupsTreeView();
-    await this.View.updateGroupsTreeView(this.Model.Courses);
+    await this.View.updateGroupsTreeView(this.Model.Courses,this.Model.Groups);
+  //  await this.View.myUpdateTreeView(this.Model.Courses,"group-treeview-tabcontrol1-bachelor");
 };
 
 Controller.prototype.setGroupsTreeView = async function (event) {

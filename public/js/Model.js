@@ -350,7 +350,18 @@ Model.prototype.getRequestsByOrganisationName = async function (nameOrganisation
     }
     return students;
 };
-
+Model.prototype.getOrganisationByName = async function (nameOrganisation) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = '?name=' + nameOrganisation;
+    let result = await fetch('/organisation-by-name' + info, params);
+    let organisation = await result.json();
+    return organisation;
+};
 Model.prototype.getApprovedStudents = async function (nameOrganisation, practice) {
     let organisation = await this.getOrganisationByName(nameOrganisation);
     let params = {

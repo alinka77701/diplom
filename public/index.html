@@ -949,6 +949,78 @@
                         </button>
                     </div>
 
+                        <div class="align-center dialog " data-overlay="true" data-overlay-color="op-dark"
+                         data-role="dialog" id="dialogAddStudent" data-overlay-click-close="true"
+                         data-close-button="true" data-width="500px" data-height="auto">
+                        <h3 class="margin20">Добавление студента в <span id="nameOrganisationDialog"></span></h3>
+                        <div class="main">
+                            <div class="tabcontrol2" data-role="tabcontrol">
+                                <ul class="tabs">
+                                    <li class="active"><a href="#frame_1_1s">Бакалавриат</a></li>
+                                    <li class=""><a href="#frame_1_2s">Магистратура</a></li>
+                                </ul>
+                                <div class="frames">
+                                    <div class="frame" id="frame_1_1s" style="display: block;">
+                                        <div class="treeview align-left" data-role="treeview"
+                                             id="group-treeview-tabcontrol1-dialogAdd-bachelor">
+                                            <ul>
+                                                <li data-mode="checkbox" data-name="c5" class="node collapsed first">
+                                                    <span class="leaf">1 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                                <li data-mode="checkbox" data-name="c6" class="node collapsed second">
+                                                    <span class="leaf">2 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                                <li data-mode="checkbox" data-name="c7" class="node collapsed third">
+                                                    <span class="leaf">3 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                                <li data-mode="checkbox" data-name="c8" class="node collapsed fourth">
+                                                    <span class="leaf">4 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="frame" id="frame_1_2s" style="display: none;">
+                                        <div class="treeview align-left" data-role="treeview"
+                                             id="group-treeview-tabcontrol2-dialogAdd-master">
+                                            <ul>
+                                                <li data-mode="checkbox" data-name="c9" class="node collapsed first">
+                                                    <span class="leaf">1 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                                <li data-mode="checkbox" data-name="c10" class="node collapsed second">
+                                                    <span class="leaf">2 курс</span>
+                                                    <span class="node-toggle"></span>
+                                                    <ul>
+
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button js-dialog-close" id="addStudentBtn">Добавить</button>
+                </div>
                 </div>
             </div>
         </section>

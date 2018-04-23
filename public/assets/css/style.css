@@ -283,3 +283,10 @@ th {
 .listview-outlook .list .list-content .list-title{
     width:350px;
 }
+#dialogAddStudent {
+  width:auto;
+}
+ #group-treeview-tabcontrol1-dialogAdd-bachelor, #group-treeview-tabcontrol2-dialogAdd-master{
+   height: 300px;
+   overflow-y: scroll;
+}

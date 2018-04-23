@@ -18,7 +18,9 @@ var View = function () {
         'group-treeview-tabcontrol1-bachelor',
         'group-treeview-tabcontrol2-master',
         'groups-treeview-practice-creation-bachelor',
-        'groups-treeview-practice-creation-master'
+        'groups-treeview-practice-creation-master',
+        'group-treeview-tabcontrol1-dialogAdd-bachelor',
+        'group-treeview-tabcontrol2-dialogAdd-master'
     ];
     this.onClickGetOrganisations = null;
     this.onClickCreateOrganisation = null;
@@ -28,6 +30,8 @@ var View = function () {
     this.onClickApproveStudent = null;
     this.onClickRejectStudent = null;
     this.onClickUpdateOrganisation = null;
+    this.onClickAddStudentToOrganisationShowDialog = null;
+    this.onClickAddStudentToOrganisation = null;
     this.Practice = null;
 };
 
@@ -55,12 +59,12 @@ View.prototype.init = function () {
         this.onClickCreateOrganisation);
     document.getElementById("practiceFinishedOk").addEventListener('click',
         this.onClickAddPractice);
-    /*  document.getElementById("organisationList").addEventListener('click',
-          this.onClickDisplayInfoAboutOrg);*/
     document.getElementById("showAllOrganisations").addEventListener('click',
         this.onClickDisplayOrganisations);
     document.getElementById("updateOrganisation").addEventListener('click',
         this.onClickUpdateOrganisation);
+    document.getElementById("addStudentBtn").addEventListener('click',
+        this.onClickAddStudentToOrganisation);
     this.myTable.dataTable({
         data: this.Groups,
         "language": {
@@ -90,7 +94,8 @@ View.prototype.goToStudentsSection = function () {
     document.querySelector("#organisationsSection").style.display = "none";
     document.querySelector("#practiceCreationSection").style.display = "none";
     document.querySelector("#mainWindowSection").style.display = "block";
-    let treeViews = document.getElementsByClassName("treeview ");
+
+    let treeViews = document.getElementsByClassName("treeview");
     for (let i = 0; i < treeViews.length; i++) {
         treeViews[i].style.display = "block";
     }
@@ -102,11 +107,13 @@ View.prototype.goToOrganisationsSection = function () {
     document.querySelector("#organisationsSection").style.display = "block";
     document.getElementById("studentsRequests").style.display = "none";
     document.getElementById("allOrganisationsListBlock").style.display = "block";
+    document.getElementById("updateOrganisation").removeAttribute("disabled");
 };
 
 View.prototype.goToPracticeCreation = function () {
     document.querySelector("#practiceCreationSection").style.display = "block";
     document.querySelector("#mainWindowSection").style.display = "none";
+    document.getElementById("updateOrganisation").setAttribute("disabled", "true");
 };
 /*========================================PRACTICE SECTION==============================================*/
 View.prototype.dialogPracticeCreatedInit = function () {
@@ -320,7 +327,7 @@ View.prototype.getSelectedGroups = function (treeView) {
     if (treeView === undefined) {
         let frames = document.getElementsByClassName("frames")[0].children;
         for (let i = 0; i < frames.length; i++) {
-            if (frames[i].style.display == "block") {
+            if (frames[i].style.display !== "none") {
                 treeView = frames[i].children[0];
                 break;
             }
@@ -330,7 +337,7 @@ View.prototype.getSelectedGroups = function (treeView) {
     let liNumber = treeView.querySelectorAll('li');
     for (let i = 0; i < liNumber.length; i++) {
         let groups = liNumber[i].querySelectorAll('input:checked');
-        if (groups.length == 1) {
+        if (groups.length === 1) {
             for (let j = 0; j < groups.length; j++) {
                 let group = groups[j].parentElement.nextElementSibling.innerHTML;
                 if (group.indexOf("курс") === -1) {
@@ -342,10 +349,11 @@ View.prototype.getSelectedGroups = function (treeView) {
     return Groups;
 };
 
-function tree_add_leaf_checkbox_example_click(tree, node, nameLeaf) {
-    tree.addLeaf(node, nameLeaf, {
+async function tree_add_leaf_checkbox_example_click(tree, node, nameLeaf, uid) {
+    await tree.addLeaf(node, nameLeaf, {
         mode: 'checkbox',
-        checked: false
+        checked: false,
+        uid: uid
     });
 }
 
@@ -367,7 +375,7 @@ View.prototype.clearGroupsTreeView = async function () {
         id++;
     }
 };
-View.prototype.updateGroupsTreeView = async function (courses) {
+View.prototype.updateGroupsTreeView = async function (courses, groups) {
     let idCounter = 0, courseNumber = bachelorYear, cnt;
     let coursesName = ['first', 'second', 'third', 'fourth'];
     var i = 0;
@@ -385,14 +393,53 @@ View.prototype.updateGroupsTreeView = async function (courses) {
         for (i; i < courseNumber; i++) {
             for (let j = 0; j < courses[i].groups.length; j++) {
                 let node = tree.element.find('li.' + coursesName[cnt]);
-                tree_add_leaf_checkbox_example_click(tree, node, courses[i].groups[j]);
+                if (this.idTreeViews[idCounter] === "group-treeview-tabcontrol1-dialogAdd-bachelor" || this.idTreeViews[idCounter] === "group-treeview-tabcontrol2-dialogAdd-master") {
+                    await  tree_add_leaf_checkbox_example_click(tree, node, courses[i].groups[j]);
+                    let elem = node.find('ul')[0].children[node.find('ul')[0].children.length - 1];
+                    $(elem).addClass("collapsed");
+                    let students = 0;
+                    for (let k = 0; k < groups.length; k++) {
+                        if (courses[i].groups[j] === groups[k].name) {
+                            students = groups[k].students;
+                            break;
+                        }
+                    }
+                    for (let k = 0; k < students.length; k++) {
+                        await tree_add_leaf_checkbox_example_click(tree, $(elem), students[k].name, students[k].uid);
+                    }
+                }
+                else {
+                    await    tree_add_leaf_checkbox_example_click(tree, node, courses[i].groups[j]);
+                }
             }
             cnt++;
         }
         idCounter++;
     }
 };
+View.prototype.myUpdateTreeView = async function (courses, id) {
+    let courseNumber = bachelorYear, n;
+    let coursesName = ['first', 'second', 'third', 'fourth'];
+    var i = 0;
 
+    var tree = $("#" + id).data("treeview");
+    if (id.indexOf("master") !== -1) {
+        courseNumber = masterYear;
+        i = bachelorYear;
+    }
+    else {
+        courseNumber = bachelorYear;
+        i = 0;
+    }
+    n = 0;
+    for (i; i < courseNumber; i++) {
+        for (let j = 0; j < courses[i].groups.length; j++) {
+            let node = tree.element.find('li.' + coursesName[n]);
+            tree_add_leaf_checkbox_example_click(tree, node, courses[i].groups[j]);
+        }
+        n++;
+    }
+};
 View.prototype.getConfigurationPractice = function () {
     let typePractice = document.getElementById(
         "selectTypePracticeOrganisationSec").value;
@@ -518,12 +565,13 @@ View.prototype.setOrganisationsList = function (organisations, idList) {
         let div_settings_organisation = document.createElement('div');
         div_settings_organisation.setAttribute("class",
             "inline-block list-content settingsOrganisation");
-
-        let span_user_plus = document.createElement('span');
-        span_user_plus.setAttribute("class",
-            "mif-user-plus mif-lg fg-gray add-student-organisation");
-        //span_user_plus.addEventListener("click", this.addStudentToOrganisation());
-        div_settings_organisation.appendChild(span_user_plus);
+        if (idList === "organisationList") {
+            let span_user_plus = document.createElement('span');
+            span_user_plus.setAttribute("class",
+                "mif-user-plus mif-lg fg-gray add-student-organisation");
+            span_user_plus.addEventListener("click", this.onClickAddStudentToOrganisationShowDialog);
+            div_settings_organisation.appendChild(span_user_plus);
+        }
 
         let span_pencil = document.createElement('span');
         span_pencil.setAttribute("class",
@@ -542,11 +590,11 @@ View.prototype.setOrganisationsList = function (organisations, idList) {
 
 };
 View.prototype.getIdOrganisation = function (event) {
-    let idOrganisation=0;
-    if(event.target.id==="updateOrganisation"){
-        idOrganisation=   +event.target.parentElement.children[1].children[0].children[2].innerHTML;
+    let idOrganisation = 0;
+    if (event.target.id === "updateOrganisation") {
+        idOrganisation = +event.target.parentElement.children[1].children[0].children[2].innerHTML;
     }
-    else{
+    else {
         idOrganisation = event.target.parentElement.parentElement.children[0].children[0].getAttribute("id_organisation");
     }
     return idOrganisation;
@@ -564,7 +612,9 @@ View.prototype.showDialogOrganisation = function (organisation) {
     document.getElementById("pswdCompany").value = organisation.pswd_organisation;
     metroDialog.open('#dialogCreateCompany');
 };
-
+View.prototype.dialogAddStudentsOpen = function (event) {
+    metroDialog.open('#dialogAddStudent');
+};
 View.prototype.updateOrganisationTitle = function (nameOrganisation, approved_student_count, non_approved_student_count) {
     if (approved_student_count === 0) {
         document.getElementById("nonApprovedStudentListTitle").innerHTML = ", пуст";
@@ -593,9 +643,11 @@ View.prototype.getSelectedOrganisation = function (event) {
     let nameOrganisationClick = element.children[0].innerHTML;
     return nameOrganisationClick;
 };
+
 View.prototype.getNameOrganisationByTitle = function () {
     return document.getElementById("orgName").innerHTML;
 };
+
 View.prototype.updateStudentsListView = function (students, idList) {
     let listStudents = document.getElementById(idList);
     removeChildren(listStudents);
@@ -699,5 +751,21 @@ View.prototype.setYearsArray = function (years) {
     buttonArray.appendChild(span);
     document.getElementById("createPracticeBtn").addEventListener('click',
         this.onClickCreatePractice);
+};
+
+View.prototype.getSelectedStudents = function (event) {
+    let Students = [];
+    let nodes = event.target.parentElement.querySelectorAll('input:checked');
+    for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].parentElement.nextSibling.innerHTML.indexOf("курс") === -1 && isNaN(+nodes[i].parentElement.nextElementSibling.innerHTML.substr(0,2))) {
+            let name = nodes[i].parentElement.nextElementSibling.innerHTML;
+            let uid = nodes[i].parentElement.parentElement.getAttribute("data-uid");
+            Students.push({
+                name: name,
+                uid: uid
+            });
+        }
+    }
+    return Students;
 };
 module.exports = View;
