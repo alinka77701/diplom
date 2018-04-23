@@ -153,6 +153,15 @@ class Query {
         }
         return data;
     }
+    async getRequestsByStudentsUIDS(req) {
+        let data = await model.Request.findOne({
+            where: {
+                uid_student: req.query.uid,
+                id_practice: req.query.id_practice
+            }
+        });
+        return data.dataValues;
+    }
 
     async getPracticeYears() {
         let data = await model.Practice.findAll({
@@ -223,7 +232,7 @@ class Query {
     }
 
     async getRequestOrganisation(req) {
-        let organisation_request = 0;
+        let organisation_request;
         organisation_request = await model.Request_Organisation.findOne({
             arguments: [
                 'id_request',
@@ -337,6 +346,16 @@ class Query {
                 id_organisation: req.query.id_organisation
             }
         });
+    }
+
+    async insertRequestOrganisation(req) {
+        let queryObj = {
+            id_request: req.query.id_request,
+            id_organisation: req.query.id_organisation,
+            id_status: req.query.id_status,
+            date_creation: req.query.date_creation
+        };
+        await model.Request_Organisation.create(queryObj);
     }
 
     async updateRequest(req) {

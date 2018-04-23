@@ -294,10 +294,15 @@ View.prototype.renderTable = function (data) {
 
 View.prototype.colorTable = function (data) {
     for (let i = 0; i < data.length; i++) {
-        if (data[i].status) {
+        if (data[i].status===1) {
             $(this.myTable.dataTable().fnGetNodes(i)).addClass("approved_stud");
             this.myTable.dataTable().fnGetNodes(i).children[0].setAttribute("class",
                 "sorting_1 approved_stud");
+        }
+        if(data[i].status===0) {
+            $(this.myTable.dataTable().fnGetNodes(i)).addClass("applied_stud");
+            this.myTable.dataTable().fnGetNodes(i).children[0].setAttribute("class",
+                "sorting_1 applied_stud");
         }
     }
 };
@@ -313,8 +318,8 @@ View.prototype.changeYear = function (node) {
 
 View.prototype.updateYear = function (event) {
     var target = event.target;
-    while (target != buttonsArray) {
-        if (target.className == 'item year') {
+    while (true) {
+        if (target.className === 'item year' || target.className === 'item year current') {
             this.changeYear(target);
             return;
         }
@@ -598,6 +603,12 @@ View.prototype.getIdOrganisation = function (event) {
         idOrganisation = event.target.parentElement.parentElement.children[0].children[0].getAttribute("id_organisation");
     }
     return idOrganisation;
+};
+
+View.prototype.getNameOrganisationInTreeview = function (idTreeview) {
+    let parent = document.getElementById(idTreeview);
+    let nameOrganisation= parent.getElementsByClassName("active")[0].querySelector('[id_organisation').innerHTML;
+    return nameOrganisation;
 };
 
 View.prototype.showDialogOrganisation = function (organisation) {

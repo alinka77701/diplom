@@ -40,8 +40,24 @@ Controller.prototype.addStudentToOrganisationShowDialog = async function () {
 };
 
 Controller.prototype.addStudentToOrganisation = async function () {
-  let students= await this.View.getSelectedStudents(event);
+    let students= await this.View.getSelectedStudents(event);
+    let info_about_practice = this.View.getConfigurationPractice();
+    let practice = await this.Model.getPractice(info_about_practice);
+    let nameOrganisation = this.View.getNameOrganisationInTreeview("organisationList");
+    let organisation = await this.Model.getOrganisationByName(nameOrganisation);
 
+    for(let i=0;i<students.length;i++){
+       let request= await this.Model.getRequestByStudentUID(practice, students[i]);
+        students[i]['id_request']=request.id_request;
+        students[i]['id_practice']=practice.id_practice;
+        students[i]['id_organisation']=organisation.id;
+
+        await this.Model.updateRequest(students[i],false);
+
+        await this.Model.insertRequestOrganisation(students[i]);
+    }
+
+    await this.getApprovedAndNonApprovedStudents(nameOrganisation);
 };
 
 Controller.prototype.setYears = async function () {
@@ -80,7 +96,7 @@ Controller.prototype.updateTypesOrganisation = async function () {
     this.View.setOrganisationsInTreeView(organisations, typesOrganisation);
     return typesOrganisation;
 };
-Controller.prototype.updateOrganisation = async function (event) {
+Controller.prototype.updateOrganisation = async function () {
     let organisation = this.View.getInfoNewOrganisation();
     await this.Model.updateOrganisation(organisation);
 };

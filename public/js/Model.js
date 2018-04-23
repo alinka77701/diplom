@@ -207,6 +207,31 @@ Model.prototype.getPractice = async function (info_about_practice) {
         });
     return info;
 };
+Model.prototype.getRequestByStudentUID = async function (practice, student) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = '?uid=' + student.uid + "&id_practice="
+        + practice.id_practice;
+    let result = await fetch('/requst-by-student-uid' + info, params);
+    let request = await result.json();
+    return request;
+};
+
+Model.prototype.updateIdOrganisationInRequest = async function (student) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = '?id_request=' + student.id_request+ "&id_organisation="
+        + student.id_organisation;
+    let result = await fetch('/update-request' + info, params);
+};
 
 Model.prototype.getRequests = async function (practice, groups) {
     let params = {
@@ -468,7 +493,7 @@ Model.prototype.rejectRequestOrganisation = async function (studentThatShouldBeA
         cache: 'no-cache',
         credentials: 'same-origin'
     };
-    let info = '?id_request=' + studentThatShouldBeApproved.id_request+"&id_organisation=" +studentThatShouldBeApproved.id_organisation;
+    let info = '?id_request=' + studentThatShouldBeApproved.id_request + "&id_organisation=" + studentThatShouldBeApproved.id_organisation;
     await fetch('/update-request-organisation-reject' + info, params);
 };
 
@@ -479,8 +504,21 @@ Model.prototype.approveRequestOrganisation = async function (studentThatShouldBe
         cache: 'no-cache',
         credentials: 'same-origin'
     };
-    let info = '?id_request=' + studentThatShouldBeApproved.id_request+"&id_organisation=" +studentThatShouldBeApproved.id_organisation;
+    let info = '?id_request=' + studentThatShouldBeApproved.id_request + "&id_organisation=" + studentThatShouldBeApproved.id_organisation;
     await fetch('/update-request-organisation-approve' + info, params);
+};
+
+Model.prototype.insertRequestOrganisation = async function (student) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let date= new Date();
+    var currentDate = date.format("yyyy-mm-dd");
+    let info = '?id_request=' + student.id_request + "&id_organisation=" + student.id_organisation+"&id_status=1"+"&date_creation="+currentDate;
+    await fetch('/insert-request-organisation' + info, params);
 };
 
 Model.prototype.updateRequest = async function (studentThatShouldBeApproved, reject) {
@@ -490,12 +528,12 @@ Model.prototype.updateRequest = async function (studentThatShouldBeApproved, rej
         cache: 'no-cache',
         credentials: 'same-origin'
     };
-    let info=0;
-    if(reject){
-        info= '?id_request=' + studentThatShouldBeApproved.id_request+"&id_organisation=null" ;
+    let info = 0;
+    if (reject) {
+        info = '?id_request=' + studentThatShouldBeApproved.id_request + "&id_organisation=null";
     }
-    else{
-        info= '?id_request=' + studentThatShouldBeApproved.id_request+"&id_organisation=" +studentThatShouldBeApproved.id_organisation;
+    else {
+        info = '?id_request=' + studentThatShouldBeApproved.id_request + "&id_organisation=" + studentThatShouldBeApproved.id_organisation;
     }
     await fetch('/update-request' + info, params);
 };

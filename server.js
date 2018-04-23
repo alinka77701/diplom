@@ -111,7 +111,10 @@ app.get('/requests-by-practice/', async function (req, res) {
     let data = await query.getRequestsByPracticeId(req);
     res.send(data);
 });
-
+app.get('/requst-by-student-uid/', async function (req, res) {
+    let data = await query.getRequestsByStudentsUIDS(req);
+    res.send(data);
+});
 
 app.get('/years-practice',async function (req, res) {
   let data =  await query.getPracticeYears();
@@ -133,6 +136,11 @@ app.get('/exist-request/', async function (req, res) {
 
 app.get('/update-request-organisation-approve/', async function (req, res) {
     let data = await query.approveRequestOrganisation(req);
+    res.send(data);
+});
+
+app.get('/insert-request-organisation/', async function (req, res) {
+    let data = await query.insertRequestOrganisation(req);
     res.send(data);
 });
 
