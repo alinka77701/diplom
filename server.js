@@ -123,20 +123,12 @@ app.get('/years-practice',async function (req, res) {
 
 app.get('/exist-request/', async function (req, res) {
     let data = await query.getRequestOrganisation(req);
-    if (data == null) {
-        res.statusCode = "404";
-        return res.json({
-            errors: ['Not found']
-        });
+    if (data === null) {
+      res.json('Not found');
     }
     else {
         res.send(data);
     }
-});
-
-app.get('/update-request-organisation-approve/', async function (req, res) {
-    let data = await query.approveRequestOrganisation(req);
-    res.send(data);
 });
 
 app.get('/insert-request-organisation/', async function (req, res) {
@@ -144,9 +136,14 @@ app.get('/insert-request-organisation/', async function (req, res) {
     res.send(data);
 });
 
-app.get('/update-request-organisation-reject/', async function (req, res) {
-    let data = await query.rejectRequestOrganisation(req);
+app.get('/update-request-organisation/', async function (req, res) {
+    let data = await query.updateRequestOrganisation(req);
     res.send(data);
+});
+
+app.get('/update-request-organisation-by-request/', async function (req, res) {
+  let data = await query.updateRequestOrganisationByRequest(req);
+  res.send(data);
 });
 
 app.get('/update-request/', async function (req, res) {
