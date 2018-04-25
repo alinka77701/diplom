@@ -72,18 +72,37 @@ class Query {
   }
 
   async getRequestsByPracticeId(req) {
-    let objReqBody = {
-      attributes: [
-        'id_request',
-        'id_practice',
-        'id_review',
-        'id_organisation',
-        'uid_student'
-      ],
-      where: {
-        id_practice: req.query.id_practice
-      }
-    };
+    let objReqBody =0;
+    if(req.query.id_organisation===undefined){
+      objReqBody = {
+        attributes: [
+          'id_request',
+          'id_practice',
+          'id_review',
+          'id_organisation',
+          'uid_student'
+        ],
+        where: {
+          id_practice: req.query.id_practice
+        }
+      };
+    }
+    else{
+      objReqBody = {
+        attributes: [
+          'id_request',
+          'id_practice',
+          'id_review',
+          'id_organisation',
+          'uid_student'
+        ],
+        where: {
+          id_practice: req.query.id_practice,
+          id_organisation: req.query.id_organisation,
+        }
+      };
+    }
+
     let requests;
     requests = await
         model.Request.findAll(objReqBody);
@@ -233,6 +252,27 @@ class Query {
     return organisation;
   }
 
+  async getGroupsByPracticeId(req) {
+    let groups_uids;
+    groups_uids = await model.Practice_Groups.findAll({
+      arguments: [
+        'uid_group',
+        'id_practice'
+      ],
+      where: {
+        id_practice: req.query.id_practice
+      }
+    });
+    let data = [];
+    for (let i = 0; i < groups_uids.length; ++i) {
+      data.push({
+        'id_practice': groups_uids[i].dataValues.id_practice,
+        'uid_group': groups_uids[i].dataValues.uid_group
+      });
+    }
+    return data;
+  }
+
   async getRequestOrganisation(req) {
     let organisation_request;
     organisation_request = await model.Request_Organisation.findOne({
@@ -377,7 +417,7 @@ class Query {
   }
 
   async updateRequest(req) {
-    if (req.query.id_organisation === 'null') {
+    if (req.query.id_organisation === 'null' || req.query.id_organisation === 'undefined') {
       req.query.id_organisation = null;
     }
     await  model.Request.update({

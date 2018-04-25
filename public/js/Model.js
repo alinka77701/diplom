@@ -89,6 +89,31 @@ Model.prototype.getGroups = async function () {
   return groups;
 };
 
+Model.prototype.getGroupsByPracticeId = async function (practice) {
+  let params = {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin'
+  };
+  let info = "?id_practice="
+      + practice.id_practice;
+  let result = await fetch('/groups-by-practice-id' + info, params);
+  let groups_uids = await result.json();
+  return groups_uids;
+};
+
+Model.prototype.getGroupsNameByGroupsUID = async function (uidsGroups) {
+  let groups=[];
+  for (let i = 0; i < uidsGroups.length; ++i) {
+    for (let j = 0;j < this.Groups.length; ++j) {
+      if(+uidsGroups[i].uid_group===this.Groups[j].uid_LDAP){
+        groups.push(this.Groups[j].name);
+    }
+    }
+  }
+  return groups;
+};
 /*получаем студентов из хранилища LDAP по ID группы*/
 /*Model.prototype.getStudentsByGroupId = async function (groupID) {
   let result = await fetch('/proxy/core/v1/groups/' + groupID);
@@ -359,41 +384,59 @@ Model.prototype.getOrganisationById = async function (id) {
   return organisation;
 };
 
-Model.prototype.getRequestsByOrganisationName = async function (nameOrganisation,
-    practice) {
-  let organisation = await this.getOrganisationByName(nameOrganisation);
+Model.prototype.getRequestsByOrganisationName = async function (organisation,
+    practice, isApproved) {
   let params = {
     method: 'GET',
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin'
   };
-  let info = "?id_practice=" + practice.id_practice;
+  let info=0, STATUS;
+  if(!isApproved){
+    info = "?id_practice=" + practice.id_practice;
+    STATUS=0;
+  }
+  else{
+    info = "?id_practice=" + practice.id_practice+"&id_organisation="
+        + organisation.id;
+    STATUS=1;
+  }
   let result = await fetch('/requests-by-practice' + info, params);
   let requests = await result.json();
   let students = [];
+  let urls=[];
   for (let i = 0; i < requests.length; i++) {
-    let info = "?id_request=" + requests[i].id_request + "&id_organisation="
-        + organisation.id;
-    let result = await fetch('/exist-request' + info, params);
-    // if (result.status !== 404) {///ОШИБКА В КОНОСЛИ NOT FOUND
-    let data = await result.json();
-    if (data !== 'Not found') {
-      if (data.id_status === 0) {
-        students.push({
-          id_request: data.id_request,
-          id_organisation: data.id_organisation,
-          id_status: data.id_status,
-          uid_student: requests[i].uid_student,
-          id_practice: requests[i].id_practice,
-          id_review: requests[i].id_review,
-          date_creation: data.date_creation
-        });
+    urls.push("/exist-request?id_request=" + requests[i].id_request + "&id_organisation="
+        + organisation.id);
+  }
+  await Promise.all(
+      urls.map(url => fetch(url,params).catch(err => err))
+  )
+  .then(responses => Promise.all(
+      responses.map(r => r instanceof Error ? r : r.json().catch(err => err))
+  ))
+  .then(results => {
+    const resLength = results.length;
+    for (let i = 0; i < resLength; i++) {
+      if (results[i] !== 'Not found') {
+        if (results[i].id_status === STATUS) {
+          students.push({
+            id_request: results[i].id_request,
+            id_organisation: results[i].id_organisation,
+            id_status: results[i].id_status,
+            uid_student: requests[i].uid_student,
+            id_practice: requests[i].id_practice,
+            id_review: requests[i].id_review,
+            date_creation: results[i].date_creation
+          });
+        }
       }
     }
-  }
+  });
   return students;
 };
+
 Model.prototype.getOrganisationByName = async function (nameOrganisation) {
   let params = {
     method: 'GET',
@@ -405,41 +448,6 @@ Model.prototype.getOrganisationByName = async function (nameOrganisation) {
   let result = await fetch('/organisation-by-name' + info, params);
   let organisation = await result.json();
   return organisation;
-};
-Model.prototype.getApprovedStudents = async function (nameOrganisation,
-    practice) {
-  let organisation = await this.getOrganisationByName(nameOrganisation);
-  let params = {
-    method: 'GET',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin'
-  };
-  let info = "?id_practice=" + practice.id_practice;
-  let result = await fetch('/requests-by-practice' + info, params);
-  let requests = await result.json();
-  let students = [];
-  for (let i = 0; i < requests.length; i++) {
-    if (requests[i].id_organisation == organisation.id) {
-      students.push({
-        id_request: requests[i].id_request,
-        id_organisation: requests[i].id_organisation,
-        uid_student: requests[i].uid_student,
-        id_practice: requests[i].id_practice,
-        id_review: requests[i].id_review
-      });
-    }
-  }
-  for (let i = 0; i < students.length; i++) {
-    info = "?id_request=" + students[i].id_request + "&id_organisation="
-        + students[i].id_organisation;
-    result = await fetch('/exist-request' + info, params);
-    if (result.status !== 404) {
-      let data = await result.json();
-      students[i].date_creation = data.date_creation;
-    }
-  }
-  return students;
 };
 
 Model.prototype.getDeterminedGroups = async function (selectedGroups) {

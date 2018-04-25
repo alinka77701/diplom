@@ -146,9 +146,14 @@ app.get('/update-request-organisation-by-request/', async function (req, res) {
   res.send(data);
 });
 
-app.get('/update-request/', async function (req, res) {
-    let data = await query.updateRequest(req);
+app.get('/groups-by-practice-id/', async function (req, res) {
+    let data = await query.getGroupsByPracticeId(req);
     res.send(data);
+});
+
+app.get('/update-request/', async function (req, res) {
+  let data = await query.updateRequest(req);
+  res.send(data);
 });
 
 app.listen('7777', function () {

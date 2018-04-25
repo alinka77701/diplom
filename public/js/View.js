@@ -401,15 +401,18 @@ View.prototype.updateGroupsTreeView = async function (courses, groups) {
     for (i; i < courseNumber; i++) {
       for (let j = 0; j < courses[i].groups.length; j++) {
         let node = tree.element.find('li.' + coursesName[cnt]);
+
         if (this.idTreeViews[idCounter]
             === "group-treeview-tabcontrol1-dialogAdd-bachelor"
             || this.idTreeViews[idCounter]
             === "group-treeview-tabcontrol2-dialogAdd-master") {
+          node[0].getElementsByTagName("input")[0].setAttribute("disabled","disabled");
           await  tree_add_leaf_checkbox_example_click(tree, node,
               courses[i].groups[j]);
           let elem = node.find('ul')[0].children[node.find(
               'ul')[0].children.length - 1];
           $(elem).addClass("collapsed");
+          elem.getElementsByTagName("input")[0].setAttribute("disabled","disabled");
           let students = 0;
           for (let k = 0; k < groups.length; k++) {
             if (courses[i].groups[j] === groups[k].name) {
@@ -421,9 +424,13 @@ View.prototype.updateGroupsTreeView = async function (courses, groups) {
             await tree_add_leaf_checkbox_example_click(tree, $(elem),
                 students[k].name, students[k].uid);
           }
+         let inputs= elem.querySelectorAll('[data-uid]');
+          for (let k = 0; k < inputs.length; k++) {
+            inputs[k].getElementsByTagName("input")[0].setAttribute("disabled","disabled");
+          }
         }
         else {
-          await    tree_add_leaf_checkbox_example_click(tree, node,
+          await tree_add_leaf_checkbox_example_click(tree, node,
               courses[i].groups[j]);
         }
       }
@@ -764,8 +771,7 @@ View.prototype.getSelectedStudent = function (event) {
   let student = {
     'id_request': node.getAttribute("request"),
     'uid_student': node.getAttribute("uid"),
-    'id_organisation': node.getAttribute("org"),
-    'name_organisation': node.getAttribute("name-org")
+    'id_organisation': node.getAttribute("org")
   };
 
   if (event.target.getAttribute("class").indexOf("mif-cancel") === 0) {
@@ -809,5 +815,21 @@ View.prototype.getSelectedStudents = function (event) {
     }
   }
   return Students;
+};
+
+View.prototype.dialogEnableCheckboxes = function (namesGroups, idElement) {
+  let parent=document.getElementById(idElement);
+ let inputs= parent.querySelectorAll('input');
+  for (let i = 0; i < inputs.length; i++) {
+    for (let j= 0; j < namesGroups.length; j++) {
+      if ( inputs[i].parentElement.nextSibling.innerHTML===namesGroups[j]){
+        inputs[i].removeAttribute("disabled");
+        let studentsCheckboxes=inputs[i].parentElement.parentElement.querySelectorAll('[data-uid]');
+        for(let n= 0; n < studentsCheckboxes.length; n++) {
+          studentsCheckboxes[n].querySelector('input').removeAttribute("disabled");
+        }
+      }
+    }
+  }
 };
 module.exports = View;
