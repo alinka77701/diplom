@@ -59,7 +59,7 @@ app.get('/practice/', async function (req, res) {
     res.send(data);
 });
 
-app.get('/filter-requsts/', async function (req, res) {
+app.get('/requsts-by-student-practice/', async function (req, res) {
     let data = await query.getDeterminedRequests(req);
     res.send(data);
 });

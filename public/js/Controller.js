@@ -47,9 +47,10 @@ Controller.prototype.addStudentToOrganisationShowDialog = async function () {
   let namesGroups = await this.Model.getGroupsNameByGroupsUID(uidsGroups);
   this.View.dialogEnableCheckboxes(namesGroups,
       "group-treeview-tabcontrol1-dialogAdd-bachelor");
+  this.View.dialogEnableCheckboxes(namesGroups,
+      "group-treeview-tabcontrol1-dialogAdd-master");
   this.View.dialogAddStudentsOpen(event);
 };
-
 Controller.prototype.addStudentToOrganisation = async function () {
   let students = await this.View.getSelectedStudents(event);
   let info_about_practice = this.View.getConfigurationPractice();
@@ -57,21 +58,25 @@ Controller.prototype.addStudentToOrganisation = async function () {
   let nameOrganisation = this.View.getNameOrganisationInTreeview(
       "organisationList");
   let organisation = await this.Model.getOrganisationByName(nameOrganisation);
-
+  let requests = await this.Model.getRequestByStudentUIDS(practice,
+      students);
   for (let i = 0; i < students.length; i++) {
-    let request = await this.Model.getRequestByStudentUID(practice,
-        students[i]);
-    students[i]['id_request'] = request.id_request;
-    students[i]['id_practice'] = practice.id_practice;
-    students[i]['id_organisation'] = organisation.id;
-    students[i]['id_status'] = APPROVED;
-
-    await this.Model.updateRequestOrganisation(students[i]);
-    await this.Model.updateRequest(students[i]);
-    students[i]['id_status'] = REJECTED;
-    await this.Model.updateRequestOrganisationByRequest(students[i]);
+    for (let j = 0; j < requests.length; j++) {
+      if (students[i].uid === requests[j].uid_student) {
+        students[i]['id_request'] = requests[j].id_request;
+        students[i]['id_practice'] = practice.id_practice;
+        students[i]['id_organisation'] = organisation.id;
+        students[i]['id_status'] = APPROVED;
+      }
+    }
   }
+  await this.Model.updateRequestsOrganisation(students);
+  await this.Model.updateRequests(students);
 
+  for (let j = 0; j < students.length; j++) {
+    students[j]['id_status'] = REJECTED;
+  }
+  await this.Model.updateRequestsOrganisationByRequest(students);
   await this.getApprovedAndNonApprovedStudents(organisation);
 };
 
@@ -171,38 +176,40 @@ Controller.prototype.renderDataInTable = async function () {
   let groupsObjects = [];
   let info_about_practice = this.View.getUserInfoAboutPractice();
   let practice = [], data = 0;
+
   if (selectedGroups.length !== 0) {
-    for (let i = 0; i < this.Model.Groups.length; i++) {
-      for (let j = 0; j < selectedGroups.length; j++) {
-        if (this.Model.Groups[i].name === selectedGroups[j]) {
-          groupsObjects.push(this.Model.Groups[i]);
-        }
-      }
-    }
     practice = await this.Model.getPractice(info_about_practice);
-    let groupsPracticeParticipants = await this.Model.getGroupsByPracticeId(
-        practice);
-    selectedGroups = [];
-    for (let i = 0; i < groupsPracticeParticipants.length; i++) {
-      for (let j = 0; j < groupsObjects.length; j++) {
-        if (+groupsPracticeParticipants[i].uid_group
-            === groupsObjects[j].uid_LDAP) {
-          selectedGroups.push(groupsObjects[j].name);
+    if (practice.length !== 0) {
+      for (let i = 0; i < this.Model.Groups.length; i++) {
+        for (let j = 0; j < selectedGroups.length; j++) {
+          if (this.Model.Groups[i].name === selectedGroups[j]) {
+            groupsObjects.push(this.Model.Groups[i]);
+          }
         }
       }
-    }
-    if (selectedGroups.length !== 0) {
-      let requests_organisations;
-      if (practice.length !== 0) {
+
+      let groupsPracticeParticipants = await this.Model.getGroupsByPracticeId(
+          practice);
+      selectedGroups = [];
+      for (let i = 0; i < groupsPracticeParticipants.length; i++) {
+        for (let j = 0; j < groupsObjects.length; j++) {
+          if (+groupsPracticeParticipants[i].uid_group
+              === groupsObjects[j].uid_LDAP) {
+            selectedGroups.push(groupsObjects[j].name);
+          }
+        }
+      }
+      if (selectedGroups.length !== 0) {
+        let requests_organisations;
         let requests = await this.Model.getRequests(practice, groupsObjects);
         await this.Model.assosiateRequestToStudent(requests, selectedGroups);
         requests_organisations = await this.Model.getRequestsOrganisations(
             selectedGroups);
         data = await this.Model.getData(selectedGroups, requests_organisations);
       }
-    }
-    else {
-      practice = [];
+      else {
+        practice = [];
+      }
     }
   }
   if (data.length === 0) {

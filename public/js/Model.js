@@ -104,12 +104,12 @@ Model.prototype.getGroupsByPracticeId = async function (practice) {
 };
 
 Model.prototype.getGroupsNameByGroupsUID = async function (uidsGroups) {
-  let groups=[];
+  let groups = [];
   for (let i = 0; i < uidsGroups.length; ++i) {
-    for (let j = 0;j < this.Groups.length; ++j) {
-      if(+uidsGroups[i].uid_group===this.Groups[j].uid_LDAP){
+    for (let j = 0; j < this.Groups.length; ++j) {
+      if (+uidsGroups[i].uid_group === this.Groups[j].uid_LDAP) {
         groups.push(this.Groups[j].name);
-    }
+      }
     }
   }
   return groups;
@@ -122,26 +122,33 @@ Model.prototype.getGroupsNameByGroupsUID = async function (uidsGroups) {
   return studentsList;
 };*/
 
-/*получаем студентов из хранилища LDAP по UID */
 Model.prototype.getStudentsByUID = async function (students_info) {
-  let students = [];
-  for (let i = 0, n = 0; i < students_info.length; ++i) {
-    let result = await fetch('/proxy/core/v1/people/'
-        + students_info[i].uid_student);
-    let list = await result.json();
-    students.push({
-      displayName: list.displayName,
-      group_name: list._links.groups[0].name,
-      group_UID: list._links.groups[0].id,
-      date_creation_request: students_info[i].date_creation,
-      id_request: students_info[i].id_request,
-      uid_student: students_info[i].uid_student,
-      id_organisation: students_info[i].id_organisation
-    });
+  let students = [], urls = [];
+  for (let i = 0; i < students_info.length; ++i) {
+    urls.push('/proxy/core/v1/people/' + students_info[i].uid_student);
   }
+  await Promise.all(
+      urls.map(url => fetch(url).catch(err => err))
+  )
+  .then(responses => Promise.all(
+      responses.map(r => r instanceof Error ? r : r.json().catch(err => err))
+  ))
+  .then(results => {
+    const resLength = results.length;
+    for (let i = 0; i < resLength; ++i) {
+      students.push({
+        displayName: results[i].displayName,
+        group_name: results[i]._links.groups[0].name,
+        group_UID: results[i]._links.groups[0].id,
+        date_creation_request: students_info[i].date_creation,
+        id_request: students_info[i].id_request,
+        uid_student: students_info[i].uid_student,
+        id_organisation: students_info[i].id_organisation
+      });
+    }
+  });
   return students;
 };
-
 Model.prototype.init = async function () {
   let groups = await this.getGroups();
   let urls = [];
@@ -283,15 +290,26 @@ Model.prototype.getRequests = async function (practice, groups) {
     credentials: 'same-origin'
   };
   let requests = [];
+  let urls = [];
   for (let i = 0; i < groups.length; i++) {
     for (let j = 0; j < groups[i].students.length; j++) {
       let info = '?id_student=' + groups[i].students[j].uid + "&id_practice="
           + practice.id_practice;
-      let result = await fetch('/filter-requsts' + info, params);
-      info = await result.json();
-      requests.push(info);
+      urls.push('/requsts-by-student-practice' + info);
     }
   }
+
+  await Promise.all(
+      urls.map(url => fetch(url, params).catch(err => err))
+  )
+  .then(responses => Promise.all(
+      responses.map(r => r instanceof Error ? r : r.json().catch(err => err))
+  ))
+  .then(results => {
+    for (let i = 0; i < results.length; ++i) {
+      requests.push(results[i]);
+    }
+  });
   return requests;//получили all заявок студентов выбранных групп
 };
 
@@ -321,26 +339,65 @@ Model.prototype.getRequestsOrganisations = async function (selectedGroups) {
     cache: 'no-cache',
     credentials: 'same-origin'
   };
+  let urls = [];
   let organisations_by_request = [];
   for (let i = 0; i < this.Groups.length; ++i) {
     for (let j = 0; j < selectedGroups.length; ++j) {
       if (this.Groups[i].name === selectedGroups[j]) {
         for (let k = 0; k < this.Groups[i].students.length; ++k) {
-          let info = '?id_request=' + this.Groups[i].students[k].id_request;
-          let result = await fetch('/organisations-by-request' + info, params);
-          info = await result.json();
-          organisations_by_request.push(info);
+          urls.push('/organisations-by-request' + '?id_request='
+              + this.Groups[i].students[k].id_request);
         }
       }
     }
   }
+  await Promise.all(
+      urls.map(url => fetch(url, params).catch(err => err))
+  )
+  .then(responses => Promise.all(
+      responses.map(r => r instanceof Error ? r : r.json().catch(err => err))
+  ))
+  .then(results => {
+    for (let i = 0; i < results.length; ++i) {
+      organisations_by_request.push(results[i]);
+    }
+  });
   return organisations_by_request;
+};
+Model.prototype.getRequestByStudentUIDS = async function (practice, students) {
+  let params = {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin'
+  };
+  let urls = [];
+  let requests = [];
+  for (let i = 0; i < students.length; i++) {
+    urls.push('/requst-by-student-uid' + '?uid=' + students[i].uid
+        + "&id_practice="
+        + practice.id_practice);
+  }
+  await Promise.all(
+      urls.map(url => fetch(url, params).catch(err => err))
+  )
+  .then(responses => Promise.all(
+      responses.map(r => r instanceof Error ? r : r.json().catch(err => err))
+  ))
+  .then(results => {
+    for (let i = 0; i < results.length; ++i) {
+      requests.push(results[i]);
+    }
+  });
+
+  return requests;
 };
 Model.prototype.getPracticeYears = async function () {
   let result = await fetch('/years-practice');
   let years = await result.json();
   return years;
 };
+
 /*============================================PRACTICE CREATION
  SECTION=====================================================*/
 Model.prototype.getTypesOrganisation = async function () {
@@ -392,26 +449,27 @@ Model.prototype.getRequestsByOrganisationName = async function (organisation,
     cache: 'no-cache',
     credentials: 'same-origin'
   };
-  let info=0, STATUS;
-  if(!isApproved){
+  let info = 0, STATUS;
+  if (!isApproved) {
     info = "?id_practice=" + practice.id_practice;
-    STATUS=0;
+    STATUS = 0;
   }
-  else{
-    info = "?id_practice=" + practice.id_practice+"&id_organisation="
+  else {
+    info = "?id_practice=" + practice.id_practice + "&id_organisation="
         + organisation.id;
-    STATUS=1;
+    STATUS = 1;
   }
   let result = await fetch('/requests-by-practice' + info, params);
   let requests = await result.json();
   let students = [];
-  let urls=[];
+  let urls = [];
   for (let i = 0; i < requests.length; i++) {
-    urls.push("/exist-request?id_request=" + requests[i].id_request + "&id_organisation="
+    urls.push("/exist-request?id_request=" + requests[i].id_request
+        + "&id_organisation="
         + organisation.id);
   }
   await Promise.all(
-      urls.map(url => fetch(url,params).catch(err => err))
+      urls.map(url => fetch(url, params).catch(err => err))
   )
   .then(responses => Promise.all(
       responses.map(r => r instanceof Error ? r : r.json().catch(err => err))
@@ -526,9 +584,30 @@ Model.prototype.updateRequestOrganisation = async function (student) {
   var currentDate = date.format("yyyy-mm-dd");
   let info = '?id_request=' + student.id_request
       + "&id_organisation=" + student.id_organisation + "&id_status="
-      + student.id_status+ "&date_creation="
+      + student.id_status + "&date_creation="
       + currentDate;
   await fetch('/update-request-organisation' + info, params);
+};
+
+Model.prototype.updateRequestsOrganisation = async function (students) {
+  let params = {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin'
+  };
+  let urls = [];
+  let date = new Date();
+  var currentDate = date.format("yyyy-mm-dd");
+  for (let i = 0; i < students.length; i++) {
+    let info = '?id_request=' + students[i].id_request
+        + "&id_organisation=" + students[i].id_organisation + "&id_status="
+        + students[i].id_status + "&date_creation="
+        + currentDate;
+    urls.push('/update-request-organisation' + info);
+  }
+
+  await Promise.all(urls.map(url => fetch(url, params).catch(err => err)));
 };
 
 Model.prototype.updateRequestOrganisationByRequest = async function (student) {
@@ -539,10 +618,26 @@ Model.prototype.updateRequestOrganisationByRequest = async function (student) {
     credentials: 'same-origin'
   };
 
-  let info = '?id_request=' + student.id_request + "&id_status=" + student.id_status+"&id_organisation=" + student.id_organisation;
+  let info = '?id_request=' + student.id_request + "&id_status="
+      + student.id_status + "&id_organisation=" + student.id_organisation;
   await fetch('/update-request-organisation-by-request' + info, params);
 };
-
+Model.prototype.updateRequestsOrganisationByRequest = async function (students) {
+  let params = {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin'
+  };
+  let urls = [];
+  for (let i = 0; i < students.length; i++) {
+    let info = '?id_request=' + students[i].id_request
+        + "&id_organisation=" + students[i].id_organisation + "&id_status="
+        + students[i].id_status;
+    urls.push('/update-request-organisation-by-request' + info);
+  }
+  await Promise.all(urls.map(url => fetch(url, params).catch(err => err)));
+};
 Model.prototype.insertRequestOrganisation = async function (student) {
   let params = {
     method: 'GET',
@@ -553,7 +648,8 @@ Model.prototype.insertRequestOrganisation = async function (student) {
   let date = new Date();
   var currentDate = date.format("yyyy-mm-dd");
   let info = '?id_request=' + student.id_request + "&id_organisation="
-      + student.id_organisation + "&id_status=" +student.id_status+ "&date_creation="
+      + student.id_organisation + "&id_status=" + student.id_status
+      + "&date_creation="
       + currentDate;
   await fetch('/insert-request-organisation' + info, params);
 };
@@ -576,5 +672,29 @@ Model.prototype.updateRequest = async function (student) {
   }
   await fetch('/update-request' + info, params);
 };
+Model.prototype.updateRequests = async function (students) {
+  let params = {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin'
+  };
+  let info = 0;
+  let urls = [];
 
+  for (let i = 0; i < students.length; i++) {
+    let info = 0;
+    if (students[i].id_status === REJECTED) {
+      info = '?id_request=' + students[i].id_request
+          + "&id_organisation=null";
+    }
+    else {
+      info = '?id_request=' + students[i].id_request
+          + "&id_organisation=" + students[i].id_organisation;
+    }
+    urls.push('/update-request' + info);
+  }
+
+  await Promise.all(urls.map(url => fetch(url, params).catch(err => err)));
+};
 module.exports = Model;
