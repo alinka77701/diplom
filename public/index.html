@@ -2,11 +2,12 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-  <script src="js/libs/jQuery/jquery.js"></script>
+    <script src="js/libs/jQuery/jquery.js"></script>
     <script src="js/libs/metro/metro.js"></script>
     <script type="text/javascript" src="js/libs/DataTables/datatables.min.js"></script>
-    <script src= "./js/bundle.js" ></script>
-    <link rel="stylesheet" href= "./assets/css/bundle.css" >
+    <script src="./js/bundle.js"></script>
+
+    <link rel="stylesheet" href="./assets/css/bundle.css">
     <link rel="shortcut icon" href="assets/img/iipo.png" type="image/x-icon">
 
     <title>Распределение студентов на практику</title>
@@ -90,7 +91,8 @@
                                     <h2>
                                         <small>Укажите группы, участвующие в практике</small>
                                     </h2>
-                                    <div class="treeview" data-role="treeview" id="groups-treeview-practice-creation-bachelor">
+                                    <div class="treeview" data-role="treeview"
+                                         id="groups-treeview-practice-creation-bachelor">
                                         <ul>
                                             <li data-mode="checkbox" data-name="c1" class="node collapsed first">
                                                 <span class="leaf">1 курс</span>
@@ -122,7 +124,8 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="treeview" data-role="treeview" id="groups-treeview-practice-creation-master">
+                                    <div class="treeview" data-role="treeview"
+                                         id="groups-treeview-practice-creation-master">
                                         <ul>
                                             <li data-mode="checkbox" data-name="c1" class="node collapsed first">
                                                 <span class="leaf">1 курс</span>
@@ -157,7 +160,8 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <button class="button" onclick="metroDialog.open('#dialogCreateCompany')">Добавить новую
+                                    <button class="button" onclick="metroDialog.open('#dialogCreateCompany')">Добавить
+                                        новую
                                         организацию
                                     </button>
                                     <div class="align-center dialog" data-overlay="true" data-overlay-color="op-dark"
@@ -167,7 +171,7 @@
                                         <div class="main">
                                             <div class="field margin20">
                                                 <label for="nameCompany">Название</label>
-                                                <input type="text"  id="nameCompany" >
+                                                <input type="text" id="nameCompany">
                                                 <div id="idCompany" class="no-display"></div>
                                             </div>
                                             <div class="field margin20">
@@ -206,7 +210,9 @@
                                             </div>
                                         </div>
                                         <button class="button js-dialog-close" id="createOrganisation">Создать</button>
-                                        <button class="button js-dialog-close" id="updateOrganisation" disabled>Обновить</button>
+                                        <button class="button js-dialog-close" id="updateOrganisation" disabled>
+                                            Обновить
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="step align-center">
@@ -567,7 +573,8 @@
                                         <input type="text" readonly="readonly" id="deadline" required>
                                         <button class="button" type="button"><span class="mif-calendar"></span></button>
                                         <div class="calendar calendar-dropdown"
-                                             style="position: absolute; max-width: 220px; z-index: 1000; top: 100%; left: 0px; display: block;" id="calendarFrom">
+                                             style="position: absolute; max-width: 220px; z-index: 1000; top: 100%; left: 0px; display: block;"
+                                             id="calendarFrom">
                                             <div class="calendar-grid">
                                                 <div class="calendar-row no-margin calendar-header">
                                                     <div class="calendar-cell align-center"><a class="btn-previous-year"
@@ -722,11 +729,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="align-center dialog" data-overlay="true" data-overlay-color="op-dark" data-role="dialog" id="dialogWaiting" data-overlay-click-close="true" data-close-button="true" data-width="500px" data-height="auto" style="width: 700px; height: 700px; visibility: hidden;">
+                                    <div class="align-center dialog" data-overlay="true" data-overlay-color="op-dark"
+                                         data-role="dialog" id="dialogWaiting" data-overlay-click-close="true"
+                                         data-close-button="true" data-width="500px" data-height="auto"
+                                         style="width: 700px; height: 700px; visibility: hidden;">
                                         <h3 class="margin20">Окно ожидания</h3>
                                         <div class="main">
                                             <div class="field margin20">
-                                                <p class="inline-block sub-header">Пожалуйста, подождите, пока практика будет созадна.</p>
+                                                <p class="inline-block sub-header">Пожалуйста, подождите, пока практика
+                                                    будет созадна.</p>
                                             </div>
                                         </div>
                                         <span class="dialog-close-button"></span>
@@ -740,7 +751,8 @@
                                         <div class="main align-left">
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Уровень высшего образования:</p>
-                                                <p class="inline-block sub-header fg-black" id="educationalLevelDialog"></p>
+                                                <p class="inline-block sub-header fg-black"
+                                                   id="educationalLevelDialog"></p>
                                             </div>
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Тип практики:</p>
@@ -749,11 +761,13 @@
 
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Группы:</p>
-                                                <p class="inline-block sub-header fg-black" id="groupsPracticeDialog"></p>
+                                                <p class="inline-block sub-header fg-black"
+                                                   id="groupsPracticeDialog"></p>
                                             </div>
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Организации:</p>
-                                                <p class="inline-block sub-header fg-black" id="organisationsPracticeDialog"></p>
+                                                <p class="inline-block sub-header fg-black"
+                                                   id="organisationsPracticeDialog"></p>
                                             </div>
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Кол-во лекций:</p>
@@ -761,14 +775,18 @@
                                             </div>
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Сроки:</p>
-                                                <p class="inline-block sub-header fg-black" id="termsPracticeDialog" ></p>
+                                                <p class="inline-block sub-header fg-black"
+                                                   id="termsPracticeDialog"></p>
                                             </div>
                                             <div class="field margin20">
                                                 <p class="inline-block sub-header">Дедлайн:</p>
-                                                <p class="inline-block sub-header fg-black" id="deadlinePracticeDialog"></p>
+                                                <p class="inline-block sub-header fg-black"
+                                                   id="deadlinePracticeDialog"></p>
                                             </div>
                                         </div>
-                                        <button class="button js-dialog-close" id="practiceFinishedOk">Создать практику</button>
+                                        <button class="button js-dialog-close" id="practiceFinishedOk">Создать
+                                            практику
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -782,70 +800,70 @@
                 <div class="row cells10 align-center">
                     <div class="cell colspan3">
 
-                            <div class="tabcontrol2" data-role="tabcontrol">
-                                <ul class="tabs">
-                                    <li class="active"><a href="#frame_1_1">Бакалавриат</a></li>
-                                    <li class=""><a href="#frame_1_2">Магистратура</a></li>
-                                </ul>
-                                <div class="frames">
-                                    <div class="frame" id="frame_1_1" style="display: block;">
-                                        <div class="treeview align-left" data-role="treeview"
-                                             id="group-treeview-tabcontrol1-bachelor">
-                                            <ul>
-                                                <li data-mode="checkbox" data-name="c5" class="node collapsed first">
-                                                    <span class="leaf">1 курс</span>
-                                                    <span class="node-toggle"></span>
-                                                    <ul>
+                        <div class="tabcontrol2" data-role="tabcontrol">
+                            <ul class="tabs">
+                                <li class="active"><a href="#frame_1_1">Бакалавриат</a></li>
+                                <li class=""><a href="#frame_1_2">Магистратура</a></li>
+                            </ul>
+                            <div class="frames">
+                                <div class="frame" id="frame_1_1" style="display: block;">
+                                    <div class="treeview align-left" data-role="treeview"
+                                         id="group-treeview-tabcontrol1-bachelor">
+                                        <ul>
+                                            <li data-mode="checkbox" data-name="c5" class="node collapsed first">
+                                                <span class="leaf">1 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
 
-                                                    </ul>
-                                                </li>
-                                                <li data-mode="checkbox" data-name="c6" class="node collapsed second">
-                                                    <span class="leaf">2 курс</span>
-                                                    <span class="node-toggle"></span>
-                                                    <ul>
+                                                </ul>
+                                            </li>
+                                            <li data-mode="checkbox" data-name="c6" class="node collapsed second">
+                                                <span class="leaf">2 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
 
-                                                    </ul>
-                                                </li>
-                                                <li data-mode="checkbox" data-name="c7" class="node collapsed third">
-                                                    <span class="leaf">3 курс</span>
-                                                    <span class="node-toggle"></span>
-                                                    <ul>
+                                                </ul>
+                                            </li>
+                                            <li data-mode="checkbox" data-name="c7" class="node collapsed third">
+                                                <span class="leaf">3 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
 
-                                                    </ul>
-                                                </li>
-                                                <li data-mode="checkbox" data-name="c8" class="node collapsed fourth">
-                                                    <span class="leaf">4 курс</span>
-                                                    <span class="node-toggle"></span>
-                                                    <ul>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="frame" id="frame_1_2" style="display: none;">
-                                        <div class="treeview align-left" data-role="treeview"
-                                             id="group-treeview-tabcontrol2-master">
-                                            <ul>
-                                                <li data-mode="checkbox" data-name="c9" class="node collapsed first">
-                                                    <span class="leaf">1 курс</span>
-                                                    <span class="node-toggle"></span>
-                                                    <ul>
-
-                                                    </ul>
-                                                </li>
-                                                <li data-mode="checkbox" data-name="c10" class="node collapsed second">
-                                                    <span class="leaf">2 курс</span>
-                                                    <span class="node-toggle"></span>
-                                                    <ul>
-
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-
+                                                </ul>
+                                            </li>
+                                            <li data-mode="checkbox" data-name="c8" class="node collapsed fourth">
+                                                <span class="leaf">4 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+                                                </ul>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
+                                <div class="frame" id="frame_1_2" style="display: none;">
+                                    <div class="treeview align-left" data-role="treeview"
+                                         id="group-treeview-tabcontrol2-master">
+                                        <ul>
+                                            <li data-mode="checkbox" data-name="c9" class="node collapsed first">
+                                                <span class="leaf">1 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+
+                                                </ul>
+                                            </li>
+                                            <li data-mode="checkbox" data-name="c10" class="node collapsed second">
+                                                <span class="leaf">2 курс</span>
+                                                <span class="node-toggle"></span>
+                                                <ul>
+
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
                             </div>
+                        </div>
                         <h2>
                             <small>Укажите тип практики</small>
                         </h2>
@@ -854,9 +872,12 @@
                             <option value="Производственная">Производственная</option>
                             <option value="Преддипломная">Преддипломная</option>
                         </select>
-                            <div> <button class="button square-button " id="getGroupsBtnOk">OK</button></div>
+                        <div>
+                            <button class="button square-button " id="getGroupsBtnOk">OK</button>
+                        </div>
 
-                        <button class="button" id="generateReportBtn">Сгенерировать копии отчетов/приказов</button>
+                        <button class="button" id="showDialogGenerateDocumentBtn">Сгенерировать копии отчетов/приказов
+                        </button>
                     </div>
                     <div class="cell colspan7">
                         <div class="row">
@@ -885,11 +906,11 @@
                                     </tfoot>
                                 </table>
                                 <div class="pagination align-center " id="buttonsArray">
-                                 <!--   <span class="item year">2015</span>
-                                    <span class="item year">2016</span>
-                                    <span class="item year">2017</span>
-                                    <span class="item year">2018</span>
-                                    <span class="item year" id="createPracticeBtn"> + </span>-->
+                                    <!--   <span class="item year">2015</span>
+                                       <span class="item year">2016</span>
+                                       <span class="item year">2017</span>
+                                       <span class="item year">2018</span>
+                                       <span class="item year" id="createPracticeBtn"> + </span>-->
                                 </div>
                             </div>
                         </div>
@@ -900,7 +921,7 @@
         <section id="organisationsSection">
             <div class="row content">
                 <div class="row cells12">
-                    <div class="cell colspan2 right-separator align-center">  <h3>Конфигурация</h3>
+                    <div class="cell colspan2 right-separator align-center"><h3>Конфигурация</h3>
                         <h2>
                             <small>Тип практики</small>
                         </h2>
@@ -921,7 +942,9 @@
                             <span class="item year">2017</span>
                             <span class="item year">2018</span>
                         </div>
-                        <div> <button class="button square-button " id="getOrganisationsBtnOk">OK</button></div>
+                        <div>
+                            <button class="button square-button " id="getOrganisationsBtnOk">OK</button>
+                        </div>
                         <button class="button" id="showAllOrganisations">Список всех организаций
                         </button>
                     </div>
@@ -930,24 +953,26 @@
                         <div class="listview-outlook align-left" data-role="listview" id="organisationList">
                         </div>
                     </div>
-                    <div class="cell colspan6 align-center"  id="studentsRequests">
-                        <h3 >Список студентов, записавшихся в <span id="orgName"></span> <span id="nonApprovedStudentListTitle"></span></h3>
-                        <div class="listview-outlook align-left" data-role="listview" id="nonApprovedStudents" >
+                    <div class="cell colspan6 align-center" id="studentsRequests">
+                        <h3>Список студентов, записавшихся в <span id="orgName"></span> <span
+                                id="nonApprovedStudentListTitle"></span></h3>
+                        <div class="listview-outlook align-left" data-role="listview" id="nonApprovedStudents">
                         </div>
                         <h3 id="approvedStudentListTitle"></h3>
                         <div class="listview-outlook align-left" data-role="listview" id="approvedStudents">
                         </div>
                     </div>
-                    <div class="cell colspan6 align-center"  id="allOrganisationsListBlock">
+                    <div class="cell colspan6 align-center" id="allOrganisationsListBlock">
                         <h3>Список всех организаций</h3>
                         <div class="listview-outlook align-left" data-role="listview" id="allOrganisationsList">
                         </div>
-                        <button class="button padding30" onclick="metroDialog.open('#dialogCreateCompany')">Добавить/Обновить
+                        <button class="button padding30" onclick="metroDialog.open('#dialogCreateCompany')">
+                            Добавить/Обновить
                             организацию
                         </button>
                     </div>
 
-                        <div class="align-center dialog " data-overlay="true" data-overlay-color="op-dark"
+                    <div class="align-center dialog " data-overlay="true" data-overlay-color="op-dark"
                          data-role="dialog" id="dialogAddStudent" data-overlay-click-close="true"
                          data-close-button="true" data-width="500px" data-height="auto">
                         <h3 class="margin20">Добавление студента в <span id="nameOrganisationDialog"></span></h3>
@@ -1018,7 +1043,49 @@
                             </div>
                         </div>
                         <button class="button js-dialog-close" id="addStudentBtn">Добавить</button>
-                </div>
+                    </div>
+
+                    <div class="align-center dialog " data-overlay="true" data-overlay-color="op-dark"
+                         data-role="dialog" id="dialogGenerateReport" data-overlay-click-close="true"
+                         data-close-button="true" data-width="500px" data-height="auto">
+                        <h3 class="margin20">Генерация документов</h3>
+                        <h4>Проверьте достоверность данных</h4>
+                        <div class="main align-left">
+                            <div class="field margin20">
+                                <p class="inline-block sub-header">Тип документа</p>
+                                <select name="select" class="styled-select slate"
+                                        id="gdtypeDocument">
+                                    <option value="Приказ">Приказ</option>
+                                    <option value="Отчет">Отчет</option>
+                                </select>
+                            </div>
+                            <div class="field margin20">
+                                <p class="inline-block sub-header">Тип практики</p>
+                                <select name="select" class="styled-select slate"
+                                        id="gdtypePractice">
+                                    <option value="Учебная">Учебная</option>
+                                    <option value="Производственная">Производственная</option>
+                                    <option value="Преддипломная">Преддипломная</option>
+                                </select>
+                            </div>
+                            <div class="field margin20">
+                                <p class="inline-block sub-header">Группа</p>
+                                <input id="gdGroup">
+                            </div>
+                            <div class="field margin20">
+                                <p class="inline-block sub-header">Сроки:</p>
+                                <p class="inline-block sub-header">c</p>
+                                <p class="sub-header">по</p>
+                                <input  class="inline-block" id="gdstart">
+                                <input  class="inline-block" id="gdEnd">
+                            </div>
+                            <div class="field margin20">
+                                <p class="inline-block sub-header">Руководитель</p>
+                                <input id="gdSupervisor">
+                            </div>
+                        </div>
+                        <button class="button js-dialog-close" id="generateDocumentBtn">Сгенерировать</button>
+                    </div>
                 </div>
             </div>
         </section>
