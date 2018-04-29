@@ -35,14 +35,25 @@ Controller.prototype.init = async function () {
         this);
     this.View.onClickAddStudentToOrganisation = this.addStudentToOrganisation.bind(
         this);
-    this.View.onClickShowDialogGenerateDocument = this.generateDocument.bind(
+    this.View.onClickShowDialogGenerateDocument = this.showDialogGenerateDocument.bind(
+        this);
+    this.View.onClickGenerateDocument = this.generateDocument.bind(
         this);
     this.View.init();
     await this.Model.init();
     this.View.OpenOrCloseLoadImage();
 };
-Controller.prototype.generateDocument = async function () {
+Controller.prototype.showDialogGenerateDocument = async function () {
     this.View.dialogOpen("#dialogGenerateReport");
+    let selectedGroups=this.View.getSelectedGroups();
+    this.View.createInputs( "order-block",selectedGroups);
+};
+Controller.prototype.generateDocument = async function () {
+    let selectedGroups=this.View.getSelectedGroups();
+    let info_about_practice = this.View.getUserInfoAboutPractice();
+    let practice = await this.Model.getPractice(info_about_practice);
+    let information=this.View.getInformationForDocument(selectedGroups, this.Model.Groups);
+    this.Model.generateDocument(practice, information);
 };
 Controller.prototype.addStudentToOrganisationShowDialog = async function () {
     let info_about_practice = this.View.getConfigurationPractice();

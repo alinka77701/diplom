@@ -1,0 +1,44 @@
+ <script type="text/javascript">
+	function onLoad(){
+			document.getElementById("docxTemplateInput").addEventListener("change", readTemplateFile);
+	}
+	
+	readTemplateFile = function(evt) {
+		var f = evt.target.files[0];
+
+		if (f) {
+			var r = new FileReader();
+			r.onload = function(e) {
+				var contents = e.target.result;
+				doc = new window.Docxgen(contents);
+				var text = document.getElementById("templateText").value;
+				//var data = JSON.parse(text);
+                doc.setData({
+                    "direction" : "Информатика и вычислительная техника",
+                    "course" : "III",
+                    "type_practice" : "учебная",
+                    "start_date" : "5.02.18",
+                    "end_date" : "08.06.18",
+                    "group_name" : "14-ИВТ2",
+					"base_practice": "по приказу",
+                    "year": "2017",
+					"teacher_number":"45",
+                    "student_number": "17",
+                    "good_stud_num": "10",
+                    "num_base_practice": "1",
+                    "num_lections": "134",
+                    "supervisor" : "доцент Лагерев Дмитрий Григорьевич",
+                    "head_of_department" : "Подвесовский А.Г."
+                    });
+				doc.render()
+				out = doc.getZip().generate({
+					type : "blob"
+				});
+				saveAs(out, "output.docx")
+			};
+			r.readAsBinaryString(f);
+		} else {
+			alert("Failed to load file");
+		}
+	};
+	</script>

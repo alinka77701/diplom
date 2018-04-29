@@ -1,3 +1,4 @@
+
 const SEPTEMBER = 9;
 const firstCourse = 0;
 const secondCourse = 1;
@@ -14,6 +15,7 @@ var Model = function () {
   this.Courses = [];
   this.typesOrganisation = [];
   this.Organisations = [];
+
 };
 
 class Course {
@@ -697,4 +699,22 @@ Model.prototype.updateRequests = async function (students) {
 
   await Promise.all(urls.map(url => fetch(url, params).catch(err => err)));
 };
+
+Model.prototype.generateDocument = async function (practice, information) {
+    information['start_date_practice']=practice.start_date;
+    information['end_date_practice']=practice.end_date;
+    information['year']=practice.year;
+    let result = await fetch('/document', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(information)
+    })
+        .catch(function (error) {
+            alert("Ошибка при добавлении практики в БД " + error);
+        });
+};
 module.exports = Model;
+
+

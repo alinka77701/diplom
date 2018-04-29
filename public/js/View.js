@@ -3,6 +3,56 @@ const masterYear = 6;
 let selectedElem = 0;
 
 var View = function () {
+    this.infoGroups = [
+        {
+            "name": "МОА",
+            "fullName": "02.03.03 «Математическое обеспечение и администрирование информационных систем»",
+            "profile": "«Технология программирования»",
+            "type": "bachelor"
+        },
+        {
+            "name": "ПРИ",
+            "fullName": "09.03.04 «Программная инженерия»",
+            "profile": "«Разработка программно-информационных систем»",
+            "type": "bachelor"
+        },
+        {
+            "name": "ИВТ-1",
+            "fullName": "09.03.01 «Информатика и вычислительная техника»",
+            "profile": "«Программное обеспечение вычислительной техники и автоматизированных систем»",
+            "type": "bachelor"
+        },
+        {
+            "name": "ИВТ-2",
+            "fullName": "09.03.01 «Информатика и вычислительная техника»",
+            "profile": "«Программное обеспечение вычислительной техники и автоматизированных систем»",
+            "type": "bachelor"
+        },
+        {
+            "name": "ИВТ-3",
+            "fullName": "09.03.01 «Информатика и вычислительная техника»",
+            "profile": "«Программное обеспечение вычислительной техники и автоматизированных систем»",
+            "type": "bachelor"
+        },
+        {
+            "name": "ПРИ (мг)",
+            "fullName": "09.04.04 «Программная инженерия»",
+            "profile": "«Проектирование программно-информационных систем»",
+            "type": "master"
+        },
+        {
+            "name": "ИВТ-1 (мг)",
+            "fullName": "09.04.01 «Информатика и вычислительная техника»",
+            "profile": "«Компьютерный анализ и интерпретация данных»",
+            "type": "master"
+        },
+        {
+            "name": "ИВТ-2 (мг)",
+            "fullName": "09.04.01 «Информатика и вычислительная техника»",
+            "profile": "«Информационное и программное обеспечение вычислительных систем»",
+            "type": "master"
+        }
+    ];
     this.onClickNextStep = null;
     this.onClickPracticeCompleted = null;
     this.onClickCreatePractice = null;
@@ -33,6 +83,7 @@ var View = function () {
     this.onClickAddStudentToOrganisationShowDialog = null;
     this.onClickAddStudentToOrganisation = null;
     this.onClickShowDialogGenerateDocument = null;
+    this.onClickGenerateDocument = null;
     this.Practice = null;
 };
 
@@ -68,6 +119,9 @@ View.prototype.init = function () {
         this.onClickAddStudentToOrganisation);
     document.getElementById("showDialogGenerateDocumentBtn").addEventListener('click',
         this.onClickShowDialogGenerateDocument);
+    document.getElementById("generateDocumentBtn").addEventListener('click',
+        this.onClickGenerateDocument);
+
     this.myTable.dataTable({
         data: this.Groups,
         "language": {
@@ -829,9 +883,8 @@ View.prototype.dialogEnableCheckboxes = function (namesGroups, idElement) {
     for (let i = 0; i < inputs.length; i++) {
         for (let j = 0; j < namesGroups.length; j++) {
             if (inputs[i].parentElement.nextSibling.innerHTML === namesGroups[j]) {
-                let course=inputs[i].parentElement.parentElement.parentElement.parentElement;
-                if(course.getAttribute("data-mode")==="checkbox" && course.getAttribute("class").indexOf("active-course")===-1)
-                {
+                let course = inputs[i].parentElement.parentElement.parentElement.parentElement;
+                if (course.getAttribute("data-mode") === "checkbox" && course.getAttribute("class").indexOf("active-course") === -1) {
                     $(course).addClass("active-course");
                 }
                 inputs[i].removeAttribute("disabled");
@@ -845,4 +898,92 @@ View.prototype.dialogEnableCheckboxes = function (namesGroups, idElement) {
         }
     }
 };
+
+View.prototype.createInputs = function (idBlock, selectedGroups) {
+    let parent = document.getElementById(idBlock);
+    removeChildren(parent);
+    let h4 = document.createElement("h4");
+    h4.innerHTML = "Руководители";
+    h4.setAttribute("class", "align-center");
+    parent.appendChild(h4);
+    for (let i = 0; i < selectedGroups.length; i++) {
+        let div = document.createElement("div");
+        div.setAttribute("class", "field margin20");
+
+        let p = document.createElement("p");
+        p.setAttribute("class", "inline-block sub-header");
+        p.innerHTML = selectedGroups[i];
+        div.appendChild(p);
+
+        let input = document.createElement("input");
+        input.setAttribute("groupName", selectedGroups[i]);
+        div.appendChild(input);
+
+        parent.appendChild(div);
+    }
+};
+View.prototype.getInformationForDocument = function (selectedGroups, allGroups) {
+    let treeView = 0;
+    let groupsForDocument = [];
+    let frames = document.getElementsByClassName("frames")[0].children;
+    for (let i = 0; i < frames.length; i++) {
+        if (frames[i].style.display !== "none") {
+            treeView = frames[i].children[0];
+            break;
+        }
+    }
+    let educational_level = treeView.getAttribute("id");
+    if (educational_level.indexOf("bachelor") !== -1) {
+        educational_level = "bachelor";
+    }
+    else {
+        educational_level = "master";
+    }
+    let blockTeachers = document.getElementById("order-block").getElementsByTagName('div');
+
+    let teachers=[];
+    for (let i = 0; i < blockTeachers.length; i++) {
+        let groupName =blockTeachers[i].children[0].innerHTML;
+        let teacher =blockTeachers[i].children[1].value;
+        for(let j = 0; j < selectedGroups.length; j++) {
+            if(selectedGroups[j]===groupName)
+        teachers.push({
+            "groupName":groupName,
+            "teacher": teacher
+        });
+        }
+    }
+
+
+    for (let i = 0; i < selectedGroups.length; i++) {
+        for (let j = 0; j < this.infoGroups.length; j++) {
+            if (selectedGroups[i].indexOf(this.infoGroups[j].name) !== -1 && this.infoGroups[j].type === educational_level) {
+                for (let n = 0; n < allGroups.length; n++) {
+                    if (selectedGroups[i] === allGroups[n].name) {
+                        for (let k = 0; k< teachers.length; k++) {
+                            if (selectedGroups[i] === teachers[k].groupName) {
+                                allGroups[n].teacher =  teachers[k].teacher;
+                                allGroups[n].type = this.infoGroups[j].type;
+                                allGroups[n].fullName = this.infoGroups[j].fullName;
+                                allGroups[n].profile = this.infoGroups[j].profile;
+                                groupsForDocument.push(allGroups[n]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    let dean=document.getElementById("dean").value;
+    let head_of_department=document.getElementById("head_of_department").value;
+    let type_document=document.getElementById("gdtypeDocument").options[document.getElementById("gdtypeDocument").selectedIndex].value;
+    let information={
+        "type_document":type_document,
+        "dean": dean,
+        "head_of_department": head_of_department,
+        "groups": groupsForDocument
+    };
+    return information;
+};
+
 module.exports = View;

@@ -4,6 +4,10 @@ var path = require('path');
 var proxy = require('express-http-proxy');
 var bodyParser = require('body-parser');
 
+let JSZip = require('jszip');
+let Docxtemplater = require('docxtemplater');
+let fs = require('fs');
+
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const model = require('./public/db/models');
@@ -161,3 +165,45 @@ app.listen('7777', function () {
 });
 
 
+
+
+app.post('/document/', async (req, res) => {
+    let content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/educational.docx'), 'binary');
+
+    let zip = new JSZip(content);
+
+    let doc = new Docxtemplater();
+    doc.loadZip(zip);
+
+    doc.setData({
+        direction: req.body.fullName,
+        profile:  req.body.profile,
+        type_practice : 'учебной',
+        head_of_department: req.body.head_of_department,
+        dean: req.body.dean,
+        group_name:req.body.group_name,
+        start_date:req.body.group_name,
+        end_date:req.body.group_name,
+        supervisor: req.body.teacher
+    });
+
+    try {
+        doc.render()
+    }
+    catch (error) {
+        let e = {
+            message: error.message,
+            name: error.name,
+            stack: error.stack,
+            properties: error.properties,
+        };
+        console.log(JSON.stringify({error: e}));
+        throw error;
+    }
+
+    let buf = doc.getZip().generate({type: 'nodebuffer'});
+    fs.writeFileSync(path.resolve(__dirname, 'generated_documents/output.docx'), buf);
+    console.log(req.body);
+    console.log(req.body.groups.students);
+    res.json('done');
+});

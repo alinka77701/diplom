@@ -7,6 +7,10 @@
     <script type="text/javascript" src="js/libs/DataTables/datatables.min.js"></script>
     <script src="./js/bundle.js"></script>
 
+    <script src="js/docx/FileSaver.js"></script>
+    <script src="js/docx/jszip-utils.js"></script>
+    <script src="js/docx/docxgen.min.js"></script>
+
     <link rel="stylesheet" href="./assets/css/bundle.css">
     <link rel="shortcut icon" href="assets/img/iipo.png" type="image/x-icon">
 
@@ -1059,30 +1063,20 @@
                                     <option value="Отчет">Отчет</option>
                                 </select>
                             </div>
-                            <div class="field margin20">
-                                <p class="inline-block sub-header">Тип практики</p>
-                                <select name="select" class="styled-select slate"
-                                        id="gdtypePractice">
-                                    <option value="Учебная">Учебная</option>
-                                    <option value="Производственная">Производственная</option>
-                                    <option value="Преддипломная">Преддипломная</option>
-                                </select>
+
+
+                            <div id="order-block">
+
                             </div>
                             <div class="field margin20">
-                                <p class="inline-block sub-header">Группа</p>
-                                <input id="gdGroup">
+                                <p class="inline-block sub-header">Зав. кафедрой</p>
+                                <input id="head_of_department" value="Подвесовский А.Г.">
                             </div>
                             <div class="field margin20">
-                                <p class="inline-block sub-header">Сроки:</p>
-                                <p class="inline-block sub-header">c</p>
-                                <p class="sub-header">по</p>
-                                <input  class="inline-block" id="gdstart">
-                                <input  class="inline-block" id="gdEnd">
+                                <p class="inline-block sub-header">Декан ФИТ</p>
+                                <input id="dean" value="Дергачев К.В.">
                             </div>
-                            <div class="field margin20">
-                                <p class="inline-block sub-header">Руководитель</p>
-                                <input id="gdSupervisor">
-                            </div>
+
                         </div>
                         <button class="button js-dialog-close" id="generateDocumentBtn">Сгенерировать</button>
                     </div>
