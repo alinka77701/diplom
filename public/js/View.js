@@ -922,7 +922,7 @@ View.prototype.createInputs = function (idBlock, selectedGroups) {
         parent.appendChild(div);
     }
 };
-View.prototype.getInformationForDocument = function (selectedGroups, allGroups) {
+View.prototype.getInformationForDocument = function (practice, selectedGroups, allGroups) {
     let treeView = 0;
     let groupsForDocument = [];
     let frames = document.getElementsByClassName("frames")[0].children;
@@ -940,29 +940,26 @@ View.prototype.getInformationForDocument = function (selectedGroups, allGroups) 
         educational_level = "master";
     }
     let blockTeachers = document.getElementById("order-block").getElementsByTagName('div');
-
-    let teachers=[];
+    let teachers = [];
     for (let i = 0; i < blockTeachers.length; i++) {
-        let groupName =blockTeachers[i].children[0].innerHTML;
-        let teacher =blockTeachers[i].children[1].value;
-        for(let j = 0; j < selectedGroups.length; j++) {
-            if(selectedGroups[j]===groupName)
-        teachers.push({
-            "groupName":groupName,
-            "teacher": teacher
-        });
+        let groupName = blockTeachers[i].children[0].innerHTML;
+        let teacher = blockTeachers[i].children[1].value;
+        for (let j = 0; j < selectedGroups.length; j++) {
+            if (selectedGroups[j] === groupName)
+                teachers.push({
+                    "groupName": groupName,
+                    "teacher": teacher
+                });
         }
     }
-
-
     for (let i = 0; i < selectedGroups.length; i++) {
         for (let j = 0; j < this.infoGroups.length; j++) {
             if (selectedGroups[i].indexOf(this.infoGroups[j].name) !== -1 && this.infoGroups[j].type === educational_level) {
                 for (let n = 0; n < allGroups.length; n++) {
                     if (selectedGroups[i] === allGroups[n].name) {
-                        for (let k = 0; k< teachers.length; k++) {
+                        for (let k = 0; k < teachers.length; k++) {
                             if (selectedGroups[i] === teachers[k].groupName) {
-                                allGroups[n].teacher =  teachers[k].teacher;
+                                allGroups[n].teacher = teachers[k].teacher;
                                 allGroups[n].type = this.infoGroups[j].type;
                                 allGroups[n].fullName = this.infoGroups[j].fullName;
                                 allGroups[n].profile = this.infoGroups[j].profile;
@@ -974,16 +971,51 @@ View.prototype.getInformationForDocument = function (selectedGroups, allGroups) 
             }
         }
     }
-    let dean=document.getElementById("dean").value;
-    let head_of_department=document.getElementById("head_of_department").value;
-    let type_document=document.getElementById("gdtypeDocument").options[document.getElementById("gdtypeDocument").selectedIndex].value;
-    let information={
-        "type_document":type_document,
-        "dean": dean,
-        "head_of_department": head_of_department,
-        "groups": groupsForDocument
-    };
-    return information;
+    let dean = document.getElementById("dean").value;
+    let head_of_department = document.getElementById("head_of_department").value;
+    let type_document = document.getElementById("gdtypeDocument").options[document.getElementById("gdtypeDocument").selectedIndex].value;
+    let documents = [];
+    let typePractice = document.getElementById("selectTypePracticeTab").value;
+    typePractice= typePractice.replaceAt(typePractice.length - 1, "й");
+    typePractice= typePractice.replaceAt(typePractice.length - 2, "о");
+    typePractice= typePractice.toLowerCase();
+
+    let start_year = practice.start_date_practice.substr(0, 4),
+        start_month = practice.start_date_practice.substr(5, 2),
+        start_day = practice.start_date_practice.substr(8, 2),
+        end_year = practice.end_date_practice.substr(0, 4),
+        end_month = practice.end_date_practice.substr(5, 2),
+        end_day = practice.end_date_practice.substr(8, 2);
+
+    let start_date = start_day + '-' + start_month + '-' + start_year;
+    let end_date = end_day + '-' + end_month + '-' + end_year;
+
+    for (let i = 0; i < groupsForDocument.length; i++) {
+        let students = groupsForDocument[i].students;
+        let str = JSON.stringify(students, ["name"]);
+        students=JSON.parse(str);
+        let document = {
+            "direction": groupsForDocument[i].fullName,
+            "profile": groupsForDocument[i].profile,
+            "dean": dean,
+            "head_of_department": head_of_department,
+            "type_practice": typePractice,
+            "start_date": start_date,
+            "end_date": end_date,
+            "group_name": groupsForDocument[i].name,
+            "supervisor": groupsForDocument[i].teacher,
+            "students": students
+        };
+        documents.push(document);
+    }
+    return documents;
+};
+View.prototype.getTypeDocument = function () {
+    let type_document = document.getElementById("gdtypeDocument").options[document.getElementById("gdtypeDocument").selectedIndex].value;
+    return type_document;
+};
+String.prototype.replaceAt = function (index, replacement) {
+    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
 };
 
 module.exports = View;

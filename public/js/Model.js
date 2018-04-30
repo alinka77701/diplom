@@ -700,20 +700,26 @@ Model.prototype.updateRequests = async function (students) {
   await Promise.all(urls.map(url => fetch(url, params).catch(err => err)));
 };
 
-Model.prototype.generateDocument = async function (practice, information) {
-    information['start_date_practice']=practice.start_date;
-    information['end_date_practice']=practice.end_date;
-    information['year']=practice.year;
+Model.prototype.generateDocument = async function (document, type_document, type_practice) {
+  let information={
+    data: document,
+      type_document: type_document,
+      type_practice: type_practice
+  };
     let result = await fetch('/document', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(information)
-    })
-        .catch(function (error) {
-            alert("Ошибка при добавлении практики в БД " + error);
+    }).then(function(resp) {
+        return resp.blob();
+    }).then(function(blob) {
+        saveAs(blob, "document.docx");
+    }).catch(function (error) {
+            alert("Ошибка при генерации документа " + error);
         });
+    debugger;
 };
 module.exports = Model;
 

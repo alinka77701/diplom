@@ -120,15 +120,15 @@ app.get('/requst-by-student-uid/', async function (req, res) {
     res.send(data);
 });
 
-app.get('/years-practice',async function (req, res) {
-  let data =  await query.getPracticeYears();
-  res.send(data);
+app.get('/years-practice', async function (req, res) {
+    let data = await query.getPracticeYears();
+    res.send(data);
 });
 
 app.get('/exist-request/', async function (req, res) {
     let data = await query.getRequestOrganisation(req);
     if (data === null) {
-      res.json('Not found');
+        res.json('Not found');
     }
     else {
         res.send(data);
@@ -146,8 +146,8 @@ app.get('/update-request-organisation/', async function (req, res) {
 });
 
 app.get('/update-request-organisation-by-request/', async function (req, res) {
-  let data = await query.updateRequestOrganisationByRequest(req);
-  res.send(data);
+    let data = await query.updateRequestOrganisationByRequest(req);
+    res.send(data);
 });
 
 app.get('/groups-by-practice-id/', async function (req, res) {
@@ -156,8 +156,8 @@ app.get('/groups-by-practice-id/', async function (req, res) {
 });
 
 app.get('/update-request/', async function (req, res) {
-  let data = await query.updateRequest(req);
-  res.send(data);
+    let data = await query.updateRequest(req);
+    res.send(data);
 });
 
 app.listen('7777', function () {
@@ -165,30 +165,14 @@ app.listen('7777', function () {
 });
 
 
-
-
 app.post('/document/', async (req, res) => {
     let content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/educational.docx'), 'binary');
-
     let zip = new JSZip(content);
-
     let doc = new Docxtemplater();
     doc.loadZip(zip);
-
-    doc.setData({
-        direction: req.body.fullName,
-        profile:  req.body.profile,
-        type_practice : 'учебной',
-        head_of_department: req.body.head_of_department,
-        dean: req.body.dean,
-        group_name:req.body.group_name,
-        start_date:req.body.group_name,
-        end_date:req.body.group_name,
-        supervisor: req.body.teacher
-    });
-
+    doc.setData(req.body.data);
     try {
-        doc.render()
+        doc.render();
     }
     catch (error) {
         let e = {
@@ -202,8 +186,18 @@ app.post('/document/', async (req, res) => {
     }
 
     let buf = doc.getZip().generate({type: 'nodebuffer'});
-    fs.writeFileSync(path.resolve(__dirname, 'generated_documents/output.docx'), buf);
-    console.log(req.body);
-    console.log(req.body.groups.students);
-    res.json('done');
+    let type_practice = req.body.type_practice;
+    type_practice= type_practice.replaceAt(type_practice.length - 1, "я");
+    type_practice= type_practice.replaceAt(type_practice.length - 2, "а");
+    fs.writeFileSync(path.resolve(__dirname, 'сгенерированные_документы/' + req.body.type_document + '/' + type_practice + '/' + req.body.data.group_name + '.docx'), buf);
+    let filePath = path.join(__dirname, 'сгенерированные_документы/' + req.body.type_document + '/' + type_practice + '/' + req.body.data.group_name + '.docx');
+    let stat = fs.statSync(filePath);
+    res.writeHead(200, {
+        'Content-Type': ' application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'Content-Length': stat.size
+    });
+    fs.createReadStream(filePath).pipe(res);
 });
+String.prototype.replaceAt = function (index, replacement) {
+    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+};

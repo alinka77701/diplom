@@ -44,16 +44,30 @@ Controller.prototype.init = async function () {
     this.View.OpenOrCloseLoadImage();
 };
 Controller.prototype.showDialogGenerateDocument = async function () {
-    this.View.dialogOpen("#dialogGenerateReport");
-    let selectedGroups=this.View.getSelectedGroups();
-    this.View.createInputs( "order-block",selectedGroups);
-};
-Controller.prototype.generateDocument = async function () {
-    let selectedGroups=this.View.getSelectedGroups();
     let info_about_practice = this.View.getUserInfoAboutPractice();
     let practice = await this.Model.getPractice(info_about_practice);
-    let information=this.View.getInformationForDocument(selectedGroups, this.Model.Groups);
-    this.Model.generateDocument(practice, information);
+    if (practice.length !== 0) {
+        let groupsPracticeParticipants = await this.Model.getGroupsByPracticeId(
+            practice);
+        if (groupsPracticeParticipants.length !== 0) {
+            this.View.dialogOpen("#dialogGenerateReport");
+            let selectedGroups = this.View.getSelectedGroups();
+            this.View.createInputs("order-block", selectedGroups);
+        }
+    }
+    else {
+        alert("Практки не существует! Для генерации документа практика для выбранных групп должна существовать.");
+    }
+};
+Controller.prototype.generateDocument = async function () {
+    let selectedGroups = this.View.getSelectedGroups();
+    let info_about_practice = this.View.getUserInfoAboutPractice();
+    let practice = await this.Model.getPractice(info_about_practice);
+    let type_document = this.View.getTypeDocument();
+    let documents = this.View.getInformationForDocument(practice, selectedGroups, this.Model.Groups);
+    for (let i = 0; i < documents.length; i++) {
+        await this.Model.generateDocument(documents[i], type_document, info_about_practice.typePractice);
+    }
 };
 Controller.prototype.addStudentToOrganisationShowDialog = async function () {
     let info_about_practice = this.View.getConfigurationPractice();
