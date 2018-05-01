@@ -701,6 +701,7 @@ Model.prototype.updateRequests = async function (students) {
 };
 
 Model.prototype.generateDocument = async function (document, type_document, type_practice) {
+    type_practice= type_practice.toLowerCase();
   let information={
     data: document,
       type_document: type_document,
@@ -715,7 +716,7 @@ Model.prototype.generateDocument = async function (document, type_document, type
     }).then(function(resp) {
         return resp.blob();
     }).then(function(blob) {
-        saveAs(blob, "document.docx");
+        saveAs(blob, type_document+' '+type_practice+' практика '+document.group_name+".docx");
     }).catch(function (error) {
             alert("Ошибка при генерации документа " + error);
         });

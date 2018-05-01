@@ -39,10 +39,47 @@ Controller.prototype.init = async function () {
         this);
     this.View.onClickGenerateDocument = this.generateDocument.bind(
         this);
+    this.View.onChangeTypeDocument = this.initDialog.bind(
+        this);
     this.View.init();
     await this.Model.init();
     this.View.OpenOrCloseLoadImage();
+
 };
+
+Controller.prototype.initDialog = async function () {
+    let type_document = this.View.getSelectValue("gdtypeDocument");
+    let isOrder=false;
+    if (type_document === "Приказ") {
+        isOrder=true;
+        this.createInputs(isOrder);
+    }
+    else {
+        isOrder=false;
+        this.createInputs(isOrder);
+    }
+};
+
+Controller.prototype.createInputs = function (isOrder) {
+    let selectedGroups = this.View.getSelectedGroups();
+    if(isOrder){//приказ
+        let block=this.View.getElemById("groups-report-block");
+        this.View.removeChildren(block);
+        this.View.changeDisplay("report-block","none");
+        this.View.changeDisplay("order-block","block");
+        this.View.createInputsOrder(selectedGroups);
+        this.View.changeInnerHtml("typeDocument","приказа");
+    }
+    else{//отчет
+        let block=this.View.getElemById("order-block");
+        this.View.removeChildren(block);
+        this.View.createInputsReport(selectedGroups);
+        this.View.changeDisplay("report-block","block");
+        this.View.changeDisplay("order-block","none");
+        this.View.changeInnerHtml("typeDocument","отчета");
+    }
+};
+
 Controller.prototype.showDialogGenerateDocument = async function () {
     let info_about_practice = this.View.getUserInfoAboutPractice();
     let practice = await this.Model.getPractice(info_about_practice);
@@ -51,24 +88,31 @@ Controller.prototype.showDialogGenerateDocument = async function () {
             practice);
         if (groupsPracticeParticipants.length !== 0) {
             this.View.dialogOpen("#dialogGenerateReport");
-            let selectedGroups = this.View.getSelectedGroups();
-            this.View.createInputs("order-block", selectedGroups);
         }
     }
     else {
         alert("Практки не существует! Для генерации документа практика для выбранных групп должна существовать.");
     }
 };
+
 Controller.prototype.generateDocument = async function () {
     let selectedGroups = this.View.getSelectedGroups();
     let info_about_practice = this.View.getUserInfoAboutPractice();
     let practice = await this.Model.getPractice(info_about_practice);
-    let type_document = this.View.getTypeDocument();
-    let documents = this.View.getInformationForDocument(practice, selectedGroups, this.Model.Groups);
+    let type_document = this.View.getSelectValue("gdtypeDocument");
+    let documents=0;
+    if(type_document==="Приказ"){
+        documents = this.View.getInformationForDocumentOrder(practice, selectedGroups, this.Model.Groups);
+    }
+    else{
+        documents = this.View.getInformationForDocumentReport(practice, selectedGroups, this.Model.Groups);
+    }
+
     for (let i = 0; i < documents.length; i++) {
         await this.Model.generateDocument(documents[i], type_document, info_about_practice.typePractice);
     }
 };
+
 Controller.prototype.addStudentToOrganisationShowDialog = async function () {
     let info_about_practice = this.View.getConfigurationPractice();
     let practice = await this.Model.getPractice(info_about_practice);
@@ -80,6 +124,7 @@ Controller.prototype.addStudentToOrganisationShowDialog = async function () {
         "group-treeview-tabcontrol2-dialogAdd-master");
     this.View.dialogOpen("#dialogAddStudent");
 };
+
 Controller.prototype.addStudentToOrganisation = async function () {
     let students = await this.View.getSelectedStudents(event);
     let info_about_practice = this.View.getConfigurationPractice();

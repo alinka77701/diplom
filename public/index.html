@@ -1053,20 +1053,34 @@
                          data-role="dialog" id="dialogGenerateReport" data-overlay-click-close="true"
                          data-close-button="true" data-width="500px" data-height="auto">
                         <h3 class="margin20">Генерация документов</h3>
-                        <h4>Проверьте достоверность данных</h4>
                         <div class="main align-left">
                             <div class="field margin20">
                                 <p class="inline-block sub-header">Тип документа</p>
                                 <select name="select" class="styled-select slate"
                                         id="gdtypeDocument">
+                                    <option disabled selected value>Тип документа</option>
                                     <option value="Приказ">Приказ</option>
                                     <option value="Отчет">Отчет</option>
                                 </select>
                             </div>
+                            <h4 class="align-center">Укажите информацию для <span id="typeDocument"></span></h4>
+                            <div id="order-block"></div>
+                            <div id="report-block">
+                                <div class="field margin20">
+                                    <p class="inline-block sub-header">Курс</p>
+                                    <input id="course">
+                                </div>
+                                <div class="field margin20">
+                                    <p class="inline-block sub-header">Базы практики</p>
+                                    <input id="base_practice">
+                                </div>
+                                <div class="field margin20">
+                                    <p class="inline-block sub-header">Кол-во баз практики</p>
+                                    <input id="num_base_practice">
+                                </div>
+                                <div id="groups-report-block">
 
-
-                            <div id="order-block">
-
+                                </div>
                             </div>
                             <div class="field margin20">
                                 <p class="inline-block sub-header">Зав. кафедрой</p>
