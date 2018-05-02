@@ -67,11 +67,11 @@ app.get('/requsts-by-student-practice/', async function (req, res) {
     let data = await query.getDeterminedRequests(req);
     res.send(data);
 });
-
 app.get('/organisations-by-request/', async function (req, res) {
     let data = await query.getOrganisationByRequestId(req);
     res.send(data);
 });
+
 
 app.post('/organisation-create', async (req, res) => {
     await query.addOrganisation(req.body);
@@ -166,7 +166,21 @@ app.listen('7777', function () {
 
 
 app.post('/document/', async (req, res) => {
-    let content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/educational.docx'), 'binary');
+    let content = 0;
+    if (req.body.type_document === "Приказ") {
+        if (req.body.type_practice === "учебная") {
+            content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/educational.docx'), 'binary');
+        }
+        else if (req.body.type_practice === "преддипломная") {
+            content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/production.docx'), 'binary');
+        }
+       /* else if (req.body.type_practice === "преддипломная") {
+            content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/preddiploma.docx'), 'binary');
+        }*/
+    }
+    else {
+        content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/report.docx'), 'binary');
+    }
     let zip = new JSZip(content);
     let doc = new Docxtemplater();
     doc.loadZip(zip);
@@ -187,8 +201,8 @@ app.post('/document/', async (req, res) => {
 
     let buf = doc.getZip().generate({type: 'nodebuffer'});
     let type_practice = req.body.type_practice;
-    type_practice= type_practice.replaceAt(type_practice.length - 1, "я");
-    type_practice= type_practice.replaceAt(type_practice.length - 2, "а");
+    type_practice = type_practice.replaceAt(type_practice.length - 1, "я");
+    type_practice = type_practice.replaceAt(type_practice.length - 2, "а");
     fs.writeFileSync(path.resolve(__dirname, 'сгенерированные_документы/' + req.body.type_document + '/' + type_practice + '/' + req.body.data.group_name + '.docx'), buf);
     let filePath = path.join(__dirname, 'сгенерированные_документы/' + req.body.type_document + '/' + type_practice + '/' + req.body.data.group_name + '.docx');
     let stat = fs.statSync(filePath);
@@ -198,6 +212,7 @@ app.post('/document/', async (req, res) => {
     });
     fs.createReadStream(filePath).pipe(res);
 });
+
 String.prototype.replaceAt = function (index, replacement) {
     return this.substr(0, index) + replacement + this.substr(index + replacement.length);
 };

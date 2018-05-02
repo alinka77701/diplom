@@ -49,34 +49,38 @@ Controller.prototype.init = async function () {
 
 Controller.prototype.initDialog = async function () {
     let type_document = this.View.getSelectValue("gdtypeDocument");
-    let isOrder=false;
+    let isOrder = false;
     if (type_document === "Приказ") {
-        isOrder=true;
+        isOrder = true;
         this.createInputs(isOrder);
     }
     else {
-        isOrder=false;
+        isOrder = false;
         this.createInputs(isOrder);
     }
 };
 
-Controller.prototype.createInputs = function (isOrder) {
+Controller.prototype.createInputs =async  function (isOrder) {
     let selectedGroups = this.View.getSelectedGroups();
-    if(isOrder){//приказ
-        let block=this.View.getElemById("groups-report-block");
+    if (isOrder) {//приказ
+        let block = this.View.getElemById("groups-report-block");
         this.View.removeChildren(block);
-        this.View.changeDisplay("report-block","none");
-        this.View.changeDisplay("order-block","block");
+        this.View.changeDisplay("report-block", "none");
+        this.View.changeDisplay("order-block", "block");
         this.View.createInputsOrder(selectedGroups);
-        this.View.changeInnerHtml("typeDocument","приказа");
+        this.View.changeInnerHtml("typeDocument", "приказа");
     }
-    else{//отчет
-        let block=this.View.getElemById("order-block");
+    else {//отчет
+        let info_about_practice = this.View.getUserInfoAboutPractice();
+        let practice = await this.Model.getPractice(info_about_practice);
+        let block = this.View.getElemById("order-block");
         this.View.removeChildren(block);
         this.View.createInputsReport(selectedGroups);
-        this.View.changeDisplay("report-block","block");
-        this.View.changeDisplay("order-block","none");
-        this.View.changeInnerHtml("typeDocument","отчета");
+        this.View.changeDisplay("report-block", "block");
+        this.View.changeDisplay("order-block", "none");
+        this.View.changeInnerHtml("typeDocument", "отчета");
+        let organisations=await this.Model.getOrganisationsByPracticeId(practice);
+        this.View.fillDialog(practice,organisations);
     }
 };
 
@@ -100,12 +104,46 @@ Controller.prototype.generateDocument = async function () {
     let info_about_practice = this.View.getUserInfoAboutPractice();
     let practice = await this.Model.getPractice(info_about_practice);
     let type_document = this.View.getSelectValue("gdtypeDocument");
-    let documents=0;
-    if(type_document==="Приказ"){
-        documents = this.View.getInformationForDocumentOrder(practice, selectedGroups, this.Model.Groups);
+    let groupsObjects=[];
+    let documents = 0,data=0;
+    if (type_document === "Приказ") {
+        if (selectedGroups.length !== 0) {
+            if (practice.length !== 0) {
+                for (let i = 0; i < this.Model.Groups.length; i++) {
+                    for (let j = 0; j < selectedGroups.length; j++) {
+                        if (this.Model.Groups[i].name === selectedGroups[j]) {
+                            groupsObjects.push(this.Model.Groups[i]);
+                        }
+                    }
+                }
+
+                let groupsPracticeParticipants = await this.Model.getGroupsByPracticeId(
+                    practice);
+                selectedGroups = [];
+                for (let i = 0; i < groupsPracticeParticipants.length; i++) {
+                    for (let j = 0; j < groupsObjects.length; j++) {
+                        if (+groupsPracticeParticipants[i].uid_group
+                            === groupsObjects[j].uid_LDAP) {
+                            selectedGroups.push(groupsObjects[j].name);
+                        }
+                    }
+                }
+                if (selectedGroups.length !== 0) {
+                    let requests_organisations;
+                    let requests = await this.Model.getRequests(practice, groupsObjects);
+                    await this.Model.assosiateRequestToStudent(requests, selectedGroups);
+                    requests_organisations = await this.Model.getRequestsOrganisations(
+                        selectedGroups);
+                    data = await this.Model.getData(selectedGroups, requests_organisations);
+                }
+            }
+        }
+        let organisations=await this.Model.getOrganisationsByPracticeId(practice);
+        documents = this.View.getInformationForDocumentOrder(practice, selectedGroups, this.Model.Groups,data,organisations);
     }
-    else{
-        documents = this.View.getInformationForDocumentReport(practice, selectedGroups, this.Model.Groups);
+    else {
+        let organisations=await this.Model.getOrganisationsByPracticeId(practice);
+        documents = this.View.getInformationForDocumentReport(practice, selectedGroups, this.Model.Groups,organisations);
     }
 
     for (let i = 0; i < documents.length; i++) {

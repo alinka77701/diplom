@@ -939,10 +939,13 @@ View.prototype.createInputsReport = function (selectedGroups) {
     h4.setAttribute("class", "align-center");
     parent.appendChild(h4);
     for (let i = 0; i < selectedGroups.length; i++) {
+        let div_group = document.createElement("div");
+        div_group.setAttribute("class", "group " + selectedGroups[i]);
+
         let h4 = document.createElement("h4");
-        h4.innerHTML =selectedGroups[i];
+        h4.innerHTML = selectedGroups[i];
         h4.setAttribute("class", "align-center");
-        parent.appendChild(h4);
+        div_group.appendChild(h4);
 
         let div = document.createElement("div");
         div.setAttribute("class", "field margin20");
@@ -951,8 +954,9 @@ View.prototype.createInputsReport = function (selectedGroups) {
         p.innerHTML = "Руководитель";
         div.appendChild(p);
         let input = document.createElement("input");
+        input.setAttribute("class", "supervisor");
         div.appendChild(input);
-        parent.appendChild(div);
+        div_group.appendChild(div);
 
         div = document.createElement("div");
         div.setAttribute("class", "field margin20");
@@ -961,22 +965,25 @@ View.prototype.createInputsReport = function (selectedGroups) {
         p.innerHTML = "Студ. (4 и 5)";
         div.appendChild(p);
         input = document.createElement("input");
+        input.setAttribute("class", "good_students");
         div.appendChild(input);
-        parent.appendChild(div);
+        div_group.appendChild(div);
 
         div = document.createElement("div");
         div.setAttribute("class", "field margin20");
         p = document.createElement("p");
         p.setAttribute("class", "inline-block sub-header");
-        p.innerHTML = "Кол-во лекций";
+        p.innerHTML = "Кол-во препод.-руковод.";
         div.appendChild(p);
         input = document.createElement("input");
+        input.setAttribute("class", "teacher_number");
         div.appendChild(input);
-        parent.appendChild(div);
+        div_group.appendChild(div);
+        parent.appendChild(div_group);
     }
 };
 
-View.prototype.getInformationForDocumentOrder = function (practice, selectedGroups, allGroups) {
+View.prototype.getInformationForDocumentOrder = function (practice, selectedGroups, allGroups, data, organisations) {
     let treeView = 0;
     let groupsForDocument = [];
     let frames = document.getElementsByClassName("frames")[0].children;
@@ -1043,24 +1050,75 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
 
     let start_date = start_day + '.' + start_month + '.' + start_year;
     let end_date = end_day + '.' + end_month + '.' + end_year;
+    if (typePractice === "учебной") {
+        for (let i = 0; i < groupsForDocument.length; i++) {
+            let students = groupsForDocument[i].students;
+            let str = JSON.stringify(students, ["name"]);
+            students = JSON.parse(str);
+            let document = {
+                "direction": groupsForDocument[i].fullName,
+                "profile": groupsForDocument[i].profile,
+                "dean": dean,
+                "head_of_department": head_of_department,
+                "type_practice": typePractice,
+                "start_date": start_date,
+                "end_date": end_date,
+                "group_name": groupsForDocument[i].name,
+                "supervisor": groupsForDocument[i].teacher,
+                "students": students
+            };
+            documents.push(document);
+        }
+    }
+    else if (typePractice === "преддипломной") {
+        for (let i = 0; i < organisations.length; i++) {
+            organisations[i].students = [];
+        }
+        for (let i = 0; i < data.length; i++) {
+            for (let j = 0; j < groupsForDocument.length; j++) {
+                if (data[i].group === groupsForDocument[j].name) {
+                    for (let k = 0; k < groupsForDocument[j].students.length; k++) {
+                        if (data[i].student === groupsForDocument[j].students[k].name) {
+                            for (let n = 0; n < organisations.length; n++) {
+                                if (data[i].organisation === organisations[n].name) {
+                                    organisations[n].group = groupsForDocument[j].name;
+                                    organisations[n].organization_name=organisations[n].name;
+                                    organisations[n].teacher = groupsForDocument[j].teacher;
+                                    let student=data[i].student;
+                                    organisations[n].students.push({"name":student});
+                                }
+                            }
+                        }
 
-    for (let i = 0; i < groupsForDocument.length; i++) {
-        let students = groupsForDocument[i].students;
-        let str = JSON.stringify(students, ["name"]);
-        students = JSON.parse(str);
-        let document = {
-            "direction": groupsForDocument[i].fullName,
-            "profile": groupsForDocument[i].profile,
-            "dean": dean,
-            "head_of_department": head_of_department,
-            "type_practice": typePractice,
-            "start_date": start_date,
-            "end_date": end_date,
-            "group_name": groupsForDocument[i].name,
-            "supervisor": groupsForDocument[i].teacher,
-            "students": students
-        };
-        documents.push(document);
+                    }
+                }
+
+            }
+        }
+        for (let i = 0; i < organisations.length; i++) {
+            for (let j = 0; j < groupsForDocument.length; j++) {
+                if(organisations[i].group===groupsForDocument[j].name){
+
+                    let str = JSON.stringify(organisations[i], ["organization_name", "teacher", "students"]);
+                    organisations[i] = JSON.parse(str);
+
+                    let document = {
+                        "direction": groupsForDocument[j].fullName,
+                        "profile": groupsForDocument[j].profile,
+                        "dean": dean,
+                        "course": "1",
+                        "head_of_department": head_of_department,
+                        "type_practice": typePractice,
+                        "start_date": start_date,
+                        "end_date": end_date,
+                        "group_name": groupsForDocument[j].name,
+                        "supervisor": groupsForDocument[j].teacher,
+                        "organizations": organisations[i]
+                    };
+                    documents.push(document);
+                }
+            }
+        }
     }
     return documents;
 };
@@ -1082,16 +1140,20 @@ View.prototype.getInformationForDocumentReport = function (practice, selectedGro
     else {
         educational_level = "master";
     }
-    let blockTeachers = document.getElementById("order-block").getElementsByTagName('div');
-    let teachers = [];
-    for (let i = 0; i < blockTeachers.length; i++) {
-        let groupName = blockTeachers[i].children[0].innerHTML;
-        let teacher = blockTeachers[i].children[1].value;
+    let blockGroups = document.getElementById("groups-report-block").getElementsByClassName('group');
+    let additional_info = [];
+    for (let i = 0; i < blockGroups.length; i++) {
+        let groupName = blockGroups[i].getElementsByTagName('h4')[0].innerHTML;
+        let supervisor = blockGroups[i].getElementsByClassName("supervisor")[0].value;
+        let good_students_number = blockGroups[i].getElementsByClassName("good_students")[0].value;
+        let teacher_number = blockGroups[i].getElementsByClassName("teacher_number")[0].value
         for (let j = 0; j < selectedGroups.length; j++) {
             if (selectedGroups[j] === groupName)
-                teachers.push({
+                additional_info.push({
                     "groupName": groupName,
-                    "teacher": teacher
+                    "supervisor": supervisor,
+                    "good_stud_num": good_students_number,
+                    "teacher_number": teacher_number
                 });
         }
     }
@@ -1100,12 +1162,12 @@ View.prototype.getInformationForDocumentReport = function (practice, selectedGro
             if (selectedGroups[i].indexOf(this.infoGroups[j].name) !== -1 && this.infoGroups[j].type === educational_level) {
                 for (let n = 0; n < allGroups.length; n++) {
                     if (selectedGroups[i] === allGroups[n].name) {
-                        for (let k = 0; k < teachers.length; k++) {
-                            if (selectedGroups[i] === teachers[k].groupName) {
-                                allGroups[n].teacher = teachers[k].teacher;
-                                allGroups[n].type = this.infoGroups[j].type;
+                        for (let k = 0; k < additional_info.length; k++) {
+                            if (selectedGroups[i] === additional_info[k].groupName) {
+                                allGroups[n].supervisor = additional_info[k].supervisor;
                                 allGroups[n].fullName = this.infoGroups[j].fullName;
-                                allGroups[n].profile = this.infoGroups[j].profile;
+                                allGroups[n].good_stud_num = additional_info[k].good_stud_num;
+                                allGroups[n].teacher_number = additional_info[k].teacher_number;
                                 groupsForDocument.push(allGroups[n]);
                             }
                         }
@@ -1114,14 +1176,16 @@ View.prototype.getInformationForDocumentReport = function (practice, selectedGro
             }
         }
     }
-    let dean = document.getElementById("dean").value;
+
     let head_of_department = document.getElementById("head_of_department").value;
-    let type_document = document.getElementById("gdtypeDocument").options[document.getElementById("gdtypeDocument").selectedIndex].value;
     let documents = [];
     let typePractice = document.getElementById("selectTypePracticeTab").value;
-    typePractice = typePractice.replaceAt(typePractice.length - 1, "й");
-    typePractice = typePractice.replaceAt(typePractice.length - 2, "о");
     typePractice = typePractice.toLowerCase();
+
+    let course = document.getElementById("course").value;
+    let base_practice = document.getElementById("base_practice").value;
+    let num_base_practice = document.getElementById("num_base_practice").value;
+    let num_lections = document.getElementById("num_lections").value;
 
     let start_year = practice.start_date_practice.substr(0, 4),
         start_month = practice.start_date_practice.substr(5, 2),
@@ -1134,20 +1198,22 @@ View.prototype.getInformationForDocumentReport = function (practice, selectedGro
     let end_date = end_day + '.' + end_month + '.' + end_year;
 
     for (let i = 0; i < groupsForDocument.length; i++) {
-        let students = groupsForDocument[i].students;
-        let str = JSON.stringify(students, ["name"]);
-        students = JSON.parse(str);
         let document = {
             "direction": groupsForDocument[i].fullName,
-            "profile": groupsForDocument[i].profile,
-            "dean": dean,
-            "head_of_department": head_of_department,
+            "course": course,
             "type_practice": typePractice,
             "start_date": start_date,
             "end_date": end_date,
             "group_name": groupsForDocument[i].name,
-            "supervisor": groupsForDocument[i].teacher,
-            "students": students
+            "base_practice": base_practice,
+            "year": practice.year,
+            "teacher_number": groupsForDocument[i].teacher_number,
+            "student_number": groupsForDocument[i].students.length,
+            "good_stud_num": groupsForDocument[i].good_stud_num,
+            "num_base_practice": num_base_practice,
+            "num_lections": num_lections,
+            "supervisor": groupsForDocument[i].supervisor,
+            "head_of_department": head_of_department
         };
         documents.push(document);
     }
@@ -1160,12 +1226,21 @@ View.prototype.getSelectValue = function (id) {
 
 View.prototype.changeDisplay = function (id, value) {
     let elem = document.getElementById(id);
-    elem.style.display =value;
+    elem.style.display = value;
 };
 
 View.prototype.changeInnerHtml = function (id, value) {
     let elem = document.getElementById(id);
-    elem.innerHTML =value;
+    elem.innerHTML = value;
+};
+
+View.prototype.fillDialog = function (practice, organisations) {
+    let elem = document.getElementById("base_practice");
+    for (let i = 0; i < organisations.length; i++) {
+        elem.value += organisations[i].name + ', ';
+    }
+    elem = document.getElementById("num_base_practice");
+    elem.value = organisations.length;
 };
 
 String.prototype.replaceAt = function (index, replacement) {

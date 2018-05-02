@@ -400,6 +400,33 @@ Model.prototype.getPracticeYears = async function () {
   return years;
 };
 
+Model.prototype.getRequestsOrganisationsByRequestId = async function (requests) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let urls = [];
+    let requests_organisations = [];
+    for (let i = 0; i < requests.length; i++) {
+        urls.push('/organisations-by-request' + '?id_request=' + requests[i].id_request);
+    }
+    await Promise.all(
+        urls.map(url => fetch(url, params).catch(err => err))
+    )
+        .then(responses => Promise.all(
+            responses.map(r => r instanceof Error ? r : r.json().catch(err => err))
+        ))
+        .then(results => {
+            for (let i = 0; i < results.length; ++i) {
+                requests_organisations.push(results[i]);
+            }
+        });
+
+    return requests_organisations;
+};
+
 /*============================================PRACTICE CREATION
  SECTION=====================================================*/
 Model.prototype.getTypesOrganisation = async function () {
@@ -442,6 +469,20 @@ Model.prototype.getOrganisationById = async function (id) {
   let organisation = await result.json();
   return organisation;
 };
+
+Model.prototype.getRequestsByPracticeId = async function (practice) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = '?id_practice=' + practice.id_practice;
+    let result = await fetch('/requests-by-practice' + info, params);
+    let requests = await result.json();
+    return requests;
+};
+
 
 Model.prototype.getRequestsByOrganisationName = async function (organisation,
     practice, isApproved) {
