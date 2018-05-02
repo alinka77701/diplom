@@ -600,7 +600,6 @@ Model.prototype.createPractice = async function (practice) {
   .catch(function (error) {
     alert("Ошибка при добавлении практики в БД " + error);
   });
-
 };
 
 Model.prototype.createOrUpdateStudents = async function (students) {

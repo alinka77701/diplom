@@ -51,6 +51,12 @@ var View = function () {
             "fullName": "09.04.01 «Информатика и вычислительная техника»",
             "profile": "«Информационное и программное обеспечение вычислительных систем»",
             "type": "master"
+        },
+        {
+            "name": "БАС",
+            "fullName": "09.04.01 «Информатика и вычислительная техника»",
+            "profile": "«Информационное и программное обеспечение вычислительных систем»",
+            "type": "bachelor"
         }
     ];
     this.onClickNextStep = null;
@@ -182,7 +188,11 @@ View.prototype.dialogPracticeCreatedInit = function () {
     finishBtn.setAttribute("onclick",
         "metroDialog.open('#dialogPracticeCompleteSuccess')");
     let educationLevel = document.getElementById("selectEducation").value;
-
+if(educationLevel==="bachelor")
+    educationLevel="Бакалавриат";
+else{
+    educationLevel="Магистратура";
+}
     let typePractice = document.getElementById("selectTypePractice").value;
 
     let lecNum = document.getElementById("lecNum").value;
@@ -846,7 +856,9 @@ View.prototype.getSelectedStudent = function (event) {
     return student;
 };
 View.prototype.setYearsArray = function (years) {
+
     let buttonArray = document.getElementById("buttonsArray");
+    this.removeChildren(buttonArray);
     for (let i = 0; i < years.length; i++) {
         let span = document.createElement('span');
         span.setAttribute("class", "item year");
@@ -982,24 +994,16 @@ View.prototype.createInputsReport = function (selectedGroups) {
         parent.appendChild(div_group);
     }
 };
+View.prototype.formatDate = function (date) {
+    let year = date.substr(0, 4),
+        month = date.substr(5, 2),
+        day = date.substr(8, 2);
 
+    return (day + '.' + month + '.' + year);
+};
 View.prototype.getInformationForDocumentOrder = function (practice, selectedGroups, allGroups, data, organisations) {
-    let treeView = 0;
     let groupsForDocument = [];
-    let frames = document.getElementsByClassName("frames")[0].children;
-    for (let i = 0; i < frames.length; i++) {
-        if (frames[i].style.display !== "none") {
-            treeView = frames[i].children[0];
-            break;
-        }
-    }
-    let educational_level = treeView.getAttribute("id");
-    if (educational_level.indexOf("bachelor") !== -1) {
-        educational_level = "bachelor";
-    }
-    else {
-        educational_level = "master";
-    }
+  let educational_level=this.getEducationalLevel();
     let blockTeachers = document.getElementById("order-block").getElementsByTagName('div');
     let teachers = [];
     for (let i = 0; i < blockTeachers.length; i++) {
@@ -1007,10 +1011,12 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
         let teacher = blockTeachers[i].children[1].value;
         for (let j = 0; j < selectedGroups.length; j++) {
             if (selectedGroups[j] === groupName)
-                teachers.push({
-                    "groupName": groupName,
-                    "teacher": teacher
-                });
+                teachers.push(
+                    {
+                        "teacher": teacher,
+                        "groupName": groupName
+                    }
+                );
         }
     }
     for (let i = 0; i < selectedGroups.length; i++) {
@@ -1041,15 +1047,8 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
     typePractice = typePractice.replaceAt(typePractice.length - 2, "о");
     typePractice = typePractice.toLowerCase();
 
-    let start_year = practice.start_date_practice.substr(0, 4),
-        start_month = practice.start_date_practice.substr(5, 2),
-        start_day = practice.start_date_practice.substr(8, 2),
-        end_year = practice.end_date_practice.substr(0, 4),
-        end_month = practice.end_date_practice.substr(5, 2),
-        end_day = practice.end_date_practice.substr(8, 2);
-
-    let start_date = start_day + '.' + start_month + '.' + start_year;
-    let end_date = end_day + '.' + end_month + '.' + end_year;
+    let start_date = this.formatDate(practice.start_date_practice);
+    let end_date = this.formatDate(practice.end_date_practice);
     if (typePractice === "учебной") {
         for (let i = 0; i < groupsForDocument.length; i++) {
             let students = groupsForDocument[i].students;
@@ -1070,7 +1069,7 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
             documents.push(document);
         }
     }
-    else if (typePractice === "преддипломной") {
+    else if (typePractice === "производственной") {
         for (let i = 0; i < organisations.length; i++) {
             organisations[i].students = [];
         }
@@ -1082,10 +1081,10 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
                             for (let n = 0; n < organisations.length; n++) {
                                 if (data[i].organisation === organisations[n].name) {
                                     organisations[n].group = groupsForDocument[j].name;
-                                    organisations[n].organization_name=organisations[n].name;
+                                    organisations[n].organization_name = organisations[n].name;
                                     organisations[n].teacher = groupsForDocument[j].teacher;
-                                    let student=data[i].student;
-                                    organisations[n].students.push({"name":student});
+                                    let student = data[i].student;
+                                    organisations[n].students.push({"name": student});
                                 }
                             }
                         }
@@ -1095,37 +1094,39 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
 
             }
         }
-        for (let i = 0; i < organisations.length; i++) {
-            for (let j = 0; j < groupsForDocument.length; j++) {
-                if(organisations[i].group===groupsForDocument[j].name){
+        for (let i = 0; i < groupsForDocument.length; i++) {
+            let organisations_for_document=[];
+            for (let j = 0; j < organisations.length; j++) {
+                if (organisations[j].group === groupsForDocument[i].name) {
+                    let students = JSON.stringify(organisations[j].students);
+                    students = JSON.parse(students);
+                    let str = JSON.stringify(organisations[j], ["organization_name", "teacher"]);
+                    organisations[j] = JSON.parse(str);
+                    organisations[j].students = students;
+                    organisations_for_document.push(organisations[j]);
 
-                    let str = JSON.stringify(organisations[i], ["organization_name", "teacher", "students"]);
-                    organisations[i] = JSON.parse(str);
-
-                    let document = {
-                        "direction": groupsForDocument[j].fullName,
-                        "profile": groupsForDocument[j].profile,
-                        "dean": dean,
-                        "course": "1",
-                        "head_of_department": head_of_department,
-                        "type_practice": typePractice,
-                        "start_date": start_date,
-                        "end_date": end_date,
-                        "group_name": groupsForDocument[j].name,
-                        "supervisor": groupsForDocument[j].teacher,
-                        "organizations": organisations[i]
-                    };
-                    documents.push(document);
                 }
             }
+            let document = {
+                "direction": groupsForDocument[i].fullName,
+                "profile": groupsForDocument[i].profile,
+                "dean": dean,
+                "course": "1",
+                "head_of_department": head_of_department,
+                "type_practice": typePractice,
+                "start_date": start_date,
+                "end_date": end_date,
+                "group_name": groupsForDocument[i].name,
+                "supervisor": groupsForDocument[i].teacher,
+                "organizations": organisations_for_document
+            };
+            documents.push(document);
         }
     }
     return documents;
 };
-
-View.prototype.getInformationForDocumentReport = function (practice, selectedGroups, allGroups) {
+View.prototype.getEducationalLevel = function () {
     let treeView = 0;
-    let groupsForDocument = [];
     let frames = document.getElementsByClassName("frames")[0].children;
     for (let i = 0; i < frames.length; i++) {
         if (frames[i].style.display !== "none") {
@@ -1135,11 +1136,15 @@ View.prototype.getInformationForDocumentReport = function (practice, selectedGro
     }
     let educational_level = treeView.getAttribute("id");
     if (educational_level.indexOf("bachelor") !== -1) {
-        educational_level = "bachelor";
+        return "bachelor";
     }
     else {
-        educational_level = "master";
+        return "master";
     }
+};
+View.prototype.getInformationForDocumentReport = function (practice, selectedGroups, allGroups) {
+    let educational_level = this.getEducationalLevel();
+    let groupsForDocument = [];
     let blockGroups = document.getElementById("groups-report-block").getElementsByClassName('group');
     let additional_info = [];
     for (let i = 0; i < blockGroups.length; i++) {
@@ -1176,6 +1181,8 @@ View.prototype.getInformationForDocumentReport = function (practice, selectedGro
             }
         }
     }
+    let start_date = this.formatDate(practice.start_date_practice);
+    let end_date = this.formatDate(practice.end_date_practice);
 
     let head_of_department = document.getElementById("head_of_department").value;
     let documents = [];
@@ -1187,15 +1194,6 @@ View.prototype.getInformationForDocumentReport = function (practice, selectedGro
     let num_base_practice = document.getElementById("num_base_practice").value;
     let num_lections = document.getElementById("num_lections").value;
 
-    let start_year = practice.start_date_practice.substr(0, 4),
-        start_month = practice.start_date_practice.substr(5, 2),
-        start_day = practice.start_date_practice.substr(8, 2),
-        end_year = practice.end_date_practice.substr(0, 4),
-        end_month = practice.end_date_practice.substr(5, 2),
-        end_day = practice.end_date_practice.substr(8, 2);
-
-    let start_date = start_day + '.' + start_month + '.' + start_year;
-    let end_date = end_day + '.' + end_month + '.' + end_year;
 
     for (let i = 0; i < groupsForDocument.length; i++) {
         let document = {

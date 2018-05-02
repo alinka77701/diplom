@@ -263,6 +263,7 @@ Controller.prototype.createPractice = async function () {
     practice.groups = groups;
     await this.Model.createPractice(practice);
     this.View.OpenOrCloseLoadImage();
+   await  this.setYears();
     this.goToStudentsSection();
 };
 

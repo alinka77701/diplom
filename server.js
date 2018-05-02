@@ -171,7 +171,7 @@ app.post('/document/', async (req, res) => {
         if (req.body.type_practice === "учебная") {
             content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/educational.docx'), 'binary');
         }
-        else if (req.body.type_practice === "преддипломная") {
+        else if (req.body.type_practice === "производственная") {
             content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/production.docx'), 'binary');
         }
        /* else if (req.body.type_practice === "преддипломная") {
