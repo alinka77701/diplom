@@ -856,14 +856,21 @@ View.prototype.getSelectedStudent = function (event) {
     return student;
 };
 View.prototype.setYearsArray = function (years) {
-
     let buttonArray = document.getElementById("buttonsArray");
+    let buttonArray1 = document.getElementById("buttonsArray1");
     this.removeChildren(buttonArray);
+  this.removeChildren(buttonArray1);
     for (let i = 0; i < years.length; i++) {
         let span = document.createElement('span');
         span.setAttribute("class", "item year");
         span.innerHTML = years[i];
         buttonArray.appendChild(span);
+
+      let span1 = document.createElement('span');
+      span1.setAttribute("class", "item year");
+      span1.innerHTML = years[i];
+      buttonArray.appendChild(span);
+      buttonArray1.appendChild(span1);
     }
     let span = document.createElement('span');
     span.setAttribute("class", "item year");
