@@ -10,7 +10,8 @@ function Controller() {
 const APPROVED = 1;
 const REJECTED = 2;
 Controller.prototype.init = async function () {
-    this.View.OpenOrCloseLoadImage();
+    this.View.OpenOrCloseLoader();
+    await this.Model.init();
     await this.setYears();
     this.View.onClickNextStep = this.displayGroups.bind(this);
     this.View.onClickCreatePractice = this.goToPracticeCreation.bind(this);
@@ -42,9 +43,8 @@ Controller.prototype.init = async function () {
     this.View.onChangeTypeDocument = this.initDialog.bind(
         this);
     this.View.init();
-    await this.Model.init();
-    this.View.OpenOrCloseLoadImage();
-
+    await this.Model.getStudentsFromLDAP();
+    this.View.OpenOrCloseLoader();
 };
 
 Controller.prototype.initDialog = async function () {
@@ -52,11 +52,11 @@ Controller.prototype.initDialog = async function () {
     let isOrder = false;
     if (type_document === "Приказ") {
         isOrder = true;
-        this.createInputs(isOrder);
+       await this.createInputs(isOrder);
     }
     else {
         isOrder = false;
-        this.createInputs(isOrder);
+        await this.createInputs(isOrder);
     }
 };
 
@@ -104,40 +104,10 @@ Controller.prototype.generateDocument = async function () {
     let info_about_practice = this.View.getUserInfoAboutPractice();
     let practice = await this.Model.getPractice(info_about_practice);
     let type_document = this.View.getSelectValue("gdtypeDocument");
-    let groupsObjects=[];
     let documents = 0,data=0;
-    if (type_document === "Приказ") {
-        if (selectedGroups.length !== 0) {
-            if (practice.length !== 0) {
-                for (let i = 0; i < this.Model.Groups.length; i++) {
-                    for (let j = 0; j < selectedGroups.length; j++) {
-                        if (this.Model.Groups[i].name === selectedGroups[j]) {
-                            groupsObjects.push(this.Model.Groups[i]);
-                        }
-                    }
-                }
 
-                let groupsPracticeParticipants = await this.Model.getGroupsByPracticeId(
-                    practice);
-                selectedGroups = [];
-                for (let i = 0; i < groupsPracticeParticipants.length; i++) {
-                    for (let j = 0; j < groupsObjects.length; j++) {
-                        if (+groupsPracticeParticipants[i].uid_group
-                            === groupsObjects[j].uid_LDAP) {
-                            selectedGroups.push(groupsObjects[j].name);
-                        }
-                    }
-                }
-                if (selectedGroups.length !== 0) {
-                    let requests_organisations;
-                    let requests = await this.Model.getRequests(practice, groupsObjects);
-                    await this.Model.assosiateRequestToStudent(requests, selectedGroups);
-                    requests_organisations = await this.Model.getRequestsOrganisations(
-                        selectedGroups);
-                    data = await this.Model.getData(selectedGroups, requests_organisations);
-                }
-            }
-        }
+    if (type_document === "Приказ") {
+        data=await this.getPreferencesStudentsOrganisations();
         let organisations=await this.Model.getOrganisationsByPracticeId(practice);
         documents = this.View.getInformationForDocumentOrder(practice, selectedGroups, this.Model.Groups,data,organisations);
     }
@@ -198,12 +168,12 @@ Controller.prototype.setYears = async function () {
 };
 
 Controller.prototype.goToOrganisationsSection = async function () {
-    this.View.OpenOrCloseLoadImage();
+    this.View.OpenOrCloseLoader();
     let organisations = await this.Model.getOrganisations();
     let typesOrganisation = await this.Model.getTypesOrganisation();
     this.View.setTypesOrganisationSelect(typesOrganisation);
     this.View.setOrganisationsList(organisations, "allOrganisationsList");
-    this.View.OpenOrCloseLoadImage();
+    this.View.OpenOrCloseLoader();
     this.View.goToOrganisationsSection();
 };
 
@@ -257,12 +227,12 @@ Controller.prototype.updateTreeView = async function () {
     await this.updateTypesOrganisation();
 };
 Controller.prototype.createPractice = async function () {
-    this.View.OpenOrCloseLoadImage();
+    this.View.OpenOrCloseLoader();
     let practice = this.View.Practice;
     let groups = await this.Model.getDeterminedGroups(practice.groups);
     practice.groups = groups;
     await this.Model.createPractice(practice);
-    this.View.OpenOrCloseLoadImage();
+    this.View.OpenOrCloseLoader();
    await  this.setYears();
     this.goToStudentsSection();
 };
@@ -282,14 +252,10 @@ Controller.prototype.setGroupsTreeView = async function (event) {
     }
     await this.renderGroupsTreeView();
 };
-
-Controller.prototype.renderDataInTable = async function () {
-    this.View.OpenOrCloseLoadImage();
+Controller.prototype.getPreferencesStudentsOrganisations = async function () {
     let selectedGroups = this.View.getSelectedGroups();
-    let groupsObjects = [];
     let info_about_practice = this.View.getUserInfoAboutPractice();
-    let practice = [], data = 0;
-
+    let practice = [], data = 0, groupsObjects = [];
     if (selectedGroups.length !== 0) {
         practice = await this.Model.getPractice(info_about_practice);
         if (practice.length !== 0) {
@@ -300,7 +266,6 @@ Controller.prototype.renderDataInTable = async function () {
                     }
                 }
             }
-
             let groupsPracticeParticipants = await this.Model.getGroupsByPracticeId(
                 practice);
             selectedGroups = [];
@@ -319,14 +284,20 @@ Controller.prototype.renderDataInTable = async function () {
                 requests_organisations = await this.Model.getRequestsOrganisations(
                     selectedGroups);
                 data = await this.Model.getData(selectedGroups, requests_organisations);
-            }
-            else {
-                practice = [];
+
             }
         }
     }
-    if (data.length === 0) {
-        data = 0;
+    return data;
+};
+Controller.prototype.renderDataInTable = async function () {
+    this.View.OpenOrCloseLoader();
+     let practice = [], data = 0;
+    let info_about_practice = this.View.getUserInfoAboutPractice();
+    practice = await this.Model.getPractice(info_about_practice);
+     data=  await this.getPreferencesStudentsOrganisations();
+    if (data === 0) {
+        practice = [];
         this.View.renderTable(data);
     }
     else {
@@ -334,7 +305,7 @@ Controller.prototype.renderDataInTable = async function () {
     }
     this.View.colorTable(data);
     this.View.renderInfo(practice);
-    this.View.OpenOrCloseLoadImage();
+    this.View.OpenOrCloseLoader();
 };
 
 /*========================================ORGANISATIONS SECTION================================================*/
@@ -392,7 +363,7 @@ Controller.prototype.getOrganisation = async function () {
 };
 
 Controller.prototype.changeStudentStatus = async function (event) {
-    this.View.OpenOrCloseLoadImage();
+    this.View.OpenOrCloseLoader();
     let student = this.View.getSelectedStudent(event);
     await this.Model.updateRequestOrganisation(student);
     await this.Model.updateRequest(student);
@@ -402,7 +373,7 @@ Controller.prototype.changeStudentStatus = async function (event) {
 
     let organisation = await this.getOrganisation();
     await this.getApprovedAndNonApprovedStudents(organisation);
-    this.View.OpenOrCloseLoadImage();
+    this.View.OpenOrCloseLoader();
 };
 
 module.exports = Controller;

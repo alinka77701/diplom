@@ -32,10 +32,32 @@ sequelize.authenticate()
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/proxy', proxy('82.179.88.27:8280'));
-app.use(express.static("public"));
+//app.use(express.static("public"));
+app.use(express.static(__dirname + '/public'));
 
+/*
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
+});
+*/
+
+app.get('/student-cabinet/', async function (req, res) {
+    res.render('index');
+});
+
+
+app.get('/user-cabinet/', async function (req, res) {
+    if(req.query.userType==="Преподаватель"){
+       // res.sendFile(path.join(__dirname + '/public/student_cabinet.html'));
+        res.redirect('student_cabinet');
+     //   res.redirect(path.join(__dirname + '/public/student_cabinet.html'));
+        console.log("student");
+    }
+   else {
+        res.redirect('/student_cabinet.html');
+        console.log("teacher");
+    }
+    return true;
 });
 
 app.get('/types-organisation', async function (req, res) {
@@ -174,9 +196,9 @@ app.post('/document/', async (req, res) => {
         else if (req.body.type_practice === "производственная") {
             content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/production.docx'), 'binary');
         }
-       /* else if (req.body.type_practice === "преддипломная") {
-            content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/preddiploma.docx'), 'binary');
-        }*/
+        /* else if (req.body.type_practice === "преддипломная") {
+             content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/preddiploma.docx'), 'binary');
+         }*/
     }
     else {
         content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/report.docx'), 'binary');

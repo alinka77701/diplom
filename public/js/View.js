@@ -188,11 +188,11 @@ View.prototype.dialogPracticeCreatedInit = function () {
     finishBtn.setAttribute("onclick",
         "metroDialog.open('#dialogPracticeCompleteSuccess')");
     let educationLevel = document.getElementById("selectEducation").value;
-if(educationLevel==="bachelor")
-    educationLevel="Бакалавриат";
-else{
-    educationLevel="Магистратура";
-}
+    if (educationLevel === "bachelor")
+        educationLevel = "Бакалавриат";
+    else {
+        educationLevel = "Магистратура";
+    }
     let typePractice = document.getElementById("selectTypePractice").value;
 
     let lecNum = document.getElementById("lecNum").value;
@@ -829,7 +829,7 @@ View.prototype.renderOrganisationSection = function (practice) {
     }
 };
 
-View.prototype.OpenOrCloseLoadImage = function () {
+View.prototype.OpenOrCloseLoader = function () {
     let display = document.getElementById("load").style.display;
     if (display === "block") {
         document.getElementById("load").style.display = "none";
@@ -943,6 +943,7 @@ View.prototype.createInputsOrder = function (selectedGroups) {
     }
 };
 
+
 View.prototype.createInputsReport = function (selectedGroups) {
     let parent = document.getElementById("groups-report-block");
     this.removeChildren(parent);
@@ -978,6 +979,7 @@ View.prototype.createInputsReport = function (selectedGroups) {
         div.appendChild(p);
         input = document.createElement("input");
         input.setAttribute("class", "good_students");
+        input.setAttribute("type", "number");
         div.appendChild(input);
         div_group.appendChild(div);
 
@@ -989,21 +991,23 @@ View.prototype.createInputsReport = function (selectedGroups) {
         div.appendChild(p);
         input = document.createElement("input");
         input.setAttribute("class", "teacher_number");
+        input.setAttribute("type", "number");
         div.appendChild(input);
         div_group.appendChild(div);
         parent.appendChild(div_group);
     }
 };
+
 View.prototype.formatDate = function (date) {
     let year = date.substr(0, 4),
         month = date.substr(5, 2),
         day = date.substr(8, 2);
-
     return (day + '.' + month + '.' + year);
 };
+
 View.prototype.getInformationForDocumentOrder = function (practice, selectedGroups, allGroups, data, organisations) {
     let groupsForDocument = [];
-  let educational_level=this.getEducationalLevel();
+    let educational_level = this.getEducationalLevel();
     let blockTeachers = document.getElementById("order-block").getElementsByTagName('div');
     let teachers = [];
     for (let i = 0; i < blockTeachers.length; i++) {
@@ -1095,7 +1099,7 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
             }
         }
         for (let i = 0; i < groupsForDocument.length; i++) {
-            let organisations_for_document=[];
+            let organisations_for_document = [];
             for (let j = 0; j < organisations.length; j++) {
                 if (organisations[j].group === groupsForDocument[i].name) {
                     let students = JSON.stringify(organisations[j].students);
@@ -1151,7 +1155,7 @@ View.prototype.getInformationForDocumentReport = function (practice, selectedGro
         let groupName = blockGroups[i].getElementsByTagName('h4')[0].innerHTML;
         let supervisor = blockGroups[i].getElementsByClassName("supervisor")[0].value;
         let good_students_number = blockGroups[i].getElementsByClassName("good_students")[0].value;
-        let teacher_number = blockGroups[i].getElementsByClassName("teacher_number")[0].value
+        let teacher_number = blockGroups[i].getElementsByClassName("teacher_number")[0].value;
         for (let j = 0; j < selectedGroups.length; j++) {
             if (selectedGroups[j] === groupName)
                 additional_info.push({
