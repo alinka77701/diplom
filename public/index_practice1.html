@@ -11,6 +11,7 @@
     <script src="js/docx/jszip-utils.js"></script>
     <script src="js/docx/docxgen.min.js"></script>
 
+    <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/bundle.css">
     <link rel="shortcut icon" href="assets/img/iipo.png" type="image/x-icon">
 
@@ -18,7 +19,7 @@
 </head>
 <body>
 <div class="container">
-    <div id="load"><img src="../../assets/img/load.gif"/></div>
+    <!--<div id="load"><img src="../../assets/img/load.gif"/></div>-->
     <div class="grid condensed">
         <!--================================HEADER===================================-->
         <div class="row cells12 myheader align-center">
@@ -803,80 +804,75 @@
         <section id="mainWindowSection">
             <div class="row content">
                 <div class="row cells10 align-center">
-                    <div class="cell colspan3">
+                    <div class="cell colspan4">
+                        <div class="treeview align-left" data-role="treeview"
+                             id="group-treeview-tabcontrol1-bachelor">
+                            <ul>
+                                <li data-mode="checkbox" data-name="c5" class="node collapsed educational">
+                                    <span class="leaf">Учебная</span>
+                                    <span class="node-toggle"></span>
+                                    <ul>
 
-                        <div class="tabcontrol2" data-role="tabcontrol">
-                            <ul class="tabs">
-                                <li class="active"><a href="#frame_1_1">Бакалавриат</a></li>
-                                <li class=""><a href="#frame_1_2">Магистратура</a></li>
+                                    </ul>
+                                </li>
+                                <li data-mode="checkbox" data-name="c6" class="node collapsed production">
+                                    <span class="leaf">Производственная</span>
+                                    <span class="node-toggle"></span>
+                                    <ul>
+
+                                        <li data-mode="checkbox" data-name="c6" class="node collapsed NIR">
+                                            <span class="leaf">НИР</span>
+                                            <span class="node-toggle"></span>
+                                            <ul>
+                                                <li data-mode="checkbox" data-name="c6" class="node collapsed green">
+                                                    <span class="leaf">16-ИВТ1(мг), 16-ИВТ2(мг), 16-ПРИ(мг)</span>
+                                                </li>
+                                                <li data-mode="checkbox" data-name="c6" class="node collapsed green">
+                                                    <span class="leaf">17-ИВТ1(мг), 17-ИВТ2(мг), 17-ПРИ(мг)</span>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li data-mode="checkbox" data-name="c6" class="node collapsed professional">
+                                            <span class="leaf">Профессиональные навыки</span>
+                                            <span class="node-toggle"></span>
+                                            <ul>
+
+                                            </ul>
+                                        </li>
+
+                                        <li data-mode="checkbox" data-name="c6" class="node collapsed preddiploma">
+                                            <span class="leaf">Преддипломная</span>
+                                            <span class="node-toggle"></span>
+                                            <ul>
+
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
                             </ul>
-                            <div class="frames">
-                                <div class="frame" id="frame_1_1" style="display: block;">
-                                    <div class="treeview align-left" data-role="treeview"
-                                         id="group-treeview-tabcontrol1-bachelor">
-                                        <ul>
-                                            <li data-mode="checkbox" data-name="c5" class="node collapsed first">
-                                                <span class="leaf">1 курс</span>
-                                                <span class="node-toggle"></span>
-                                                <ul>
-
-                                                </ul>
-                                            </li>
-                                            <li data-mode="checkbox" data-name="c6" class="node collapsed second">
-                                                <span class="leaf">2 курс</span>
-                                                <span class="node-toggle"></span>
-                                                <ul>
-
-                                                </ul>
-                                            </li>
-                                            <li data-mode="checkbox" data-name="c7" class="node collapsed third">
-                                                <span class="leaf">3 курс</span>
-                                                <span class="node-toggle"></span>
-                                                <ul>
-
-                                                </ul>
-                                            </li>
-                                            <li data-mode="checkbox" data-name="c8" class="node collapsed fourth">
-                                                <span class="leaf">4 курс</span>
-                                                <span class="node-toggle"></span>
-                                                <ul>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="frame" id="frame_1_2" style="display: none;">
-                                    <div class="treeview align-left" data-role="treeview"
-                                         id="group-treeview-tabcontrol2-master">
-                                        <ul>
-                                            <li data-mode="checkbox" data-name="c9" class="node collapsed first">
-                                                <span class="leaf">1 курс</span>
-                                                <span class="node-toggle"></span>
-                                                <ul>
-
-                                                </ul>
-                                            </li>
-                                            <li data-mode="checkbox" data-name="c10" class="node collapsed second">
-                                                <span class="leaf">2 курс</span>
-                                                <span class="node-toggle"></span>
-                                                <ul>
-
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                            </div>
                         </div>
-                        <h2>
-                            <small>Укажите тип практики</small>
-                        </h2>
-                        <select name="select" class="styled-select slate" id="selectTypePracticeTab">
-                            <option value="Учебная" selected>Учебная</option>
-                            <option value="Производственная">Производственная</option>
-                            <option value="Преддипломная">Преддипломная</option>
-                        </select>
+                        <div id="buttonsYears">
+                            <div class="split-button">
+                                <button class="split dropdown-toggle">2017</button>
+                                <ul class="split-content d-menu" data-role="dropdown" style="display: none;">
+                                    <li><a class="autumn" href="#">осенний</a></li>
+                                    <li><a class="spring" href="#">весенний</a></li>
+                                </ul>
+                            </div>
+                            <div class="split-button">
+                                <button class="split dropdown-toggle">2018</button>
+                                <ul class="split-content d-menu" data-role="dropdown" style="display: none;">
+                                    <li><a class="autumn" href="#">осенний</a></li>
+                                    <li><a class="spring" href="#">весенний</a></li>
+                                </ul>
+                            </div>
+                            <button class="button square-button " id="createPracticeBtn">+</button>
+                        </div>
+                        <div>
+
+                        </div>
                         <div>
                             <button class="button square-button " id="getGroupsBtnOk">OK</button>
                         </div>
@@ -884,7 +880,7 @@
                         <button class="button" id="showDialogGenerateDocumentBtn">Сгенерировать копии отчетов/приказов
                         </button>
                     </div>
-                    <div class="cell colspan7">
+                    <div class="cell colspan6">
                         <div class="row">
                             <div class="cell align-center">
                                 <h3 id="mainWindowTypePractice" class="inline-block"></h3>
@@ -1062,11 +1058,11 @@
                             <div id="report-block">
                                 <div class="field margin20">
                                     <p class="inline-block sub-header">Курс</p>
-                                    <input id="course" >
+                                    <input id="course">
                                 </div>
                                 <div class="field margin20">
                                     <p class="inline-block sub-header">Базы практики</p>
-                                    <input id="base_practice" >
+                                    <input id="base_practice">
                                 </div>
                                 <div class="field margin20">
                                     <p class="inline-block sub-header">Кол-во баз </p>

@@ -431,13 +431,9 @@ Model.prototype.getRequestsOrganisationsByRequestId = async function (requests) 
 
 /*============================================PRACTICE CREATION
  SECTION=====================================================*/
-/*let result = await fetch('/proxy/core/v1/groups/' + groupID);
-let list = await result.json();
-let studentsList = list._embedded.students;
-return studentsList;*/
-Model.prototype.init = async function () {
 
-    let subID = "57238bd9-36e8-4d84-8160-eb4ad957a841";
+Model.prototype.init = async function () {
+    /*let subID = "57238bd9-36e8-4d84-8160-eb4ad957a841";
     let userToken = getUserToken(), user=0;
     if (!userToken) {
         window.location = CONFIG.no_token_location;
@@ -451,7 +447,7 @@ Model.prototype.init = async function () {
         cache: 'no-cache',
         credentials: 'same-origin'
     };
-    let info = '?userType=' + user.typeUser;
+    let info = '?userType=' + user.typeUser;*/
     await fetch('/user-cabinet' + info, params);
 };
 

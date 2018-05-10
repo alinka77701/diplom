@@ -11,9 +11,9 @@ const APPROVED = 1;
 const REJECTED = 2;
 Controller.prototype.init = async function () {
     this.View.OpenOrCloseLoader();
-    await this.Model.init();
+   // await this.Model.init();
     await this.setYears();
-    this.View.onClickNextStep = this.displayGroups.bind(this);
+    this.View.onClickNextStepDisplayGroupsTreeView = this.displayGroups.bind(this);
     this.View.onClickCreatePractice = this.goToPracticeCreation.bind(this);
     this.View.onClickAddPractice = this.createPractice.bind(this);
     this.View.onClickToOrganisationsSection = this.goToOrganisationsSection.bind(

@@ -59,7 +59,7 @@ var View = function () {
             "type": "bachelor"
         }
     ];
-    this.onClickNextStep = null;
+    this.onClickNextStepDisplayGroupsTreeView = null;
     this.onClickPracticeCompleted = null;
     this.onClickCreatePractice = null;
     this.onClickAddPractice = null;
@@ -96,7 +96,7 @@ var View = function () {
 
 View.prototype.init = function () {
     document.getElementsByClassName("btn-next")[0].addEventListener('click',
-        this.onClickNextStep);
+        this.onClickNextStepDisplayGroupsTreeView);
     document.querySelector("#dialogPracticeCompleteSuccess").querySelector(
         "#practiceFinishedOk").addEventListener('click',
         this.onClickPracticeCompleted);
@@ -182,6 +182,11 @@ View.prototype.goToPracticeCreation = function () {
     document.getElementById("updateOrganisation").setAttribute("disabled",
         "true");
 };
+
+
+
+
+
 /*========================================PRACTICE SECTION==============================================*/
 View.prototype.dialogPracticeCreatedInit = function () {
     let finishBtn = document.getElementsByClassName("btn-finish")[0];
@@ -264,7 +269,45 @@ View.prototype.dialogPracticeCreatedInit = function () {
     return this.Practice;
 };
 
+function roundPlus(x, n) { //x - число, n - количество знаков
+    if(isNaN(x) || isNaN(n)) return false;
+    var m = Math.pow(10,n);
+    return Math.round(x*m)/m;
+}
+function getWeeks(first_date, second_date){
+    let first_array = first_date.match(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/);
+    let   second_array = second_date.match(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/);
+    let first = Date.UTC(first_array[3], first_array[2]-1, first_array[1]);
+    let second = Date.UTC(second_array[3], second_array[2]-1, second_array[1]);
+    let weeks = (Math.ceil((second - first)/(1000*60*60*24)))/7;
+    return weeks;
+}
+function isInteger(num) {
+    return (num ^ 0) === num;
+}
 View.prototype.displayGroups = function () {
+    let toDate = document.getElementById("toDateInput");
+    let fromDate = document.getElementById("fromDateInput");
+    let toDateCalendar= document.getElementById("toDateCalendar");
+    toDateCalendar.display="none";
+    fromDate.onchange   = function(){
+            toDateCalendar.style.display="inline-block";
+            toDate.value="";
+    };
+    toDate.onchange = function()
+    {
+        let weeks= getWeeks(fromDate.value.replace(/\s+/g,'')+" 00:00",toDate.value.replace(/\s+/g,'')+" 00:00");
+        let text=document.getElementById("textWeeks");
+        text.style.display="block";
+        weeks=roundPlus(weeks, 1);
+        text.innerHTML="Количество недель: " +weeks;
+        if(isInteger(weeks)){
+            text.setAttribute("class","margin20 green");
+        }
+        else{
+            text.setAttribute("class","margin20 red");
+        }
+    };
     let educationLevel = document.getElementById("selectEducation").value;
     if (educationLevel === "bachelor") {
         for (let i = 0; i < this.idTreeViews.length; i++) {
