@@ -370,16 +370,6 @@ class Query {
     });
   }
 
-  /*async updateRequestOrganisation(req) {
-      await  model.Request_Organisation.update({
-          id_status: req.query.id_status
-      }, {
-          where: {
-              id_request: req.query.id_request,
-              id_organisation: req.query.id_organisation
-          }
-      });
-  }*/
 
   async updateRequestOrganisationByRequest(req) {
     await  model.Request_Organisation.update({

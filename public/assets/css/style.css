@@ -308,7 +308,7 @@ th {
 }
 #report-block{
     display:none;
-    height: 500px;
+    height: 350px;
     overflow-y: scroll;
     background-color: #d7deef7d;
     border: 1px solid #00000029;
@@ -322,27 +322,34 @@ th {
     border: 1px solid #00000029;
     margin: 20px;
 }
+
 #textWeeks{
     display:none;
 }
+
 .green{
     color:green;
     font-weight: 700;
 }
+
 .red{
     color:red;
     font-weight: 700;
 }
+
 .gray{
     color:gray;
     font-weight: 700;
 }
+
 #toDateCalendar{
     display:none;
 }
+
 .dropdown-toggle{
     width:80px;
 }
+
 #buttonsYears{
     text-align: left;
     margin:10px 0;

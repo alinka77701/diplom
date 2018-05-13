@@ -3,7 +3,8 @@ const masterYear = 6;
 let selectedElem = 0;
 
 var View = function () {
-    this.infoGroups = [
+    this.infoGroups =  null;
+   /* this.infoGroups = [
         {
             "name": "МОА",
             "fullName": "02.03.03 «Математическое обеспечение и администрирование информационных систем»",
@@ -58,7 +59,7 @@ var View = function () {
             "profile": "«Информационное и программное обеспечение вычислительных систем»",
             "type": "bachelor"
         }
-    ];
+    ];*/
     this.onClickNextStepDisplayGroupsTreeView = null;
     this.onClickPracticeCompleted = null;
     this.onClickCreatePractice = null;
@@ -184,9 +185,6 @@ View.prototype.goToPracticeCreation = function () {
 };
 
 
-
-
-
 /*========================================PRACTICE SECTION==============================================*/
 View.prototype.dialogPracticeCreatedInit = function () {
     let finishBtn = document.getElementsByClassName("btn-finish")[0];
@@ -202,7 +200,8 @@ View.prototype.dialogPracticeCreatedInit = function () {
 
     let lecNum = document.getElementById("lecNum").value;
     let fromDate = document.getElementById("fromDateInput").value;
-    let toDate = document.getElementById("toDateInput").value;
+    let numWeeks = document.getElementById("textWeeks").innerHTML;
+    let toDate = document.getElementById("toDateInput").value+' ' +numWeeks;
     let deadline = document.getElementById("deadline").value;
     document.getElementById("termsPracticeDialog").innerHTML = 'c ' + fromDate
         + ' по ' + toDate;
@@ -257,7 +256,7 @@ View.prototype.dialogPracticeCreatedInit = function () {
     this.Practice = {
         'typePractice': typePractice,
         'startDatePractice': fromDate,
-        'endDatePractice': toDate,
+        'endDatePractice': toDate ,
         'deadlinePractice': deadline,
         'lecNum': lecNum,
         'eduLevel': educationLevel,
@@ -270,44 +269,51 @@ View.prototype.dialogPracticeCreatedInit = function () {
 };
 
 function roundPlus(x, n) { //x - число, n - количество знаков
-    if(isNaN(x) || isNaN(n)) return false;
-    var m = Math.pow(10,n);
-    return Math.round(x*m)/m;
+    if (isNaN(x) || isNaN(n)) return false;
+    var m = Math.pow(10, n);
+    return Math.round(x * m) / m;
 }
-function getWeeks(first_date, second_date){
+
+function getWeeks(first_date, second_date) {
     let first_array = first_date.match(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/);
-    let   second_array = second_date.match(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/);
-    let first = Date.UTC(first_array[3], first_array[2]-1, first_array[1]);
-    let second = Date.UTC(second_array[3], second_array[2]-1, second_array[1]);
-    let weeks = (Math.ceil((second - first)/(1000*60*60*24)))/7;
+    let second_array = second_date.match(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/);
+    let first = Date.UTC(first_array[3], first_array[2] - 1, first_array[1]);
+    let second = Date.UTC(second_array[3], second_array[2] - 1, second_array[1]);
+    let weeks = (Math.ceil((second - first) / (1000 * 60 * 60 * 24))) / 7;
     return weeks;
 }
+
 function isInteger(num) {
     return (num ^ 0) === num;
 }
-View.prototype.displayGroups = function () {
+View.prototype.createWeeksText = function () {
     let toDate = document.getElementById("toDateInput");
     let fromDate = document.getElementById("fromDateInput");
-    let toDateCalendar= document.getElementById("toDateCalendar");
-    toDateCalendar.display="none";
-    fromDate.onchange   = function(){
-            toDateCalendar.style.display="inline-block";
-            toDate.value="";
+    let toDateCalendar = document.getElementById("toDateCalendar");
+    toDateCalendar.display = "none";
+
+    let text = document.getElementById("textWeeks");
+    text.style.display = "none";
+
+    fromDate.onchange = function () {
+        toDateCalendar.style.display = "inline-block";
+        toDate.value = "";
+
     };
-    toDate.onchange = function()
-    {
-        let weeks= getWeeks(fromDate.value.replace(/\s+/g,'')+" 00:00",toDate.value.replace(/\s+/g,'')+" 00:00");
-        let text=document.getElementById("textWeeks");
-        text.style.display="block";
-        weeks=roundPlus(weeks, 1);
-        text.innerHTML="Количество недель: " +weeks;
-        if(isInteger(weeks)){
-            text.setAttribute("class","margin20 green");
+    toDate.onchange = function () {
+        let weeks = getWeeks(fromDate.value.replace(/\s+/g, '') + " 00:00", toDate.value.replace(/\s+/g, '') + " 00:00");
+        text.style.display = "block";
+        weeks = roundPlus(weeks, 1);
+        text.innerHTML = "Количество недель: " + weeks;
+        if (isInteger(weeks)) {
+            text.setAttribute("class", "margin20 green");
         }
-        else{
-            text.setAttribute("class","margin20 red");
+        else {
+            text.setAttribute("class", "margin20 red");
         }
     };
+};
+View.prototype.displayGroups = function () {
     let educationLevel = document.getElementById("selectEducation").value;
     if (educationLevel === "bachelor") {
         for (let i = 0; i < this.idTreeViews.length; i++) {
@@ -332,9 +338,26 @@ View.prototype.displayGroups = function () {
 
 };
 View.prototype.clearPracticeSection = function () {
+    this.createWeeksText();
+
+    let toDateCalendar = document.getElementById("toDateCalendar");
+    toDateCalendar.style.display = "none";
     document.getElementById("fromDateInput").value = "";
     document.getElementById("toDateInput").value = "";
+    toDateCalendar.value = "";
     document.getElementById("deadline").value = "";
+    document.getElementById("lecNum").value = "";
+    for(let i=0;i<this.idTreeViews.length;i++){
+       let inputs= document.getElementById(this.idTreeViews[i]).querySelectorAll('input');
+        for(let j=0;j<inputs.length;j++){
+            $(inputs[j]).attr('checked', false);
+        }
+    }
+   /* let steps= document.getElementsByClassName("steps")[0].children;
+    steps[0].style.display="block";
+    for(let i=0;i<this.idTreeViews.length;i++){
+        steps[i].style.display='none';
+    }*/
 };
 /*============================================STUDENTS SECTION=====================================================*/
 View.prototype.renderInfo = function (practice) {
@@ -625,7 +648,7 @@ View.prototype.setOrganisationsInTreeView = function (organisations,
                 let node;
                 for (let k = 0; k < liArr.length; k++) {
                     if (liArr[k].getAttribute("id") === ('type_org_'
-                            + typesOrganisation[j].id)) {
+                        + typesOrganisation[j].id)) {
                         node = $(liArr[k]);
                         break;
                     }
@@ -902,18 +925,18 @@ View.prototype.setYearsArray = function (years) {
     let buttonArray = document.getElementById("buttonsArray");
     let buttonArray1 = document.getElementById("buttonsArray1");
     this.removeChildren(buttonArray);
-  this.removeChildren(buttonArray1);
+    this.removeChildren(buttonArray1);
     for (let i = 0; i < years.length; i++) {
         let span = document.createElement('span');
         span.setAttribute("class", "item year");
         span.innerHTML = years[i];
         buttonArray.appendChild(span);
 
-      let span1 = document.createElement('span');
-      span1.setAttribute("class", "item year");
-      span1.innerHTML = years[i];
-      buttonArray.appendChild(span);
-      buttonArray1.appendChild(span1);
+        let span1 = document.createElement('span');
+        span1.setAttribute("class", "item year");
+        span1.innerHTML = years[i];
+        buttonArray.appendChild(span);
+        buttonArray1.appendChild(span1);
     }
     let span = document.createElement('span');
     span.setAttribute("class", "item year");
@@ -1177,6 +1200,9 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
             documents.push(document);
         }
     }
+    else {
+        alert("Возможность генерации документов для преддипломной практики в стадии разработки. Приносим свои извинения за предоставленные неудобства")
+    }
     return documents;
 };
 View.prototype.getEducationalLevel = function () {
@@ -1293,7 +1319,25 @@ View.prototype.fillDialog = function (practice, organisations) {
     }
     elem = document.getElementById("num_base_practice");
     elem.value = organisations.length;
+
+    elem = document.getElementById("num_lections");
+    elem.value = +practice.lections_number;
 };
+View.prototype.readTextFile = function (file, callback) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+        var res= callback(rawFile.responseText);
+            this.infoGroups= res;
+            return res;
+        }
+    }
+    rawFile.send(null);
+}
+
+//usage:
 
 String.prototype.replaceAt = function (index, replacement) {
     return this.substr(0, index) + replacement + this.substr(index + replacement.length);
