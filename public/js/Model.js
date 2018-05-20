@@ -84,6 +84,19 @@ Model.prototype.getData = async function (selectedGroups,
     return data;
 };
 
+Model.prototype.getPracticeById = async function (selected_practice) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = "?id=" +selected_practice;
+    let result = await fetch('/practice-by-practice-id' + info, params);
+    let practice = await result.json();
+    return practice;
+};
+
 Model.prototype.getGroups = async function () {
     let result = await fetch('/proxy/core/v1/groups');
     let list = await result.json();
@@ -401,7 +414,16 @@ Model.prototype.getPracticeYears = async function () {
     let years = await result.json();
     return years;
 };
-
+Model.prototype.getPractices = async function () {
+    let result = await fetch('/all-practices');
+    let practices = await result.json();
+    return practices;
+};
+Model.prototype.getTypesPractices = async function () {
+    let result = await fetch('/types-practices');
+    let types_practices = await result.json();
+    return types_practices;
+};
 Model.prototype.getRequestsOrganisationsByRequestId = async function (requests) {
     let params = {
         method: 'GET',
@@ -784,7 +806,6 @@ Model.prototype.updateRequests = async function (students) {
 };
 
 Model.prototype.generateDocument = async function (document, type_document, type_practice) {
-    type_practice = type_practice.toLowerCase();
     let information = {
         data: document,
         type_document: type_document,

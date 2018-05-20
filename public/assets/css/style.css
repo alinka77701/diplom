@@ -357,3 +357,9 @@ th {
 #dialogPracticeCompleteSuccess{
 top:0 !important;
 }
+.treeview ul > li > .leaf{
+    width:90%;
+}
+.treeview li .input-control{
+    width:1%;
+}

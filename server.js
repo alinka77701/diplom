@@ -132,7 +132,10 @@ app.get('/organisation-by-id/', async function (req, res) {
     let data = await query.getOrganisationById(req.query.id);
     res.send(data);
 });
-
+app.get('/practice-by-practice-id', async function (req, res) {
+    let data = await query.getPracticeById(req.query.id);
+    res.send(data);
+});
 app.get('/requests-by-practice/', async function (req, res) {
     let data = await query.getRequestsByPracticeId(req);
     res.send(data);
@@ -190,13 +193,16 @@ app.listen('7777', function () {
 app.post('/document/', async (req, res) => {
     let content = 0;
     if (req.body.type_document === "Приказ") {
-        if (req.body.type_practice === "учебная") {
+        if (req.body.type_practice === 0) {
             content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/educational.docx'), 'binary');
         }
-        else if (req.body.type_practice === "производственная") {
+        else if (req.body.type_practice === 4) {
             content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/production.docx'), 'binary');
         }
-        /* else if (req.body.type_practice === "преддипломная") {
+       /* else if (req.body.type_practice === 3) {
+            content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/nir.docx'), 'binary');
+        }
+        else if (req.body.type_practice === 2) {
              content = fs.readFileSync(path.resolve(__dirname, 'public/assets/templates/preddiploma.docx'), 'binary');
          }*/
     }
@@ -222,11 +228,11 @@ app.post('/document/', async (req, res) => {
     }
 
     let buf = doc.getZip().generate({type: 'nodebuffer'});
-    let type_practice = req.body.type_practice;
-    type_practice = type_practice.replaceAt(type_practice.length - 1, "я");
-    type_practice = type_practice.replaceAt(type_practice.length - 2, "а");
-    fs.writeFileSync(path.resolve(__dirname, 'сгенерированные_документы/' + req.body.type_document + '/' + type_practice + '/' + req.body.data.group_name + '.docx'), buf);
-    let filePath = path.join(__dirname, 'сгенерированные_документы/' + req.body.type_document + '/' + type_practice + '/' + req.body.data.group_name + '.docx');
+let type_practice = "hello";
+    /*    type_practice = type_practice.replaceAt(type_practice.length - 1, "я");
+    type_practice = type_practice.replaceAt(type_practice.length - 2, "а");*/
+    fs.writeFileSync(path.resolve(__dirname, 'сгенерированные_документы/' + req.body.type_document +'/' + req.body.data.group_name + '.docx'), buf);
+    let filePath = path.join(__dirname, 'сгенерированные_документы/' + req.body.type_document + '/' + req.body.data.group_name + '.docx');
     let stat = fs.statSync(filePath);
     res.writeHead(200, {
         'Content-Type': ' application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -238,3 +244,13 @@ app.post('/document/', async (req, res) => {
 String.prototype.replaceAt = function (index, replacement) {
     return this.substr(0, index) + replacement + this.substr(index + replacement.length);
 };
+
+app.get('/all-practices', async function (req, res) {
+    let data = await query.getPractices();
+    res.send(data);
+});
+
+app.get('/types-practices', async function (req, res) {
+    let data = await query.getDataFromTable(model.Type_practice);
+    res.send(data);
+});
