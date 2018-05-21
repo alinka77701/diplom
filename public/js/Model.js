@@ -91,7 +91,7 @@ Model.prototype.getPracticeById = async function (selected_practice) {
         cache: 'no-cache',
         credentials: 'same-origin'
     };
-    let info = "?id=" +selected_practice;
+    let info = "?id=" + selected_practice;
     let result = await fetch('/practice-by-practice-id' + info, params);
     let practice = await result.json();
     return practice;
@@ -477,15 +477,15 @@ Model.prototype.getUserInfo = async function (subID) {
     let user = {};
     let result = await fetch('/proxy/core/v1/people/?uid=' + subID);
     let subject = await result.json();
-    let type_user=subject._embedded.people["0"].title;
-    if(type_user.length===2){
-        type_user=subject._embedded.people["0"].title[1];
+    let type_user = subject._embedded.people["0"].title;
+    if (type_user.length === 2) {
+        type_user = subject._embedded.people["0"].title[1];
     }
     let givenName = subject._embedded.people["0"].givenName;
     let sn = subject._embedded.people["0"].sn;
-    user.firstName=givenName;
-    user.lastName= sn;
-    user.typeUser=type_user;
+    user.firstName = givenName;
+    user.lastName = sn;
+    user.typeUser = type_user;
     return user;
 };
 
@@ -548,9 +548,25 @@ Model.prototype.getRequestsByPracticeId = async function (practice) {
     return requests;
 };
 
+Model.prototype.getRequestsByPracticeId_OrganisationId = async function (idPractice, idOrganisation) {
+    let params = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin'
+    };
+    let info = '?id_practice=' + idPractice + "&id_organisation="
+        + idOrganisation;
+    let result = await fetch('/requests-by-idpractice-idorganisation' + info, params);
+    let request = await result.json();
+    if (request !== undefined)
+        return request;
+    else
+        return 0;
+};
 
-Model.prototype.getRequestsByOrganisationName = async function (organisation,
-                                                                practice, isApproved) {
+Model.prototype.getRequestsByOrganisationId = async function (organisation,
+                                                              practice, isApproved) {
     let params = {
         method: 'GET',
         mode: 'cors',

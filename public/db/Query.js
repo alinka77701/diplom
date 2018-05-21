@@ -71,6 +71,19 @@ class Query {
         return organisation;
     }
 
+    async getRequestsByPracticeId_OrganisationId(req) {
+        let request = await model.Request.findAll({
+            where: {
+                id_organisation: req.query.id_organisation,
+                id_practice: req.query.id_practice
+            }
+        });
+        if (request) {
+            request = request.length;
+        }
+        return request;
+    }
+
     async getPracticeById(id_practice) {
         let practice = await model.Practice.findOne({
             include: [{

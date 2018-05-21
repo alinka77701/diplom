@@ -21,6 +21,10 @@ var View = function () {
         'group-treeview-tabcontrol1-dialogAdd-bachelor',
         'group-treeview-tabcontrol2-dialogAdd-master'
     ];
+    this.idTreeViewsPractice = [
+        'types-practice-treeview',
+        'types-practice-treeview-organisation-section'
+    ];
     this.onClickGetOrganisations = null;
     this.onClickCreateOrganisation = null;
     this.onClickDisplayInfoAboutOrg = null;
@@ -321,55 +325,39 @@ View.prototype.renderInfo = function (practice) {
         let start_date = start_day + '-' + start_month + '-' + start_year;
         let end_date = end_day + '-' + end_month + '-' + end_year;
         document.getElementById("mainWindowTermsPractice").innerHTML = 'с ' + start_date + ' по ' + end_date;
-        document.getElementById("mainWindowTypePractice").innerHTML ='Практика ';
+        document.getElementById("mainWindowTypePractice").innerHTML = 'Практика ';
     }
     else {
         document.getElementById("mainWindowTypePractice").innerHTML = "Практики" + " не существует.";
         document.getElementById("mainWindowTermsPractice").innerHTML = " ";
     }
 };
-View.prototype.getSelectedPractice = function () {
-    let treeView= document.getElementById("types-practice-treeview");
-    let Practices = [];
+View.prototype.getSelectedPractice = function (section) {
+    let id, Practices = [];
+    if (section === "forOrganisationSection") {
+        id = this.idTreeViewsPractice[1];
+    }
+    else {
+        id = this.idTreeViewsPractice[0];
+    }
+    let treeView = document.getElementById(id);
     let liNumber = treeView.querySelectorAll('li');
     for (let i = 0; i < liNumber.length; i++) {
         let selectedPractices = liNumber[i].querySelectorAll('input:checked');
         if (selectedPractices.length === 1) {
             for (let j = 0; j < selectedPractices.length; j++) {
-                let practice= {
+                let practice = {
                     "id": selectedPractices[j].parentElement.parentElement.getAttribute("data-uid"),
-                    "groups":selectedPractices[j].parentElement.nextSibling.innerHTML
+                    "groups": selectedPractices[j].parentElement.nextSibling.innerHTML
                 };
                 Practices.push(practice);
             }
         }
+
     }
     return Practices;
 };
 
-View.prototype.getUserInfoAboutPracticeOrgSection = function () {
-    let educationLevel = document.getElementById(
-        "selectEduLevelOrganisationSec").value;
-    let typePractice = document.getElementById(
-        "selectTypePracticeOrganisationSec").value;
-    let typePracticeText = "Учебная";
-    if (typePractice === "educational") {
-        typePracticeText = "Учебная";
-    }
-    else if (typePractice === "internship") {
-        typePracticeText = "Производственная";
-    }
-    else if (typePractice === "prediploma") {
-        typePracticeText = "Преддипломная";
-    }
-
-    let info_about_practice = {
-        'typePractice': typePracticeText,
-        'year': this.selectedYear,
-        'edu_level': educationLevel
-    };
-    return info_about_practice;
-};
 
 View.prototype.renderTable = function (data) {
     if (data === 0) {
@@ -471,15 +459,18 @@ View.prototype.clearGroupsTreeView = async function () {
     }
 };
 View.prototype.clearPracticeTreeView = async function () {
-    let liArray = document.getElementById("types-practice-treeview").children[0].children;
-    for (let i = 0; i < liArray.length; i++) {
-        if (liArray[i].getElementsByTagName('ul').length === 1) {
-            this.removeChildren(liArray[i].getElementsByTagName('ul')[0]);
-        }
-        else {
-            let children = liArray[i].getElementsByTagName('ul')[0].children;
-            for (let j = 0; j < children.length; j++) {
-                this.removeChildren(children[j].getElementsByTagName('ul')[0]);
+    for (let n = 0; n < this.idTreeViewsPractice.length; n++) {
+        let id = this.idTreeViewsPractice[n];
+        let liArray = document.getElementById(id).children[0].children;
+        for (let i = 0; i < liArray.length; i++) {
+            if (liArray[i].getElementsByTagName('ul').length === 1) {
+                this.removeChildren(liArray[i].getElementsByTagName('ul')[0]);
+            }
+            else {
+                let children = liArray[i].getElementsByTagName('ul')[0].children;
+                for (let j = 0; j < children.length; j++) {
+                    this.removeChildren(children[j].getElementsByTagName('ul')[0]);
+                }
             }
         }
     }
@@ -597,24 +588,27 @@ View.prototype.setTypesOrganisation = function (typesOrganisation) {
     }
 };
 View.prototype.setPracticesInTreeView = function (practices, typesPractices) {
-    var tree = $("#types-practice-treeview").data("treeview");
-    for (let i = 0; i < practices.length; i++) {
-        for (let j = 0; j < typesPractices.length; j++) {
-            if (practices[i].id_type_practice === typesPractices[j].id) {
-                let liArr = tree.element.find('li');
-                let node;
-                for (let k = 0; k < liArr.length; k++) {
-                    if (liArr[k].getAttribute("id") === ('type_pract_'
-                            + typesPractices[j].id)) {
-                        node = $(liArr[k]);
-                        break;
+    for (let n = 0; n < this.idTreeViewsPractice.length; n++) {
+        let id = this.idTreeViewsPractice[n];
+        var tree = $("#" + id).data("treeview");
+        for (let i = 0; i < practices.length; i++) {
+            for (let j = 0; j < typesPractices.length; j++) {
+                if (practices[i].id_type_practice === typesPractices[j].id) {
+                    let liArr = tree.element.find('li');
+                    let node;
+                    for (let k = 0; k < liArr.length; k++) {
+                        if (liArr[k].getAttribute("id") === ('type_pract_'
+                                + typesPractices[j].id)) {
+                            node = $(liArr[k]);
+                            break;
+                        }
                     }
-                }
-                if(practices[i].groups!==undefined){
-                    tree_add_leaf_checkbox_example_click(tree, node,
-                        practices[i].groups, practices[i].id_practice );
-                }
+                    if (practices[i].groups !== undefined) {
+                        tree_add_leaf_checkbox_example_click(tree, node,
+                            practices[i].groups, practices[i].id_practice);
+                    }
 
+                }
             }
         }
     }
@@ -706,8 +700,8 @@ View.prototype.setOrganisationsList = function (organisations, idList) {
         let span_list_remark = document.createElement('span');
         span_list_remark.setAttribute("class", "list-remark");
         span_list_remark.innerHTML = 'Осталось: '
-            + organisations[i].max_students_number;
-        /*ОБЯЗАТЕЛЬНО ИСПРАВИТЬ НА КОЛИЧЕСТВО ОСТАВШИХСЯ МЕСТ.!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+            + organisations[i].num_vacant_places;
+
         div_list_content.appendChild(span_list_remark);
 
         div_list.appendChild(div_list_content);
@@ -777,6 +771,7 @@ View.prototype.showDialogOrganisation = function (organisation) {
 View.prototype.dialogOpen = function (id) {
     metroDialog.open(id);
 };
+
 View.prototype.updateOrganisationTitle = function (nameOrganisation,
                                                    approved_student_count, non_approved_student_count) {
     if (non_approved_student_count === 0) {
@@ -811,6 +806,10 @@ View.prototype.getSelectedOrganisation = function (event) {
 
 View.prototype.getNameOrganisationByTitle = function () {
     return document.getElementById("orgName").innerHTML;
+};
+
+View.prototype.getOnClickNameOrganisation = function (event) {
+    return event.target.parentElement.parentElement.children[0].children[0].innerHTML;
 };
 
 View.prototype.updateStudentsListView = function (students, idList) {
@@ -884,15 +883,18 @@ View.prototype.renderOrganisationSection = function (practice) {
     }
 };
 
-View.prototype.OpenOrCloseLoader = function () {
-    let display = document.getElementById("load").style.display;
+View.prototype.OpenOrCloseLoader = function (id) {
+    if (id === undefined)
+        id = "load";
+    let display = document.getElementById(id).style.display;
     if (display === "block") {
-        document.getElementById("load").style.display = "none";
+        document.getElementById(id).style.display = "none";
     }
     else {
-        document.getElementById("load").style.display = "block";
+        document.getElementById(id).style.display = "block";
     }
 };
+
 View.prototype.getSelectedStudent = function (event) {
     let node = event.target.parentElement.parentElement.querySelector(
         '[request]');
@@ -957,6 +959,23 @@ View.prototype.getSelectedStudents = function (event) {
 View.prototype.dialogEnableCheckboxes = function (namesGroups, idElement) {
     let parent = document.getElementById(idElement);
     let inputs = parent.querySelectorAll('input');
+
+    for (let i = 0; i < inputs.length; i++) {
+        for (let j = 0; j < namesGroups.length; j++) {
+            let course = inputs[i].parentElement.parentElement.parentElement.parentElement;
+            course.classList.remove('active-course');
+            let studentsCheckboxes = inputs[i].parentElement.parentElement.querySelectorAll(
+                '[data-uid]');
+            if (studentsCheckboxes.length !== 0)
+                studentsCheckboxes[0].parentElement.parentElement.setAttribute(
+                    "disabled", "true");
+            for (let n = 0; n < studentsCheckboxes.length; n++) {
+                studentsCheckboxes[n].querySelector('input').setAttribute(
+                    "disabled", "true");
+            }
+        }
+    }
+
     for (let i = 0; i < inputs.length; i++) {
         for (let j = 0; j < namesGroups.length; j++) {
             if (inputs[i].parentElement.nextSibling.innerHTML === namesGroups[j]) {
@@ -968,6 +987,7 @@ View.prototype.dialogEnableCheckboxes = function (namesGroups, idElement) {
                 inputs[i].removeAttribute("disabled");
                 let studentsCheckboxes = inputs[i].parentElement.parentElement.querySelectorAll(
                     '[data-uid]');
+
                 for (let n = 0; n < studentsCheckboxes.length; n++) {
                     studentsCheckboxes[n].querySelector('input').removeAttribute(
                         "disabled");
@@ -1069,7 +1089,7 @@ View.prototype.formatDate = function (date) {
 
 View.prototype.getInformationForDocumentOrder = function (practice, selectedGroups, allGroups, data, organisations) {
     let groupsForDocument = [];
-    let educational_level = this.getEducationalLevel();
+    let educational_level = practice.edu_level;
     let blockTeachers = document.getElementById(
         "order-block").getElementsByTagName('div');
     let teachers = [];
@@ -1114,8 +1134,8 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
         "gdtypeDocument").selectedIndex].value;
     let documents = [];
     let typePractice = practice.Type_practice.name;
-    if(practice.id_type_practice===2 || practice.id_type_practice===3 ||  practice.id_type_practice===4){
-        typePractice="производственная";
+    if (practice.id_type_practice === 2 || practice.id_type_practice === 3 || practice.id_type_practice === 4) {
+        typePractice = "производственная";
     }
     typePractice = typePractice.toLowerCase();
     typePractice = typePractice.replaceAt(typePractice.length - 1, "й");
@@ -1144,7 +1164,7 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
             documents.push(document);
         }
     }
-    else if (typePractice === "производственной" ) {
+    else if (typePractice === "производственной") {
         if (practice.id_type_practice === 2) {
             alert(
                 "Возможность генерации документов для преддипломной практики в стадии разработки. Приносим свои извинения за предоставленные неудобства.");
@@ -1211,101 +1231,85 @@ View.prototype.getInformationForDocumentOrder = function (practice, selectedGrou
     }
     return documents;
 };
-View.prototype.getEducationalLevel = function () {
-    let treeView = 0;
-    let frames = document.getElementsByClassName("frames")[0].children;
-    for (let i = 0; i < frames.length; i++) {
-        if (frames[i].style.display !== "none") {
-            treeView = frames[i].children[0];
-            break;
-        }
-    }
-    let educational_level = treeView.getAttribute("id");
-    if (educational_level.indexOf("bachelor") !== -1) {
-        return "bachelor";
-    }
-    else {
-        return "master";
-    }
-};
+
 View.prototype.getInformationForDocumentReport = function (practice, selectedGroups, allGroups) {
-        let educational_level = practice.edu_level;
-        let groupsForDocument = [];
-        let blockGroups = document.getElementById("groups-report-block").getElementsByClassName('group');
-        let additional_info = [];
-        for (let i = 0; i < blockGroups.length; i++) {
-            let groupName = blockGroups[i].getElementsByTagName('h4')[0].innerHTML;
-            let supervisor = blockGroups[i].getElementsByClassName(
-                "supervisor")[0].value;
-            let good_students_number = blockGroups[i].getElementsByClassName(
-                "good_students")[0].value;
-            let teacher_number = blockGroups[i].getElementsByClassName(
-                "teacher_number")[0].value;
-            for (let j = 0; j < selectedGroups.length; j++) {
-                if (selectedGroups[j] === groupName) {
-                    additional_info.push({
-                        "groupName": groupName,
-                        "supervisor": supervisor,
-                        "good_stud_num": good_students_number,
-                        "teacher_number": teacher_number
-                    });
-                }
+    let educational_level = practice.edu_level;
+    let groupsForDocument = [];
+    let blockGroups = document.getElementById("groups-report-block").getElementsByClassName('group');
+    let additional_info = [];
+    for (let i = 0; i < blockGroups.length; i++) {
+        let groupName = blockGroups[i].getElementsByTagName('h4')[0].innerHTML;
+        let supervisor = blockGroups[i].getElementsByClassName(
+            "supervisor")[0].value;
+        let good_students_number = blockGroups[i].getElementsByClassName(
+            "good_students")[0].value;
+        let teacher_number = blockGroups[i].getElementsByClassName(
+            "teacher_number")[0].value;
+        for (let j = 0; j < selectedGroups.length; j++) {
+            if (selectedGroups[j] === groupName) {
+                additional_info.push({
+                    "groupName": groupName,
+                    "supervisor": supervisor,
+                    "good_stud_num": good_students_number,
+                    "teacher_number": teacher_number
+                });
             }
         }
-        for (let i = 0; i < selectedGroups.length; i++) {
-            for (let j = 0; j < this.infoGroups.length; j++) {
-                if (selectedGroups[i].indexOf(this.infoGroups[j].name) !== -1
-                    && this.infoGroups[j].type === educational_level) {
-                    for (let n = 0; n < allGroups.length; n++) {
-                        if (selectedGroups[i] === allGroups[n].name) {
-                            for (let k = 0; k < additional_info.length; k++) {
-                                if (selectedGroups[i] === additional_info[k].groupName) {
-                                    allGroups[n].supervisor = additional_info[k].supervisor;
-                                    allGroups[n].fullName = this.infoGroups[j].fullName;
-                                    allGroups[n].good_stud_num = additional_info[k].good_stud_num;
-                                    allGroups[n].teacher_number = additional_info[k].teacher_number;
-                                    groupsForDocument.push(allGroups[n]);
-                                }
+    }
+    for (let i = 0; i < selectedGroups.length; i++) {
+        for (let j = 0; j < this.infoGroups.length; j++) {
+            if (selectedGroups[i].indexOf(this.infoGroups[j].name) !== -1
+                && this.infoGroups[j].type === educational_level) {
+                for (let n = 0; n < allGroups.length; n++) {
+                    if (selectedGroups[i] === allGroups[n].name) {
+                        for (let k = 0; k < additional_info.length; k++) {
+                            if (selectedGroups[i] === additional_info[k].groupName) {
+                                allGroups[n].supervisor = additional_info[k].supervisor;
+                                allGroups[n].fullName = this.infoGroups[j].fullName;
+                                allGroups[n].good_stud_num = additional_info[k].good_stud_num;
+                                allGroups[n].teacher_number = additional_info[k].teacher_number;
+                                groupsForDocument.push(allGroups[n]);
                             }
                         }
                     }
                 }
             }
         }
+    }
 
-        let start_date = this.formatDate(practice.start_date_practice);
-        let end_date = this.formatDate(practice.end_date_practice);
+    let start_date = this.formatDate(practice.start_date_practice);
+    let end_date = this.formatDate(practice.end_date_practice);
 
-        let head_of_department = document.getElementById("head_of_department").value;
-        let documents = [];
-        let typePractice = practice.Type_practice.name;
-        typePractice = typePractice.toLowerCase();
+    let head_of_department = document.getElementById("head_of_department").value;
+    let documents = [];
+    let typePractice = practice.Type_practice.name;
+    typePractice = typePractice.toLowerCase();
 
-        let course = document.getElementById("course").value;
-        let base_practice = document.getElementById("base_practice").value;
-        let num_base_practice = document.getElementById("num_base_practice").value;
-        let num_lections = document.getElementById("num_lections").value;
+    let course = document.getElementById("course").value;
+    let base_practice = document.getElementById("base_practice").value;
+    let num_base_practice = document.getElementById("num_base_practice").value;
+    let num_lections = document.getElementById("num_lections").value;
 
-        for (let i = 0; i < groupsForDocument.length; i++) {
-            let document = {
-                "direction": groupsForDocument[i].fullName,
-                "course": course,
-                "type_practice": typePractice,
-                "start_date": start_date,
-                "end_date": end_date,
-                "group_name": groupsForDocument[i].name,
-                "base_practice": base_practice,
-                "year": practice.year,
-                "teacher_number": groupsForDocument[i].teacher_number,
-                "student_number": groupsForDocument[i].students.length,
-                "good_stud_num": groupsForDocument[i].good_stud_num,
-                "num_base_practice": num_base_practice,
-                "num_lections": num_lections,
-                "supervisor": groupsForDocument[i].supervisor,
-                "head_of_department": head_of_department
-            };
-            documents.push(document);
-        }
+    for (let i = 0; i < groupsForDocument.length; i++) {
+        let document = {
+            "direction": groupsForDocument[i].fullName,
+            "course": course,
+            "type_practice": typePractice,
+            "start_date": start_date,
+            "end_date": end_date,
+            "group_name": groupsForDocument[i].name,
+            "base_practice": base_practice,
+            "year": practice.year,
+            "teacher_number": groupsForDocument[i].teacher_number,
+            "student_number": groupsForDocument[i].students.length,
+            "good_stud_num": groupsForDocument[i].good_stud_num,
+            "num_base_practice": num_base_practice,
+            "num_lections": num_lections,
+            "supervisor": groupsForDocument[i].supervisor,
+            "head_of_department": head_of_department
+        };
+        documents.push(document);
+    }
 
     return documents;
 };
@@ -1348,8 +1352,6 @@ View.prototype.readTextFile = function (file, callback) {
     }.bind(this);
     rawFile.send(null);
 };
-
-//usage:
 
 String.prototype.replaceAt = function (index, replacement) {
     return this.substr(0, index) + replacement + this.substr(index

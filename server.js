@@ -254,3 +254,7 @@ app.get('/types-practices', async function (req, res) {
     let data = await query.getDataFromTable(model.Type_practice);
     res.send(data);
 });
+app.get('/requests-by-idpractice-idorganisation', async function (req, res) {
+    let data = await query.getRequestsByPracticeId_OrganisationId(req);
+    res.send(''+data);
+});

@@ -209,9 +209,10 @@ th {
     margin-left: 20px !important;
 }
 
-#getGroupsBtnOk {
-    margin: 15px;
-    width: 250px;
+#getGroupsBtnOk, #showDialogGenerateDocumentBtn {
+    margin: 5px;
+    width: auto;
+    padding: 0 20px;
     border-color: rgb(169, 169, 169);
 }
 
@@ -249,12 +250,10 @@ th {
     display: none;
 }
 
-#showAllOrganisations {
-    width: 145px;
-}
 
-#getOrganisationsBtnOk {
-    width: 145px;
+#getOrganisationsBtnOk,#showAllOrganisations {
+    width: auto;
+    padding: 0 20px;
 }
 
 #load {
@@ -277,9 +276,6 @@ th {
     z-index: 100;
 }
 
-#getOrganisationsBtnOk {
-    width: 145px;
-}
 
 .listview-outlook .list .list-content .list-title {
     width: 350px;

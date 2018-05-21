@@ -23,7 +23,7 @@ Controller.prototype.init = async function () {
     this.View.onClickFinishBtn = this.dialogPracticeCreatedInit.bind(this);
     this.View.onClickSelectGroupBtnOk = this.renderDataInTable.bind(this);
     this.View.onClickYearsArray = this.setGroupsTreeView.bind(this);
-    this.View.onClickGetOrganisations = this.getOrganisations.bind(this);
+    this.View.onClickGetOrganisations = this.getOrganisationsInCurrentPractice.bind(this);
     this.View.onClickCreateOrganisation = this.updateTreeView.bind(this);
     this.View.onClickDisplayInfoAboutOrg = this.displayInfoAboutOrg.bind(this);
     this.View.onClickDisplayOrganisations = this.goToOrganisationsSection.bind(
@@ -63,7 +63,7 @@ Controller.prototype.initDialog = async function () {
 };
 
 Controller.prototype.createInputs = async function (isOrder) {
-    let selectedPractice = await this.View.getSelectedPractice()[0];
+    let selectedPractice = await this.View.getSelectedPractice("forStudentsSection")[0];
     let groups=selectedPractice.groups.split(',');
     if (isOrder) {//приказ
         let block = this.View.getElemById("groups-report-block");
@@ -87,15 +87,14 @@ Controller.prototype.createInputs = async function (isOrder) {
 };
 
 Controller.prototype.showDialogGenerateDocument = async function () {
-
-    let practice=this.View.getSelectedPractice();
-    practice = await this.Model.getPracticeById(practice[0].id);
-    if(practice.id_type_practice===2 || practice.id_type_practice===3){
-        alert(
-            "Возможность генерации документов для преддипломной практики и научно-исследовательский работы в стадии разработки. Приносим свои извинения за предоставленные неудобства.");
-        return;
-    }
-    if (practice.length !== 0) {
+    let practice=this.View.getSelectedPractice("forStudentsSection");
+    if(practice.length!==0){
+        practice = await this.Model.getPracticeById(practice[0].id);
+        if(practice.id_type_practice===2 || practice.id_type_practice===3){
+            alert(
+                "Возможность генерации документов для преддипломной практики и научно-исследовательский работы в стадии разработки. Приносим свои извинения за предоставленные неудобства.");
+            return;
+        }
         this.View.dialogOpen("#dialogGenerateReport");
     }
     else {
@@ -109,7 +108,7 @@ Controller.prototype.generateDocument = async function () {
         let data = JSON.parse(text);
         return data;
     });
-    let selectedPractice=this.View.getSelectedPractice()[0];
+    let selectedPractice=this.View.getSelectedPractice("forStudentsSection")[0];
     let groups=selectedPractice.groups.split(',');
     let practice = await this.Model.getPracticeById(selectedPractice.id);
     let type_document = this.View.getSelectValue("gdtypeDocument");
@@ -235,13 +234,19 @@ Controller.prototype.getPreferencesStudentsOrganisations = async function (selec
 Controller.prototype.renderDataInTable = async function () {
     this.View.OpenOrCloseLoader();
     let data = [];
-    let practices = this.View.getSelectedPractice();
-    let practice = await this.Model.getPracticeById(practices[0].id);
-    data = await this.getPreferencesStudentsOrganisations(practices[0]);
+    let practices = this.View.getSelectedPractice("forStudentsSection");
+    if(practices.length!==0) {
+        let practice = await this.Model.getPracticeById(practices[0].id);
+        data = await this.getPreferencesStudentsOrganisations(practices[0]);
 
-    this.View.renderTable(data);
-    this.View.colorTable(data);
-    this.View.renderInfo(practice);
+        this.View.renderTable(data);
+        this.View.colorTable(data);
+        this.View.renderInfo(practice);
+    }
+    else {
+        alert(
+            "Практика не выбрана. Выберите практику.");
+    }
     this.View.OpenOrCloseLoader();
 };
 
@@ -257,8 +262,8 @@ Controller.prototype.goToOrganisationsSection = async function () {
 };
 
 Controller.prototype.getApprovedAndNonApprovedStudents = async function (organisation) {
-    let info_about_practice = this.View.getConfigurationPractice();
-    let practice = await this.Model.getPractice(info_about_practice);
+    let practice = await this.View.getSelectedPractice("forOrganisationSection")[0];
+    practice = await this.Model.getPracticeById(practice.id);
     let approved_student_count = 0, non_approved_student_count = 0;
     if (practice.length !== 0) {
         approved_student_count = await this.renderStudentList(organisation,
@@ -276,8 +281,7 @@ Controller.prototype.displayInfoAboutOrg = async function (event) {
     await this.getApprovedAndNonApprovedStudents(organisation);
 };
 
-Controller.prototype.renderStudentList = async function (organisation, practice,
-                                                         idList) {
+Controller.prototype.renderStudentList = async function (organisation, practice, idList) {
     let status;
     if (idList === "approvedStudents") {
         status = true;
@@ -285,19 +289,23 @@ Controller.prototype.renderStudentList = async function (organisation, practice,
     else {
         status = false;
     }
-    let studentsInfo = await this.Model.getRequestsByOrganisationName(
+    let studentsInfo = await this.Model.getRequestsByOrganisationId(
         organisation, practice, status);
     let students = await this.Model.getStudentsByUID(studentsInfo);
     this.View.updateStudentsListView(students, idList);
     return students.length;
 };
 
-Controller.prototype.getOrganisations = async function () {
-    let info_about_practice = this.View.getConfigurationPractice();
-    let practice = await this.Model.getPractice(info_about_practice);
+Controller.prototype.getOrganisationsInCurrentPractice = async function () {
+    let practice = await this.View.getSelectedPractice("forOrganisationSection")[0];
+    practice = await this.Model.getPracticeById(practice.id);
     let organisations = 0;
     if (practice.length !== 0) {
         organisations = await this.Model.getOrganisationsByPracticeId(practice);
+        for(let i=0;i<organisations.length;i++){
+            let requests_number =await this.Model.getRequestsByPracticeId_OrganisationId(practice.id_practice,organisations[i].id);
+            organisations[i].num_vacant_places=organisations[i].max_students_number-requests_number;
+        }
     }
     this.View.setOrganisationsList(organisations, "organisationList");
     this.View.renderOrganisationSection(practice);
@@ -331,24 +339,26 @@ Controller.prototype.updateOrganisation = async function () {
 Controller.prototype.createNewOrganisation = async function () {
     let organisation = this.View.getInfoNewOrganisation();
     await this.Model.createOrganisation(organisation);
-}
+};
 
-Controller.prototype.addStudentToOrganisationShowDialog = async function () {
-    let info_about_practice = this.View.getConfigurationPractice();
-    let practice = await this.Model.getPractice(info_about_practice);
+Controller.prototype.addStudentToOrganisationShowDialog = async function (event) {
+    let practice = await this.View.getSelectedPractice("forOrganisationSection")[0];
+    practice = await this.Model.getPracticeById(practice.id);
     let uidsGroups = await this.Model.getGroupsByPracticeId(practice);
     let namesGroups = await this.Model.getGroupsNameByGroupsUID(uidsGroups);
     this.View.dialogEnableCheckboxes(namesGroups,
         "group-treeview-tabcontrol1-dialogAdd-bachelor");
     this.View.dialogEnableCheckboxes(namesGroups,
         "group-treeview-tabcontrol2-dialogAdd-master");
+    let nameOrganisation=this.View.getOnClickNameOrganisation(event);
+    this.View.changeInnerHtml("nameOrganisationDialog",nameOrganisation);
     this.View.dialogOpen("#dialogAddStudent");
 };
 
 Controller.prototype.addStudentToOrganisation = async function () {
     let students = await this.View.getSelectedStudents(event);
-    let info_about_practice = this.View.getConfigurationPractice();
-    let practice = await this.Model.getPractice(info_about_practice);
+    let practice = await this.View.getSelectedPractice("forOrganisationSection")[0];
+    practice = await this.Model.getPracticeById(practice.id);
     let nameOrganisation = this.View.getNameOrganisationInTreeview(
         "organisationList");
     let organisation = await this.Model.getOrganisationByName(nameOrganisation);
