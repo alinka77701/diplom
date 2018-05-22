@@ -690,19 +690,21 @@ View.prototype.setOrganisationsList = function (organisations, idList) {
         span_list_title.setAttribute("id_organisation", organisations[i].id);
         span_list_title.innerHTML = organisations[i].name;
         div_list_content.appendChild(span_list_title);
+        if (idList === "organisationList") {
+            let span_list_subtitle = document.createElement('span');
+            span_list_subtitle.setAttribute("class", "list-subtitle");
+            span_list_subtitle.innerHTML = 'Всего мест: '
+                + organisations[i].max_students_number;
+            div_list_content.appendChild(span_list_subtitle);
 
-        let span_list_subtitle = document.createElement('span');
-        span_list_subtitle.setAttribute("class", "list-subtitle");
-        span_list_subtitle.innerHTML = 'Всего мест: '
-            + organisations[i].max_students_number;
-        div_list_content.appendChild(span_list_subtitle);
+            let span_list_remark = document.createElement('span');
+            span_list_remark.setAttribute("class", "list-remark");
+            span_list_remark.innerHTML = 'Осталось: '
+                + organisations[i].num_vacant_places;
+            div_list_content.appendChild(span_list_remark);
+        }
 
-        let span_list_remark = document.createElement('span');
-        span_list_remark.setAttribute("class", "list-remark");
-        span_list_remark.innerHTML = 'Осталось: '
-            + organisations[i].num_vacant_places;
 
-        div_list_content.appendChild(span_list_remark);
 
         div_list.appendChild(div_list_content);
 
