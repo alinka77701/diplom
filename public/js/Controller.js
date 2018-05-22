@@ -11,7 +11,7 @@ const APPROVED = 1;
 const REJECTED = 2;
 Controller.prototype.init = async function () {
     this.View.OpenOrCloseLoader();
-    //  await this.Model.init();
+    await this.Model.init();
     await this.setYears();
     this.View.onClickNextStepDisplayGroupsTreeView = this.displayGroups.bind(
         this);
@@ -244,8 +244,7 @@ Controller.prototype.renderDataInTable = async function () {
         this.View.renderInfo(practice);
     }
     else {
-        alert(
-            "Практика не выбрана. Выберите практику.");
+        alert("Практика не выбрана. Выберите практику.");
     }
     this.View.OpenOrCloseLoader();
 };
@@ -297,18 +296,24 @@ Controller.prototype.renderStudentList = async function (organisation, practice,
 };
 
 Controller.prototype.getOrganisationsInCurrentPractice = async function () {
+
     let practice = await this.View.getSelectedPractice("forOrganisationSection")[0];
-    practice = await this.Model.getPracticeById(practice.id);
-    let organisations = 0;
-    if (practice.length !== 0) {
-        organisations = await this.Model.getOrganisationsByPracticeId(practice);
-        for(let i=0;i<organisations.length;i++){
-            let requests_number =await this.Model.getRequestsByPracticeId_OrganisationId(practice.id_practice,organisations[i].id);
-            organisations[i].num_vacant_places=organisations[i].max_students_number-requests_number;
+    if(practice!==undefined) {
+        practice = await this.Model.getPracticeById(practice.id);
+        let organisations = 0;
+        if (practice.length !== 0) {
+            organisations = await this.Model.getOrganisationsByPracticeId(practice);
+            for (let i = 0; i < organisations.length; i++) {
+                let requests_number = await this.Model.getRequestsByPracticeId_OrganisationId(practice.id_practice, organisations[i].id);
+                organisations[i].num_vacant_places = organisations[i].max_students_number - requests_number;
+            }
         }
+        this.View.setOrganisationsList(organisations, "organisationList");
+        this.View.renderOrganisationSection(practice);
     }
-    this.View.setOrganisationsList(organisations, "organisationList");
-    this.View.renderOrganisationSection(practice);
+    else{
+        alert("Практика не выбрана. Выберите практику.");
+    }
 };
 
 Controller.prototype.getOrganisation = async function () {
