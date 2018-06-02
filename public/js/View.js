@@ -153,8 +153,8 @@ View.prototype.dialogPracticeCreatedInit = function () {
     document.getElementById("termsPracticeDialog").innerHTML = 'c ' + fromDate
         + ' по ' + toDate;
     document.getElementById("deadlinePracticeDialog").innerHTML = deadline;
-    document.getElementById("mainWindowTermsPractice").innerHTML = fromDate
-        + ' - ' + toDate;
+    //document.getElementById("mainWindowTermsPractice").innerHTML = fromDate
+    //    + ' - ' + toDate;
     if (fromDate === "") {
         fromDate = "2000-01-01 21:00:00.000 +00:00";
     }
@@ -196,8 +196,8 @@ View.prototype.dialogPracticeCreatedInit = function () {
     document.getElementById(
         "organisationsPracticeDialog").innerHTML = arrOrganisations;
 
-    document.getElementById("mainWindowTypePractice").innerHTML = typePractice
-        + " практика";
+  //  document.getElementById("mainWindowTypePractice").innerHTML = typePractice
+      //  + " практика";
 
     document.getElementById("lecNumDialog").innerHTML = lecNum;
     this.Practice = {
@@ -670,6 +670,16 @@ View.prototype.setTypesOrganisationSelect = function (typesOrganisation) {
         typeOrg.appendChild(option);
     }
 };
+
+/*
+View.prototype.updateNumberPlacesInOrganisation = function (organisation) {
+    let organisation= document.getElementById("organisationList");
+    organisation.getElementsByClassName("active")[0].children[0].children[1].innerHTML=
+        "Всего мест: "+organisation.max_students_number;
+    organisation.getElementsByClassName("active")[0].children[0].children[2].innerHTML=
+        "Осталось : "+organisation.num_vacant_places;
+};
+*/
 
 View.prototype.setOrganisationsList = function (organisations, idList) {
     let listOrg = document.getElementById(idList);

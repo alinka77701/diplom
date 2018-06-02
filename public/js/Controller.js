@@ -296,7 +296,6 @@ Controller.prototype.renderStudentList = async function (organisation, practice,
 };
 
 Controller.prototype.getOrganisationsInCurrentPractice = async function () {
-
     let practice = await this.View.getSelectedPractice("forOrganisationSection")[0];
     if(practice!==undefined) {
         practice = await this.Model.getPracticeById(practice.id);
@@ -333,6 +332,8 @@ Controller.prototype.changeStudentStatus = async function (event) {
 
     let organisation = await this.getOrganisation();
     await this.getApprovedAndNonApprovedStudents(organisation);
+    await  this.getOrganisationsInCurrentPractice();
+    // this.View.updateNumberPlacesInOrganisation(organisation);
     this.View.OpenOrCloseLoader();
 };
 
@@ -386,7 +387,9 @@ Controller.prototype.addStudentToOrganisation = async function () {
         students[j]['id_status'] = REJECTED;
     }
     await this.Model.updateRequestsOrganisationByRequest(students);
+    await  this.getOrganisationsInCurrentPractice();
     await this.getApprovedAndNonApprovedStudents(organisation);
+
 };
 
 Controller.prototype.showDialogEditOrganisation = async function (event) {
